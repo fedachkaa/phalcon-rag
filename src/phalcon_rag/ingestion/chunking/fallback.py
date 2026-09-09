@@ -31,7 +31,7 @@ def _split_oversized_chunk(
             current_word_count = 0
 
         current_blocks.append(block)
-        current_word_count += (block_word_count)
+        current_word_count += block_word_count
 
     if current_blocks:
         chunks.append(

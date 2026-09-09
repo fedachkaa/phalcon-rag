@@ -14,9 +14,7 @@ METHOD_SIGNATURE_PATTERN = re.compile(
 def _split_by_method_signatures(
     chunk: Chunk,
 ) -> list[Chunk]:
-    method_blocks = (
-        _find_method_signature_blocks(chunk.content)
-    )
+    method_blocks = _find_method_signature_blocks(chunk.content)
 
     if not method_blocks:
         return [chunk]
@@ -45,10 +43,10 @@ def _split_by_method_signatures(
     for index, method_block in enumerate(
         method_blocks
     ):
-        method_start, _, method_name = (method_block)
+        method_start, _, method_name = method_block
 
         if index + 1 < len(method_blocks):
-            method_end = (method_blocks[index + 1][0])
+            method_end = method_blocks[index + 1][0]
         else:
             method_end = len(lines)
 
@@ -92,16 +90,10 @@ def _find_method_signature_blocks(
             continue
 
         if (in_php_block and stripped_line == "```"):
-            method_name = (_extract_method_name(block_lines))
+            method_name = _extract_method_name(block_lines)
 
             if method_name:
-                method_blocks.append(
-                    (
-                        block_start,
-                        index,
-                        method_name,
-                    )
-                )
+                method_blocks.append((block_start, index, method_name))
 
             in_php_block = False
             block_lines = []

@@ -33,22 +33,12 @@ def _split_by_headings(
             heading_level = len(
                 heading_match.group(1)
             )
-            heading_title = (
-                heading_match.group(2).strip()
-            )
+            heading_title = heading_match.group(2).strip()
 
-            while (
-                heading_stack
-                and heading_stack[-1][0] >= heading_level
-            ):
+            while (heading_stack and heading_stack[-1][0] >= heading_level):
                 heading_stack.pop()
 
-            heading_stack.append(
-                (
-                    heading_level,
-                    heading_title,
-                )
-            )
+            heading_stack.append((heading_level, heading_title))
 
             current_heading_path = [
                 title

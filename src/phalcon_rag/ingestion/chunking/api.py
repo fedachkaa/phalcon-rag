@@ -46,7 +46,7 @@ def _split_by_api_methods(
                         )
                     )
 
-            current_method = (method_match.group(1).strip())
+            current_method = method_match.group(1).strip()
             current_lines = [line]
 
             continue

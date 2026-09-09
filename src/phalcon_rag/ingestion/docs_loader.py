@@ -12,7 +12,7 @@ class DocsLoader:
             raw_content = file_path.read_text(encoding="utf-8")
 
             frontmatter, content = parse_frontmatter(raw_content)
-            relative_path = file_path.relative_to(self.docs_path)
+            relative_path = file_path.relative_to(self.docs_path).as_posix()
 
             document = Document(
                 id=str(relative_path),
