@@ -20,7 +20,7 @@ class DocsLoader:
                 source="phalcon_docs",
                 metadata={
                     "file_path": str(relative_path),
-                    "verison": "5.20",
+                    "version": "5.20",
                     **frontmatter
                 }
             )
