@@ -225,15 +225,9 @@ def main() -> None:
     args = parse_args()
     model_key = args.model
 
-    processed_data_path = Path(
-        "data/processed/phalcon_docs_5.20.jsonl"
-    )
-    retrieval_questions_path = Path(
-        "data/evaluation/retrieval_questions.json"
-    )
-    chunk_ids_path = Path(
-        "data/embeddings/chunk_ids.json"
-    )
+    processed_data_path = Path("data/processed/phalcon_docs_5.20.jsonl")
+    retrieval_questions_path = Path("data/evaluation/retrieval_questions.json")
+    chunk_ids_path = Path("data/embeddings/chunk_ids.json")
 
     processed_data = load_chunks(processed_data_path)
     retrieval_questions = load_json(retrieval_questions_path)
@@ -246,9 +240,7 @@ def main() -> None:
 
     assert embedding_chunk_ids == current_chunk_ids
 
-    embeddings = np.load(
-        MODELS[model_key]["embeddings_path"]
-    )
+    embeddings = np.load(MODELS[model_key]["embeddings_path"])
 
     assert len(embeddings) == len(processed_data)
 
@@ -269,14 +261,9 @@ def main() -> None:
     print("Embeddings shape:", embeddings.shape)
     print("Original chunks:", len(processed_data))
     print("Chunks after filtering:", len(filtered_chunks))
-    print(
-        "Removed:",
-        len(processed_data) - len(filtered_chunks),
-    )
+    print("Removed:", len(processed_data) - len(filtered_chunks))
 
-    model = SentenceTransformer(
-        MODELS[model_key]["model_name"]
-    )
+    model = SentenceTransformer(MODELS[model_key]["model_name"])
 
     result = evaluate_model(
         model_key,

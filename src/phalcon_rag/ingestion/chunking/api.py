@@ -127,22 +127,7 @@ def _split_by_api_items(
             current_items = [item]
         else:
             current_items.append(item)
-        # if (current_items and _word_count(candidate_content) > MAX_CHUNK_WORDS):
-        #     chunks.append(
-        #         _create_api_items_chunk(
-        #             parent_chunk=chunk,
-        #             prefix=prefix,
-        #             items=current_items,
-        #             part=part,
-        #         )
-        #     )
-
-        #     part += 1
-        #     current_items = [item]
-
-        # else:
-        #     current_items.append(item)
-
+            
     if current_items:
         chunks.append(
             _create_api_items_chunk(
