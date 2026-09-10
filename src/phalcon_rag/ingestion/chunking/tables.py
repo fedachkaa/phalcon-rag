@@ -1,5 +1,5 @@
 import re
-from phalcon_rag.ingestion.models import Chunk
+from phalcon_rag.models import Chunk
 from .utils import _word_count, _slugify, MAX_CHUNK_WORDS
 from .factories import _create_parent_chunk
 

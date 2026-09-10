@@ -4,7 +4,7 @@ import argparse
 import numpy as np
 from sentence_transformers import SentenceTransformer
 
-from phalcon_rag.ingestion.models import Chunk
+from phalcon_rag.models import Chunk
 from phalcon_rag.utils import load_chunks, load_json, save_result
 
 

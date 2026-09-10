@@ -1,5 +1,5 @@
 from pathlib import Path
-from .models import Document
+from ..models import Document
 from .frontmatter import parse_frontmatter
 from .cleaning import clean_content
 

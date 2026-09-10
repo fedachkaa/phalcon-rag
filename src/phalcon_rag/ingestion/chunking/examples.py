@@ -1,4 +1,4 @@
-from phalcon_rag.ingestion.models import Chunk
+from phalcon_rag.models import Chunk
 from .utils import _word_count, MAX_CHUNK_WORDS
 
 def _split_query_builder_examples(

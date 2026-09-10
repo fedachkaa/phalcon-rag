@@ -1,5 +1,5 @@
 from pathlib import Path
-from phalcon_rag.ingestion.models import Chunk
+from phalcon_rag.models import Chunk
 import json
 
 def load_chunks(path: Path) -> list[Chunk]:

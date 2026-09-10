@@ -1,4 +1,4 @@
-from phalcon_rag.ingestion.models import Chunk
+from phalcon_rag.models import Chunk
 import bm25s
 
 class BM25Retriever:

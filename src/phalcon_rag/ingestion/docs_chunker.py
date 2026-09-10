@@ -1,4 +1,4 @@
-from .models import Chunk, Document
+from ..models import Chunk, Document
 from .chunking.utils import _word_count, MAX_CHUNK_WORDS
 from .chunking.headings import _split_by_headings
 from .chunking.api import _contains_api_methods, _split_by_api_methods, _split_method_annotations, _contains_method_annotations, _contains_api_items, _split_by_api_items
