@@ -4,6 +4,7 @@ from .utils import _word_count, MAX_CHUNK_WORDS
 from .factories import _create_method_chunk, _create_parent_chunk
 
 API_METHOD_PATTERN = re.compile(r'^<h4 id="[^"]+"><code>(.+?)</code></h4>$')
+MAX_API_ITEMS_PER_CHUNK = 10
 
 def _contains_api_methods(
     content: str,
@@ -109,7 +110,10 @@ def _split_by_api_items(
             "</ApiList>"
         )
 
-        if (current_items and _word_count(candidate_content) > MAX_CHUNK_WORDS):
+        if current_items and (
+            len(current_items) >= MAX_API_ITEMS_PER_CHUNK
+            or _word_count(candidate_content) > MAX_CHUNK_WORDS
+        ):
             chunks.append(
                 _create_api_items_chunk(
                     parent_chunk=chunk,
@@ -121,10 +125,9 @@ def _split_by_api_items(
 
             part += 1
             current_items = [item]
-
         else:
             current_items.append(item)
-
+            
     if current_items:
         chunks.append(
             _create_api_items_chunk(

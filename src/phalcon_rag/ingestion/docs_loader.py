@@ -1,6 +1,7 @@
 from pathlib import Path
 from .models import Document
 from .frontmatter import parse_frontmatter
+from .cleaning import clean_content
 
 class DocsLoader:
     def __init__(self, docs_path: Path):
@@ -12,6 +13,7 @@ class DocsLoader:
             raw_content = file_path.read_text(encoding="utf-8")
 
             frontmatter, content = parse_frontmatter(raw_content)
+            content = clean_content(content)
             relative_path = file_path.relative_to(self.docs_path).as_posix()
 
             document = Document(
