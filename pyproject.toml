@@ -7,4 +7,5 @@ dependencies = [
     "transformers>=5.0,<6.0",
     "sentence-transformers>=6.0,<7.0",
     "numpy>=2.0,<2.4",
+    "bm25s>=0.2,<1.0",
 ]

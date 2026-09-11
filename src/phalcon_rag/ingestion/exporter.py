@@ -1,7 +1,7 @@
 from dataclasses import asdict
 import json
 from pathlib import Path
-from .models import Chunk
+from ..models import Chunk
 
 
 class JsonlExporter:

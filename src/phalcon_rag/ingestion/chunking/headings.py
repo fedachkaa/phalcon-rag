@@ -1,6 +1,5 @@
 import re
-
-from phalcon_rag.ingestion.models import Document, Chunk
+from phalcon_rag.models import Document, Chunk
 from .utils import _slugify, _make_unique_id
 
 HEADING_PATTERN = re.compile(r"^(#{1,6})\s+(.+)$")

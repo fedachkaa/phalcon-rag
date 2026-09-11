@@ -1,5 +1,5 @@
 import re
-from phalcon_rag.ingestion.models import Chunk
+from phalcon_rag.models import Chunk
 from .headings import HEADING_PATTERN
 
 def _filter_chunks(
