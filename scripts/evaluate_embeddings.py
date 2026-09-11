@@ -5,7 +5,7 @@ import numpy as np
 from sentence_transformers import SentenceTransformer
 
 from phalcon_rag.models import Chunk
-from phalcon_rag.utils import load_chunks, load_json, save_result
+from phalcon_rag.utils import load_chunks, load_json, save_result, load_retrieval_data
 
 
 MODELS = {
@@ -48,16 +48,6 @@ def parse_args() -> argparse.Namespace:
     )
 
     return parser.parse_args()
-
-
-def is_retrieval_noise(chunk: Chunk) -> bool:
-    content = chunk.content.strip()
-
-    return content == (
-        ":::info[NOTE]\n"
-        "All classes are prefixed with `Phalcon`\n"
-        ":::"
-    )
 
 
 def format_query(model_key: str, query: str) -> str:
@@ -193,51 +183,25 @@ def main() -> None:
     args = parse_args()
     model_key = args.model
 
-    processed_data_path = Path("data/processed/phalcon_docs_5.20.jsonl")
-    retrieval_questions_path = Path("data/evaluation/retrieval_questions.json")
-    chunk_ids_path = Path("data/embeddings/chunk_ids.json")
+    retrieval_questions = load_json(Path("data/evaluation/retrieval_questions.json"))
 
-    processed_data = load_chunks(processed_data_path)
-    retrieval_questions = load_json(retrieval_questions_path)
-    embedding_chunk_ids = load_json(chunk_ids_path)
-
-    current_chunk_ids = [
-        chunk.id
-        for chunk in processed_data
-    ]
-
-    assert embedding_chunk_ids == current_chunk_ids
-
-    embeddings = np.load(MODELS[model_key]["embeddings_path"])
-
-    assert len(embeddings) == len(processed_data)
-
-    filtered_indices = [
-        index
-        for index, chunk in enumerate(processed_data)
-        if not is_retrieval_noise(chunk)
-    ]
-
-    filtered_chunks = [
-        processed_data[index]
-        for index in filtered_indices
-    ]
-
-    filtered_embeddings = embeddings[filtered_indices]
+    chunks, embeddings = load_retrieval_data(
+        chunks_path=Path("data/processed/phalcon_docs_5.20.jsonl"),
+        embeddings_path=Path("data/embeddings/qwen_embeddings.npy"),
+        chunk_ids_path=Path("data/embeddings/chunk_ids.json"),
+    )
 
     print("Model:", MODELS[model_key]["model_name"])
     print("Embeddings shape:", embeddings.shape)
-    print("Original chunks:", len(processed_data))
-    print("Chunks after filtering:", len(filtered_chunks))
-    print("Removed:", len(processed_data) - len(filtered_chunks))
+    print("Chunks:", len(chunks))
 
     model = SentenceTransformer(MODELS[model_key]["model_name"])
 
     result = evaluate_model(
         model_key,
         retrieval_questions,
-        filtered_chunks,
-        filtered_embeddings,
+        chunks,
+        embeddings,
         model,
     )
 
