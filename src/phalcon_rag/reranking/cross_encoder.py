@@ -3,7 +3,7 @@ from phalcon_rag.models import Chunk
 
 
 class CrossEncoderReranker:
-    def __init__(self, model_name: str):
+    def __init__(self, model_name: str = "BAAI/bge-reranker-v2-m3"):
         self.model = CrossEncoder(model_name)
 
     def rerank(
