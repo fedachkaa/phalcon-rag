@@ -1,13 +1,13 @@
 {
-  "model": "cross-encoder/ms-marco-MiniLM-L12-v2",
+  "model": "BAAI/bge-reranker-v2-m3",
   "retrieval": "qwen_bm25_rrf_4_1",
   "questions_count": 30,
   "metrics": {
-    "recall_at_1": 0.6,
+    "recall_at_1": 0.4666666666666667,
     "recall_at_3": 0.7666666666666667,
-    "recall_at_5": 0.8333333333333334,
+    "recall_at_5": 0.9,
     "recall_at_10": 0.9333333333333333,
-    "mrr": 0.7009126984126984
+    "mrr": 0.6430555555555555
   },
   "results": [
     {
@@ -26,7 +26,7 @@
       "relevant_chunk_ids": [
         "di.mdx::methods::setshared"
       ],
-      "rank": 3
+      "rank": 4
     },
     {
       "id": "q003",
@@ -53,7 +53,7 @@
       "relevant_chunk_ids": [
         "db-models.mdx::finding-records::binding-parameters"
       ],
-      "rank": 7
+      "rank": 4
     },
     {
       "id": "q006",
@@ -71,7 +71,7 @@
       "relevant_chunk_ids": [
         "db-pagination.mdx::adapters::query-builder"
       ],
-      "rank": 1
+      "rank": 2
     },
     {
       "id": "q008",
@@ -80,7 +80,7 @@
       "relevant_chunk_ids": [
         "db-models-cache.mdx::reusable-relationships"
       ],
-      "rank": 5
+      "rank": 4
     },
     {
       "id": "q009",
@@ -89,7 +89,7 @@
       "relevant_chunk_ids": [
         "db-models-behaviors.mdx::softdelete"
       ],
-      "rank": 7
+      "rank": 1
     },
     {
       "id": "q010",
@@ -153,7 +153,7 @@
       "relevant_chunk_ids": [
         "encryption-security.mdx::password-hashing::part-1"
       ],
-      "rank": 2
+      "rank": 1
     },
     {
       "id": "q017",
@@ -171,7 +171,7 @@
       "relevant_chunk_ids": [
         "cache.mdx::adapters::redis"
       ],
-      "rank": 4
+      "rank": 2
     },
     {
       "id": "q019",
@@ -189,7 +189,7 @@
       "relevant_chunk_ids": [
         "session.mdx::adapters::stream"
       ],
-      "rank": 1
+      "rank": 2
     },
     {
       "id": "q021",
@@ -198,7 +198,7 @@
       "relevant_chunk_ids": [
         "volt.mdx::filters::part-1"
       ],
-      "rank": 1
+      "rank": 4
     },
     {
       "id": "q022",
@@ -207,7 +207,7 @@
       "relevant_chunk_ids": [
         "db-pagination.mdx::adapters::array"
       ],
-      "rank": 1
+      "rank": 2
     },
     {
       "id": "q023",
@@ -216,7 +216,7 @@
       "relevant_chunk_ids": [
         "db-pagination.mdx::adapters::model"
       ],
-      "rank": 1
+      "rank": 2
     },
     {
       "id": "q024",
@@ -243,7 +243,7 @@
       "relevant_chunk_ids": [
         "db-models-cache.mdx::reusable-relationships"
       ],
-      "rank": 1
+      "rank": 3
     },
     {
       "id": "q027",

@@ -14,10 +14,6 @@ chunks, embeddings = load_retrieval_data(
     chunk_ids_path=Path("data/embeddings/chunk_ids.json"),
 )
 
-# 1. cross-encoder/ms-marco-MiniLM-L6-v2
-# 2. cross-encoder/ms-marco-MiniLM-L12-v2
-# 3. BAAI/bge-reranker-v2-m3
-
 reranker_model_name = "BAAI/bge-reranker-v2-m3"
 
 dense_retriever = DenseRetriever(chunks, embeddings)
