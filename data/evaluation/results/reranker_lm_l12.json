@@ -1,0 +1,285 @@
+{
+  "model": "cross-encoder/ms-marco-MiniLM-L12-v2",
+  "retrieval": "qwen_bm25_rrf_4_1",
+  "questions_count": 30,
+  "metrics": {
+    "recall_at_1": 0.6,
+    "recall_at_3": 0.7666666666666667,
+    "recall_at_5": 0.8333333333333334,
+    "recall_at_10": 0.9333333333333333,
+    "mrr": 0.7009126984126984
+  },
+  "results": [
+    {
+      "id": "q001",
+      "query": "How can I register a service so Phalcon always returns the same instance?",
+      "category": "problem_oriented",
+      "relevant_chunk_ids": [
+        "di.mdx::shared-services"
+      ],
+      "rank": 1
+    },
+    {
+      "id": "q002",
+      "query": "Which DI method registers an always-shared service?",
+      "category": "api",
+      "relevant_chunk_ids": [
+        "di.mdx::methods::setshared"
+      ],
+      "rank": 3
+    },
+    {
+      "id": "q003",
+      "query": "How do I map an interface to a concrete implementation in the Phalcon container?",
+      "category": "how_to",
+      "relevant_chunk_ids": [
+        "container.mdx::interface-binding"
+      ],
+      "rank": 1
+    },
+    {
+      "id": "q004",
+      "query": "How can I retrieve only the first model record matching some criteria?",
+      "category": "how_to",
+      "relevant_chunk_ids": [
+        "db-models.mdx::finding-records::findfirst"
+      ],
+      "rank": 1
+    },
+    {
+      "id": "q005",
+      "query": "How should I safely pass user values into Phalcon model queries instead of concatenating them into conditions?",
+      "category": "problem_oriented",
+      "relevant_chunk_ids": [
+        "db-models.mdx::finding-records::binding-parameters"
+      ],
+      "rank": 7
+    },
+    {
+      "id": "q006",
+      "query": "How do I build PHQL queries programmatically instead of writing the whole PHQL string?",
+      "category": "problem_oriented",
+      "relevant_chunk_ids": [
+        "db-phql.mdx::query-builder"
+      ],
+      "rank": 1
+    },
+    {
+      "id": "q007",
+      "query": "How can I paginate results produced by a Phalcon query builder?",
+      "category": "how_to",
+      "relevant_chunk_ids": [
+        "db-pagination.mdx::adapters::query-builder"
+      ],
+      "rank": 1
+    },
+    {
+      "id": "q008",
+      "query": "How can I avoid repeatedly querying related model records that have already been loaded?",
+      "category": "problem_oriented",
+      "relevant_chunk_ids": [
+        "db-models-cache.mdx::reusable-relationships"
+      ],
+      "rank": 5
+    },
+    {
+      "id": "q009",
+      "query": "How do I make deleting a model mark it as deleted instead of physically removing the database row?",
+      "category": "problem_oriented",
+      "relevant_chunk_ids": [
+        "db-models-behaviors.mdx::softdelete"
+      ],
+      "rank": 7
+    },
+    {
+      "id": "q010",
+      "query": "How do I group multiple model database operations into a single transaction manually?",
+      "category": "how_to",
+      "relevant_chunk_ids": [
+        "db-models-transactions.mdx::manual"
+      ],
+      "rank": null
+    },
+    {
+      "id": "q011",
+      "query": "How do I check whether an ACL role is allowed to access a resource and action?",
+      "category": "how_to",
+      "relevant_chunk_ids": [
+        "acl.mdx::querying"
+      ],
+      "rank": 1
+    },
+    {
+      "id": "q012",
+      "query": "How do I define a route and map it to a controller or handler in Phalcon?",
+      "category": "conceptual",
+      "relevant_chunk_ids": [
+        "routing.mdx::overview"
+      ],
+      "rank": 2
+    },
+    {
+      "id": "q013",
+      "query": "How can I generate a URL from a named route without hard-coding the path?",
+      "category": "problem_oriented",
+      "relevant_chunk_ids": [
+        "mvc-url.mdx::dynamic-urls::routing"
+      ],
+      "rank": 2
+    },
+    {
+      "id": "q014",
+      "query": "How can I listen for Phalcon events and run a handler when an event fires?",
+      "category": "how_to",
+      "relevant_chunk_ids": [
+        "events.mdx::handlers::part-1",
+        "events.mdx::overview"
+      ],
+      "rank": 1
+    },
+    {
+      "id": "q015",
+      "query": "How can I protect a Phalcon form against cross-site request forgery?",
+      "category": "problem_oriented",
+      "relevant_chunk_ids": [
+        "encryption-security.mdx::csrf-protection"
+      ],
+      "rank": 1
+    },
+    {
+      "id": "q016",
+      "query": "How should passwords be stored and verified securely in a Phalcon application?",
+      "category": "problem_oriented",
+      "relevant_chunk_ids": [
+        "encryption-security.mdx::password-hashing::part-1"
+      ],
+      "rank": 2
+    },
+    {
+      "id": "q017",
+      "query": "How can I create my own validation rule in Phalcon?",
+      "category": "how_to",
+      "relevant_chunk_ids": [
+        "filter-validation.mdx::validators::custom-validators"
+      ],
+      "rank": 1
+    },
+    {
+      "id": "q018",
+      "query": "How do I configure Redis as a cache backend in Phalcon?",
+      "category": "how_to",
+      "relevant_chunk_ids": [
+        "cache.mdx::adapters::redis"
+      ],
+      "rank": 4
+    },
+    {
+      "id": "q019",
+      "query": "How can I store Phalcon sessions in Redis instead of local files?",
+      "category": "how_to",
+      "relevant_chunk_ids": [
+        "session.mdx::adapters::redis"
+      ],
+      "rank": 1
+    },
+    {
+      "id": "q020",
+      "query": "Which session adapter should I use if I want sessions stored on the filesystem?",
+      "category": "api",
+      "relevant_chunk_ids": [
+        "session.mdx::adapters::stream"
+      ],
+      "rank": 1
+    },
+    {
+      "id": "q021",
+      "query": "How do I apply filters to values in a Volt template?",
+      "category": "how_to",
+      "relevant_chunk_ids": [
+        "volt.mdx::filters::part-1"
+      ],
+      "rank": 1
+    },
+    {
+      "id": "q022",
+      "query": "How can I paginate a plain PHP array with Phalcon?",
+      "category": "how_to",
+      "relevant_chunk_ids": [
+        "db-pagination.mdx::adapters::array"
+      ],
+      "rank": 1
+    },
+    {
+      "id": "q023",
+      "query": "How do I paginate a model result set in Phalcon?",
+      "category": "how_to",
+      "relevant_chunk_ids": [
+        "db-pagination.mdx::adapters::model"
+      ],
+      "rank": 1
+    },
+    {
+      "id": "q024",
+      "query": "How do I start, commit, and roll back a database transaction using a Phalcon DB adapter?",
+      "category": "how_to",
+      "relevant_chunk_ids": [
+        "db-layer.mdx::transactions"
+      ],
+      "rank": null
+    },
+    {
+      "id": "q025",
+      "query": "What does findFirst() return when no matching model record exists?",
+      "category": "api",
+      "relevant_chunk_ids": [
+        "db-models.mdx::methods::findfirst"
+      ],
+      "rank": 1
+    },
+    {
+      "id": "q026",
+      "query": "How can I define reusable relationships between Phalcon models?",
+      "category": "conceptual",
+      "relevant_chunk_ids": [
+        "db-models-cache.mdx::reusable-relationships"
+      ],
+      "rank": 1
+    },
+    {
+      "id": "q027",
+      "query": "How can I add bound parameters to a low-level database query in Phalcon?",
+      "category": "how_to",
+      "relevant_chunk_ids": [
+        "db-layer.mdx::parameters::binding"
+      ],
+      "rank": 8
+    },
+    {
+      "id": "q028",
+      "query": "How can I create URLs that follow routes configured in the Phalcon router?",
+      "category": "conceptual",
+      "relevant_chunk_ids": [
+        "mvc-url.mdx::dynamic-urls::routing"
+      ],
+      "rank": 1
+    },
+    {
+      "id": "q029",
+      "query": "How can I use Memcached as the backend for Phalcon sessions?",
+      "category": "how_to",
+      "relevant_chunk_ids": [
+        "session.mdx::adapters::libmemcached"
+      ],
+      "rank": 1
+    },
+    {
+      "id": "q030",
+      "query": "How can I create a custom cache adapter when the built-in Phalcon adapters do not fit my needs?",
+      "category": "how_to",
+      "relevant_chunk_ids": [
+        "cache.mdx::adapters::custom"
+      ],
+      "rank": 3
+    }
+  ]
+}
