@@ -1,7 +1,7 @@
-from phalcon_rag.retrieval.bm25 import BM25Retriever
 from pathlib import Path
-from phalcon_rag.utils import load_chunks, load_json, save_result
 
+from phalcon_rag.retrieval.bm25 import BM25Retriever
+from phalcon_rag.utils import load_chunks, load_json, save_result
 
 processed_data_path = Path("data/processed/phalcon_docs_5.20.jsonl")
 retrieval_questions_path = Path("data/evaluation/retrieval_questions.json")
@@ -17,7 +17,7 @@ recall_at_10 = 0
 reciprocal_rank_sum = 0
 
 for question in retrieval_questions:
-    search_results = retriever.search(question['query'], top_k=len(processed_data))
+    search_results = retriever.search(question["query"], top_k=len(processed_data))
 
     relevant_rank = None
 
@@ -35,19 +35,21 @@ for question in retrieval_questions:
 
         reciprocal_rank_sum += 1 / relevant_rank
 
-    results.append({
-        "id": question["id"],
-        "query": question["query"],
-        "category": question["category"],
-        "relevant_chunk_ids": question["relevant_chunk_ids"],
-        "rank": relevant_rank,
-    })
+    results.append(
+        {
+            "id": question["id"],
+            "query": question["query"],
+            "category": question["category"],
+            "relevant_chunk_ids": question["relevant_chunk_ids"],
+            "rank": relevant_rank,
+        }
+    )
 
 
 questions_count = len(retrieval_questions)
 
 metrics = {
-    "recall_at_5": recall_at_5/ questions_count,
+    "recall_at_5": recall_at_5 / questions_count,
     "recall_at_10": recall_at_10 / questions_count,
     "mrr": reciprocal_rank_sum / questions_count,
 }

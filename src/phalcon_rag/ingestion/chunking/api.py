@@ -1,18 +1,19 @@
 import re
+
 from phalcon_rag.models import Chunk
-from .utils import _word_count, MAX_CHUNK_WORDS
+
 from .factories import _create_method_chunk, _create_parent_chunk
+from .utils import MAX_CHUNK_WORDS, _word_count
 
 API_METHOD_PATTERN = re.compile(r'^<h4 id="[^"]+"><code>(.+?)</code></h4>$')
 MAX_API_ITEMS_PER_CHUNK = 10
 
+
 def _contains_api_methods(
     content: str,
 ) -> bool:
-    return any(
-        API_METHOD_PATTERN.match(line)
-        for line in content.splitlines()
-    )
+    return any(API_METHOD_PATTERN.match(line) for line in content.splitlines())
+
 
 def _split_by_api_methods(
     chunk: Chunk,
@@ -68,14 +69,12 @@ def _split_by_api_methods(
 
     return chunks
 
+
 def _contains_api_items(
     content: str,
 ) -> bool:
-    return (
-        "<ApiList>" in content
-        and "<ApiItem " in content
-        and "</ApiItem>" in content
-    )
+    return "<ApiList>" in content and "<ApiItem " in content and "</ApiItem>" in content
+
 
 def _split_by_api_items(
     chunk: Chunk,
@@ -91,11 +90,8 @@ def _split_by_api_items(
     if not matches:
         return [chunk]
 
-    prefix = chunk.content[:matches[0].start()]
-    api_items = [
-        match.group(0).strip()
-        for match in matches
-    ]
+    prefix = chunk.content[: matches[0].start()]
+    api_items = [match.group(0).strip() for match in matches]
 
     chunks: list[Chunk] = []
     current_items: list[str] = []
@@ -104,11 +100,7 @@ def _split_by_api_items(
     for item in api_items:
         candidate = "\n\n".join(current_items + [item])
 
-        candidate_content = (
-            f"{prefix.strip()}\n\n"
-            f"{candidate}\n\n"
-            "</ApiList>"
-        )
+        candidate_content = f"{prefix.strip()}\n\n{candidate}\n\n</ApiList>"
 
         if current_items and (
             len(current_items) >= MAX_API_ITEMS_PER_CHUNK
@@ -127,7 +119,7 @@ def _split_by_api_items(
             current_items = [item]
         else:
             current_items.append(item)
-            
+
     if current_items:
         chunks.append(
             _create_api_items_chunk(
@@ -140,6 +132,7 @@ def _split_by_api_items(
 
     return chunks
 
+
 def _create_api_items_chunk(
     parent_chunk: Chunk,
     prefix: str,
@@ -148,11 +141,7 @@ def _create_api_items_chunk(
 ) -> Chunk:
     items_content = "\n\n".join(items)
 
-    content = (
-        f"{prefix.strip()}\n\n"
-        f"{items_content}\n\n"
-        "</ApiList>"
-    )
+    content = f"{prefix.strip()}\n\n{items_content}\n\n</ApiList>"
 
     return Chunk(
         id=f"{parent_chunk.id}::api-items-{part}",
@@ -168,26 +157,18 @@ def _create_api_items_chunk(
 def _contains_method_annotations(
     content: str,
 ) -> bool:
-    return sum(
-        1
-        for line in content.splitlines()
-        if line.strip().startswith("@method ")
-    ) > 1
+    return (
+        sum(1 for line in content.splitlines() if line.strip().startswith("@method "))
+        > 1
+    )
+
 
 def _split_method_annotations(
     chunk: Chunk,
 ) -> list[Chunk]:
-    lines = [
-        line
-        for line in chunk.content.splitlines()
-        if line.strip()
-    ]
+    lines = [line for line in chunk.content.splitlines() if line.strip()]
 
-    method_lines = [
-        line
-        for line in lines
-        if line.strip().startswith("@method ")
-    ]
+    method_lines = [line for line in lines if line.strip().startswith("@method ")]
 
     if len(method_lines) <= 1:
         return [chunk]
@@ -199,7 +180,7 @@ def _split_method_annotations(
     for method_line in method_lines:
         candidate = "\n".join([*current_methods, method_line])
 
-        if (current_methods and _word_count(candidate) > MAX_CHUNK_WORDS):
+        if current_methods and _word_count(candidate) > MAX_CHUNK_WORDS:
             chunks.append(
                 _create_method_annotations_chunk(
                     parent_chunk=chunk,
@@ -225,20 +206,18 @@ def _split_method_annotations(
 
     return chunks
 
+
 def _create_method_annotations_chunk(
     parent_chunk: Chunk,
     method_lines: list[str],
     part: int,
 ) -> Chunk:
     return Chunk(
-        id=(
-            f"{parent_chunk.id}::"
-            f"method-annotations-{part}"
-        ),
+        id=(f"{parent_chunk.id}::method-annotations-{part}"),
         content="\n".join(method_lines),
         source=parent_chunk.source,
         metadata={
             **parent_chunk.metadata,
-             "method_annotations_part": part,
+            "method_annotations_part": part,
         },
     )

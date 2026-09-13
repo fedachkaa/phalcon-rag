@@ -1,6 +1,8 @@
 import re
-from phalcon_rag.models import Document, Chunk
-from .utils import _slugify, _make_unique_id
+
+from phalcon_rag.models import Chunk, Document
+
+from .utils import _make_unique_id, _slugify
 
 HEADING_PATTERN = re.compile(r"^(#{1,6})\s+(.+)$")
 
@@ -29,20 +31,15 @@ def _split_by_headings(
                     )
                 )
 
-            heading_level = len(
-                heading_match.group(1)
-            )
+            heading_level = len(heading_match.group(1))
             heading_title = heading_match.group(2).strip()
 
-            while (heading_stack and heading_stack[-1][0] >= heading_level):
+            while heading_stack and heading_stack[-1][0] >= heading_level:
                 heading_stack.pop()
 
             heading_stack.append((heading_level, heading_title))
 
-            current_heading_path = [
-                title
-                for _, title in heading_stack
-            ]
+            current_heading_path = [title for _, title in heading_stack]
 
             current_lines = [line]
 
@@ -71,11 +68,7 @@ def _create_chunk(
 ) -> Chunk:
     content = "\n".join(lines).strip()
 
-    section = (
-        heading_path[-1]
-        if heading_path
-        else None
-    )
+    section = heading_path[-1] if heading_path else None
 
     base_id = _create_chunk_id(
         document_id=document.id,
@@ -106,9 +99,6 @@ def _create_chunk_id(
     if not heading_path:
         return f"{document_id}::root"
 
-    path = "::".join(
-        _slugify(heading)
-        for heading in heading_path
-    )
+    path = "::".join(_slugify(heading) for heading in heading_path)
 
     return f"{document_id}::{path}"

@@ -1,7 +1,9 @@
-from pathlib import Path
-from phalcon_rag.models import Chunk
 import json
+from pathlib import Path
+
 import numpy as np
+
+from phalcon_rag.models import Chunk
 
 
 def load_chunks(path: Path) -> list[Chunk]:
@@ -39,11 +41,7 @@ def save_result(model_key: str, result: dict) -> None:
 def is_retrieval_noise(chunk: Chunk) -> bool:
     content = chunk.content.strip()
 
-    return content == (
-        ":::info[NOTE]\n"
-        "All classes are prefixed with `Phalcon`\n"
-        ":::"
-    )
+    return content == (":::info[NOTE]\nAll classes are prefixed with `Phalcon`\n:::")
 
 
 def load_retrieval_data(
@@ -54,27 +52,20 @@ def load_retrieval_data(
     chunks = load_chunks(chunks_path)
     embedding_chunk_ids = load_json(chunk_ids_path)
 
-    current_chunk_ids = [
-        chunk.id
-        for chunk in chunks
-    ]
+    current_chunk_ids = [chunk.id for chunk in chunks]
 
-    assert embedding_chunk_ids == current_chunk_ids
+    if embedding_chunk_ids != current_chunk_ids:
+        raise ValueError("Embedding chunk IDs do not match loaded chunks")
 
     embeddings = np.load(embeddings_path)
 
     assert len(embeddings) == len(chunks)
 
     filtered_indices = [
-        index
-        for index, chunk in enumerate(chunks)
-        if not is_retrieval_noise(chunk)
+        index for index, chunk in enumerate(chunks) if not is_retrieval_noise(chunk)
     ]
 
-    filtered_chunks = [
-        chunks[index]
-        for index in filtered_indices
-    ]
+    filtered_chunks = [chunks[index] for index in filtered_indices]
 
     filtered_embeddings = embeddings[filtered_indices]
 

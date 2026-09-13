@@ -2,8 +2,12 @@ import re
 
 MAX_CHUNK_WORDS = 500
 
-def _word_count(content: str,) -> int:
+
+def _word_count(
+    content: str,
+) -> int:
     return len(content.split())
+
 
 def _slugify(value: str) -> str:
     value = value.lower().strip()
@@ -11,6 +15,7 @@ def _slugify(value: str) -> str:
     value = re.sub(r"[^a-z0-9_]+", "-", value)
 
     return value.strip("-")
+
 
 def _make_unique_id(
     base_id: str,

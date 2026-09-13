@@ -1,15 +1,14 @@
 import re
+
 from phalcon_rag.models import Chunk
+
 from .headings import HEADING_PATTERN
+
 
 def _filter_chunks(
     chunks: list[Chunk],
 ) -> list[Chunk]:
-    return [
-        chunk
-        for chunk in chunks
-        if not _should_skip_chunk(chunk)
-    ]
+    return [chunk for chunk in chunks if not _should_skip_chunk(chunk)]
 
 
 def _should_skip_chunk(
@@ -23,26 +22,20 @@ def _should_skip_chunk(
     if _is_heading_only_chunk(chunk):
         return True
 
-    if not _has_substantive_content(chunk):
-        return True
+    return bool(not _has_substantive_content(chunk))
 
-    return False
-        
-    
+
 def _is_heading_only_chunk(
     chunk: Chunk,
 ) -> bool:
-    lines = [
-        line.strip()
-        for line in chunk.content.splitlines()
-        if line.strip()
-    ]
+    lines = [line.strip() for line in chunk.content.splitlines() if line.strip()]
 
     if len(lines) != 1:
         return False
 
     return bool(HEADING_PATTERN.match(lines[0]))
-    
+
+
 def _has_substantive_content(
     chunk: Chunk,
 ) -> bool:

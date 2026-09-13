@@ -1,11 +1,13 @@
 from pathlib import Path
-from phalcon_rag.retrieval.hybrid import HybridRetriever
-from phalcon_rag.retrieval.dense import DenseRetriever
-from phalcon_rag.retrieval.bm25 import BM25Retriever
-from phalcon_rag.reranking.cross_encoder import CrossEncoderReranker
-from phalcon_rag.generation.answer_generator import AnswerGenerator
-from phalcon_rag.utils import load_retrieval_data, load_json, save_result
 
+from phalcon_rag.config import GENERATION_MODEL
+from phalcon_rag.generation.answer_generator import AnswerGenerator
+from phalcon_rag.pipeline import RagPipeline
+from phalcon_rag.reranking.cross_encoder import CrossEncoderReranker
+from phalcon_rag.retrieval.bm25 import BM25Retriever
+from phalcon_rag.retrieval.dense import DenseRetriever
+from phalcon_rag.retrieval.hybrid import HybridRetriever
+from phalcon_rag.utils import load_json, load_retrieval_data, save_result
 
 chunks, embeddings = load_retrieval_data(
     chunks_path=Path("data/processed/phalcon_docs_5.20.jsonl"),
@@ -14,42 +16,40 @@ chunks, embeddings = load_retrieval_data(
 )
 
 retrieval_questions = load_json(Path("data/evaluation/retrieval_questions.json"))
-
-bm25_retriever = BM25Retriever(chunks)
-dense_retriever = DenseRetriever(chunks, embeddings)
-hybrid_retriever = HybridRetriever(dense_retriever, bm25_retriever)
-reranker = CrossEncoderReranker()
-answer_generator = AnswerGenerator("gpt-5.6-luna")
+answer_generator = AnswerGenerator(GENERATION_MODEL)
+pipeline = RagPipeline(
+    hybrid_retriever=HybridRetriever(
+        DenseRetriever(chunks, embeddings), BM25Retriever(chunks)
+    ),
+    reranker=CrossEncoderReranker(),
+    answer_generator=answer_generator,
+)
 
 results = []
 for question in retrieval_questions:
-    candidates = hybrid_retriever.search(
-        question['query'],
-    ) 
+    top_chunks = pipeline.retrieve(question["query"])
 
-    reranked = reranker.rerank(question['query'], candidates)
+    answer = answer_generator.generate(
+        question["query"],
+        top_chunks,
+    )
 
-    top_chunks = [
-        chunk
-        for chunk, _ in reranked[:5]
-    ]
+    results.append(
+        {
+            "id": question["id"],
+            "query": question["query"],
+            "expected_answer_points": question["expected_answer_points"],
+            "retrieved_chunks": [
+                {
+                    "position": position,
+                    "id": chunk.id,
+                    "source": chunk.source,
+                    "content": chunk.content,
+                }
+                for position, chunk in enumerate(top_chunks, start=1)
+            ],
+            "generated_answer": answer,
+        }
+    )
 
-    result = answer_generator.generate(question['query'], top_chunks)
-
-    results.append({
-        'id': question['id'],
-        'query': question['query'],
-        'expected_answer_points': question['expected_answer_points'],
-        'retrieved_chunks':  [
-            {
-                "position": position,
-                "id": chunk.id,
-                "source": chunk.source,
-                "content": chunk.content,
-            }
-            for position, chunk in enumerate(top_chunks, start=1)
-        ],
-        'generated_answer': result
-    })
-
-save_result('generation', results)
+save_result("generation", results)

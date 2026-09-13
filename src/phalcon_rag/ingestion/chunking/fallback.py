@@ -1,6 +1,8 @@
 from phalcon_rag.models import Chunk
+
 from .headings import HEADING_PATTERN
-from .utils import _word_count, MAX_CHUNK_WORDS
+from .utils import MAX_CHUNK_WORDS, _word_count
+
 
 def _split_oversized_chunk(
     chunk: Chunk,
@@ -17,7 +19,7 @@ def _split_oversized_chunk(
     for block in blocks:
         block_word_count = _word_count(block)
 
-        if (current_blocks and (current_word_count + block_word_count > MAX_CHUNK_WORDS)):
+        if current_blocks and (current_word_count + block_word_count > MAX_CHUNK_WORDS):
             chunks.append(
                 _create_fallback_chunk(
                     parent_chunk=chunk,
@@ -43,6 +45,7 @@ def _split_oversized_chunk(
         )
 
     return chunks
+
 
 def _merge_heading_blocks(
     blocks: list[str],
@@ -71,6 +74,7 @@ def _merge_heading_blocks(
 
     return merged
 
+
 def _create_fallback_chunk(
     parent_chunk: Chunk,
     blocks: list[str],
@@ -79,10 +83,7 @@ def _create_fallback_chunk(
     content = "\n\n".join(blocks).strip()
 
     return Chunk(
-        id=(
-            f"{parent_chunk.id}::"
-            f"part-{part_number}"
-        ),
+        id=(f"{parent_chunk.id}::part-{part_number}"),
         content=content,
         source=parent_chunk.source,
         metadata={
@@ -90,6 +91,7 @@ def _create_fallback_chunk(
             "part": part_number,
         },
     )
+
 
 def _split_into_blocks(
     content: str,

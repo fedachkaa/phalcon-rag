@@ -1,7 +1,9 @@
 import re
+
 from phalcon_rag.models import Chunk
-from .utils import _word_count, MAX_CHUNK_WORDS
+
 from .factories import _create_method_chunk, _create_parent_chunk
+from .utils import MAX_CHUNK_WORDS, _word_count
 
 METHOD_SIGNATURE_PATTERN = re.compile(
     r"^(?:final\s+)?"
@@ -26,9 +28,7 @@ def _split_by_method_signatures(
     first_method_start = method_blocks[0][0]
 
     if first_method_start > 0:
-        prefix_lines = lines[
-            :first_method_start
-        ]
+        prefix_lines = lines[:first_method_start]
 
         prefix_content = "\n".join(prefix_lines).strip()
 
@@ -40,9 +40,7 @@ def _split_by_method_signatures(
                 )
             )
 
-    for index, method_block in enumerate(
-        method_blocks
-    ):
+    for index, method_block in enumerate(method_blocks):
         method_start, _, method_name = method_block
 
         if index + 1 < len(method_blocks):
@@ -50,9 +48,7 @@ def _split_by_method_signatures(
         else:
             method_end = len(lines)
 
-        method_lines = lines[
-            method_start:method_end
-        ]
+        method_lines = lines[method_start:method_end]
 
         chunks.append(
             _create_method_chunk(
@@ -64,10 +60,12 @@ def _split_by_method_signatures(
 
     return chunks
 
+
 def _contains_method_signatures(
     content: str,
 ) -> bool:
     return bool(_find_method_signature_blocks(content))
+
 
 def _find_method_signature_blocks(
     content: str,
@@ -83,13 +81,13 @@ def _find_method_signature_blocks(
     for index, line in enumerate(lines):
         stripped_line = line.strip()
 
-        if (not in_php_block and stripped_line == "```php"):
+        if not in_php_block and stripped_line == "```php":
             in_php_block = True
             block_start = index
             block_lines = []
             continue
 
-        if (in_php_block and stripped_line == "```"):
+        if in_php_block and stripped_line == "```":
             method_name = _extract_method_name(block_lines)
 
             if method_name:
@@ -104,6 +102,7 @@ def _find_method_signature_blocks(
             block_lines.append(line)
 
     return method_blocks
+
 
 def _extract_method_name(
     lines: list[str],
@@ -123,10 +122,13 @@ def _extract_method_name(
             return match.group(1)
 
         return None
-    
+
     return None
 
-def _contains_multiple_method_signatures(content: str,) -> bool:
+
+def _contains_multiple_method_signatures(
+    content: str,
+) -> bool:
     lines = content.splitlines()
 
     method_count = 0
@@ -136,6 +138,7 @@ def _contains_multiple_method_signatures(content: str,) -> bool:
             method_count += 1
 
     return method_count > 1
+
 
 def _split_method_signature_list(
     chunk: Chunk,
@@ -161,7 +164,7 @@ def _split_method_signature_list(
         if not inside_php_block:
             continue
 
-        if (METHOD_SIGNATURE_PATTERN.match(stripped) and current_lines):
+        if METHOD_SIGNATURE_PATTERN.match(stripped) and current_lines:
             method_blocks.append("\n".join(current_lines).strip())
             current_lines = []
 
@@ -183,13 +186,9 @@ def _split_method_signature_list(
             method_block,
         ]
 
-        candidate_content = (
-            "```php\n"
-            + "\n\n".join(candidate_methods)
-            + "\n```"
-        )
+        candidate_content = "```php\n" + "\n\n".join(candidate_methods) + "\n```"
 
-        if (current_methods and _word_count(candidate_content) > MAX_CHUNK_WORDS):
+        if current_methods and _word_count(candidate_content) > MAX_CHUNK_WORDS:
             chunks.append(
                 _create_method_list_chunk(
                     parent_chunk=chunk,
@@ -215,6 +214,7 @@ def _split_method_signature_list(
 
     return chunks
 
+
 def _create_method_list_chunk(
     parent_chunk: Chunk,
     method_blocks: list[str],
@@ -222,17 +222,10 @@ def _create_method_list_chunk(
 ) -> Chunk:
     methods_content = "\n\n".join(method_blocks)
 
-    content = (
-        "```php\n"
-        f"{methods_content}\n"
-        "```"
-    )
+    content = f"```php\n{methods_content}\n```"
 
     return Chunk(
-        id=(
-            f"{parent_chunk.id}::"
-            f"method-signatures-{part}"
-        ),
+        id=(f"{parent_chunk.id}::method-signatures-{part}"),
         content=content,
         source=parent_chunk.source,
         metadata={

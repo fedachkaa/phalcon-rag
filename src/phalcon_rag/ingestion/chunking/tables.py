@@ -1,7 +1,10 @@
 import re
+
 from phalcon_rag.models import Chunk
-from .utils import _word_count, _slugify, MAX_CHUNK_WORDS
+
 from .factories import _create_parent_chunk
+from .utils import MAX_CHUNK_WORDS, _slugify, _word_count
+
 
 def _split_large_markdown_table(
     chunk: Chunk,
@@ -32,7 +35,7 @@ def _split_large_markdown_table(
             ]
         )
 
-        if (current_rows and _word_count(candidate) > MAX_CHUNK_WORDS):
+        if current_rows and _word_count(candidate) > MAX_CHUNK_WORDS:
             chunks.append(
                 _create_table_chunk(
                     parent_chunk=chunk,
@@ -62,6 +65,7 @@ def _split_large_markdown_table(
 
     return chunks
 
+
 def _create_table_chunk(
     parent_chunk: Chunk,
     header: str,
@@ -87,22 +91,17 @@ def _create_table_chunk(
         },
     )
 
+
 def _is_markdown_table(
     content: str,
 ) -> bool:
-    lines = [
-        line
-        for line in content.splitlines()
-        if line.strip()
-    ]
+    lines = [line for line in content.splitlines() if line.strip()]
 
     if len(lines) < 3:
         return False
 
-    return (
-        lines[0].strip().startswith("|")
-        and lines[1].strip().startswith("|")
-    )
+    return lines[0].strip().startswith("|") and lines[1].strip().startswith("|")
+
 
 def _contains_events_table(
     chunk: Chunk,
@@ -132,7 +131,7 @@ def _split_events_table(
     for line in lines:
         stripped_line = line.strip()
 
-        if (stripped_line.startswith("|") and "|" in stripped_line[1:]):
+        if stripped_line.startswith("|") and "|" in stripped_line[1:]:
             table_started = True
             table_rows.append(line)
             continue
@@ -150,10 +149,7 @@ def _split_events_table(
     grouped_rows: dict[str, list[str]] = {}
 
     for row in data_rows:
-        columns = [
-            column.strip()
-            for column in row.strip("|").split("|")
-        ]
+        columns = [column.strip() for column in row.strip("|").split("|")]
 
         if len(columns) < 3:
             continue
@@ -186,7 +182,8 @@ def _split_events_table(
         )
 
     return chunks
-    
+
+
 def _create_events_chunk(
     parent_chunk: Chunk,
     component: str,
@@ -213,10 +210,7 @@ def _create_events_chunk(
     ]
 
     return Chunk(
-        id=(
-            f"{parent_chunk.id}::"
-            f"{_slugify(clean_component)}"
-        ),
+        id=(f"{parent_chunk.id}::{_slugify(clean_component)}"),
         content=content,
         source=parent_chunk.source,
         metadata={
@@ -227,7 +221,10 @@ def _create_events_chunk(
         },
     )
 
-def _extract_link_text(value: str,) -> str:
+
+def _extract_link_text(
+    value: str,
+) -> str:
     match = re.match(r"\[([^\]]+)\]", value)
 
     if match:
