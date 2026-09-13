@@ -201,6 +201,7 @@ src/phalcon_rag/
 scripts/
 ├── ingest_docs.py
 ├── analyze_tokens.py
+├── generate_embeddings.py
 ├── evaluate_embeddings.py
 ├── evaluate_bm25.py
 ├── evaluate_hybrid.py
