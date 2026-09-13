@@ -1,10 +1,10 @@
 from pathlib import Path
-from phalcon_rag.retrieval.hybrid import HybridRetriever
-from phalcon_rag.retrieval.dense import DenseRetriever
-from phalcon_rag.retrieval.bm25 import BM25Retriever
-from phalcon_rag.reranking.cross_encoder import CrossEncoderReranker
-from phalcon_rag.utils import load_json, load_retrieval_data, save_result
 
+from phalcon_rag.reranking.cross_encoder import CrossEncoderReranker
+from phalcon_rag.retrieval.bm25 import BM25Retriever
+from phalcon_rag.retrieval.dense import DenseRetriever
+from phalcon_rag.retrieval.hybrid import HybridRetriever
+from phalcon_rag.utils import load_json, load_retrieval_data, save_result
 
 retrieval_questions = load_json(Path("data/evaluation/retrieval_questions.json"))
 
@@ -29,12 +29,7 @@ recall_at_10 = 0
 reciprocal_rank_sum = 0
 
 for question in retrieval_questions:
-    candidates = hybrid_retriever.search(
-        question["query"],
-        top_k=50,
-    )
-
-    candidates = candidates[:10]
+    candidates = hybrid_retriever.search(question["query"], candidate_k=50, top_k=10)
 
     reranked = reranker.rerank(
         question["query"],
@@ -47,11 +42,11 @@ for question in retrieval_questions:
         if chunk.id in question["relevant_chunk_ids"]:
             relevant_rank = rank
             break
-    
+
     if relevant_rank is not None:
         if relevant_rank == 1:
             recall_at_1 += 1
-    
+
         if relevant_rank <= 3:
             recall_at_3 += 1
 
@@ -62,14 +57,16 @@ for question in retrieval_questions:
             recall_at_10 += 1
 
         reciprocal_rank_sum += 1 / relevant_rank
-    
-    results.append({
-        "id": question["id"],
-        "query": question["query"],
-        "category": question["category"],
-        "relevant_chunk_ids": question["relevant_chunk_ids"],
-        "rank": relevant_rank,
-    })
+
+    results.append(
+        {
+            "id": question["id"],
+            "query": question["query"],
+            "category": question["category"],
+            "relevant_chunk_ids": question["relevant_chunk_ids"],
+            "rank": relevant_rank,
+        }
+    )
 
 questions_count = len(retrieval_questions)
 

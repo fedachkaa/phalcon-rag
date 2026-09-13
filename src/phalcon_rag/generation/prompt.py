@@ -5,11 +5,7 @@ def build_context(chunks: list[Chunk]) -> str:
     context = ""
 
     for pos, chunk in enumerate(chunks, start=1):
-        context += (
-            f"[{pos}]\n"
-            f"Source: {chunk.source}\n"
-            f"Content:\n{chunk.content}\n\n"
-        )
+        context += f"[{pos}]\nSource: {chunk.source}\nContent:\n{chunk.content}\n\n"
 
     return context
 

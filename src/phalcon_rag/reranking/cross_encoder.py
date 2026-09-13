@@ -1,9 +1,11 @@
 from sentence_transformers import CrossEncoder
+
+from phalcon_rag.config import RERANKER_MODEL
 from phalcon_rag.models import Chunk
 
 
 class CrossEncoderReranker:
-    def __init__(self, model_name: str = "BAAI/bge-reranker-v2-m3"):
+    def __init__(self, model_name: str = RERANKER_MODEL):
         self.model = CrossEncoder(model_name)
 
     def rerank(
@@ -13,17 +15,13 @@ class CrossEncoderReranker:
     ) -> list[tuple[Chunk, float]]:
         if not candidates:
             return []
-        
-        pairs = [
-            (query, chunk.content)
-            for chunk, _ in candidates
-        ]
+
+        pairs = [(query, chunk.content) for chunk, _ in candidates]
 
         scores = self.model.predict(pairs)
 
         reranked = [
-            (chunk, float(score))
-            for (chunk, _), score in zip(candidates, scores)
+            (chunk, float(score)) for (chunk, _), score in zip(candidates, scores)
         ]
 
         return sorted(

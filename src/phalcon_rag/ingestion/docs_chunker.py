@@ -1,18 +1,32 @@
 from ..models import Chunk, Document
-from .chunking.utils import _word_count, MAX_CHUNK_WORDS
-from .chunking.headings import _split_by_headings
-from .chunking.api import _contains_api_methods, _split_by_api_methods, _split_method_annotations, _contains_method_annotations, _contains_api_items, _split_by_api_items
-
-from .chunking.tables import _is_markdown_table, _split_large_markdown_table, _contains_events_table, _split_events_table
-from .chunking.code import _split_by_method_signatures, _contains_method_signatures, _contains_multiple_method_signatures, _split_method_signature_list
-
+from .chunking.api import (
+    _contains_api_items,
+    _contains_api_methods,
+    _contains_method_annotations,
+    _split_by_api_items,
+    _split_by_api_methods,
+    _split_method_annotations,
+)
+from .chunking.code import (
+    _contains_method_signatures,
+    _contains_multiple_method_signatures,
+    _split_by_method_signatures,
+    _split_method_signature_list,
+)
 from .chunking.examples import _is_query_builder_examples, _split_query_builder_examples
 from .chunking.fallback import _split_oversized_chunk
 from .chunking.filters import _filter_chunks
+from .chunking.headings import _split_by_headings
+from .chunking.tables import (
+    _contains_events_table,
+    _is_markdown_table,
+    _split_events_table,
+    _split_large_markdown_table,
+)
+from .chunking.utils import MAX_CHUNK_WORDS, _word_count
 
 
 class DocsChunker:
-
     def chunk(self, document: Document) -> list[Chunk]:
         heading_chunks = _split_by_headings(document)
 
@@ -25,7 +39,9 @@ class DocsChunker:
             elif _contains_events_table(chunk):
                 chunks.extend(_split_events_table(chunk))
 
-            elif (_word_count(chunk.content) > MAX_CHUNK_WORDS and _contains_method_signatures(chunk.content)):
+            elif _word_count(
+                chunk.content
+            ) > MAX_CHUNK_WORDS and _contains_method_signatures(chunk.content):
                 chunks.extend(_split_by_method_signatures(chunk))
 
             else:
@@ -58,7 +74,7 @@ class DocsChunker:
 
             elif _contains_multiple_method_signatures(chunk.content):
                 final_chunks.extend(_split_method_signature_list(chunk))
-           
+
             elif _contains_method_annotations(chunk.content):
                 final_chunks.extend(_split_method_annotations(chunk))
 
@@ -66,5 +82,3 @@ class DocsChunker:
                 final_chunks.append(chunk)
 
         return final_chunks
-
-    

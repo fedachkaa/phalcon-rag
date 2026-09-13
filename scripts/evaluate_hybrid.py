@@ -1,10 +1,9 @@
 from pathlib import Path
-import numpy as np
+
 from phalcon_rag.retrieval.bm25 import BM25Retriever
 from phalcon_rag.retrieval.dense import DenseRetriever
 from phalcon_rag.retrieval.hybrid import HybridRetriever
-from phalcon_rag.retrieval.rrf import reciprocal_rank_fusion
-from phalcon_rag.utils import load_json, load_chunks, load_retrieval_data, save_result
+from phalcon_rag.utils import load_json, load_retrieval_data, save_result
 
 retrieval_questions = load_json(Path("data/evaluation/retrieval_questions.json"))
 
@@ -43,13 +42,15 @@ for question in retrieval_questions:
 
         reciprocal_rank_sum += 1 / relevant_rank
 
-    results.append({
-        "id": question["id"],
-        "query": question["query"],
-        "category": question["category"],
-        "relevant_chunk_ids": question["relevant_chunk_ids"],
-        "rank": relevant_rank,
-    })
+    results.append(
+        {
+            "id": question["id"],
+            "query": question["query"],
+            "category": question["category"],
+            "relevant_chunk_ids": question["relevant_chunk_ids"],
+            "rank": relevant_rank,
+        }
+    )
 
 questions_count = len(retrieval_questions)
 

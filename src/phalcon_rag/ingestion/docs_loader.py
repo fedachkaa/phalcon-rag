@@ -1,7 +1,9 @@
 from pathlib import Path
+
 from ..models import Document
-from .frontmatter import parse_frontmatter
 from .cleaning import clean_content
+from .frontmatter import parse_frontmatter
+
 
 class DocsLoader:
     def __init__(self, docs_path: Path):
@@ -9,7 +11,7 @@ class DocsLoader:
 
     def load(self) -> list[Document]:
         documents = []
-        for file_path in self.docs_path.rglob("*.mdx"):
+        for file_path in sorted(self.docs_path.rglob("*.mdx")):
             raw_content = file_path.read_text(encoding="utf-8")
 
             frontmatter, content = parse_frontmatter(raw_content)
@@ -23,10 +25,10 @@ class DocsLoader:
                 metadata={
                     "file_path": str(relative_path),
                     "version": "5.20",
-                    **frontmatter
-                }
+                    **frontmatter,
+                },
             )
 
             documents.append(document)
-        
+
         return documents

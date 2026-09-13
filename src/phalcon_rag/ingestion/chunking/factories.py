@@ -1,4 +1,5 @@
 from phalcon_rag.models import Chunk
+
 from .utils import _slugify
 
 
@@ -18,10 +19,7 @@ def _create_method_chunk(
     ]
 
     return Chunk(
-        id=(
-            f"{parent_chunk.id}::"
-            f"{_slugify(method_name)}"
-        ),
+        id=(f"{parent_chunk.id}::{_slugify(method_name)}"),
         content=content,
         source=parent_chunk.source,
         metadata={
@@ -31,6 +29,7 @@ def _create_method_chunk(
             "method": method_name,
         },
     )
+
 
 def _create_parent_chunk(
     parent_chunk: Chunk,

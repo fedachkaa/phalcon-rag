@@ -1,12 +1,11 @@
-from pathlib import Path
 import argparse
+from pathlib import Path
 
 import numpy as np
 from sentence_transformers import SentenceTransformer
 
 from phalcon_rag.models import Chunk
-from phalcon_rag.utils import load_chunks, load_json, save_result, load_retrieval_data
-
+from phalcon_rag.utils import load_json, load_retrieval_data, save_result
 
 MODELS = {
     "qwen": {
@@ -20,9 +19,7 @@ MODELS = {
     "bge": {
         "model_name": "BAAI/bge-large-en-v1.5",
         "embeddings_path": "data/embeddings/bge_embeddings.npy",
-        "query_prefix": (
-            "Represent this sentence for searching relevant passages: "
-        ),
+        "query_prefix": ("Represent this sentence for searching relevant passages: "),
     },
     "gte": {
         "model_name": "Alibaba-NLP/gte-modernbert-base",
@@ -57,10 +54,7 @@ def format_query(model_key: str, query: str) -> str:
         return config["query_prefix"] + query
 
     if model_key in {"e5", "qwen"}:
-        return (
-            f'Instruct: {config["query_instruction"]}\n'
-            f"Query: {query}"
-        )
+        return f"Instruct: {config['query_instruction']}\nQuery: {query}"
 
     return query
 
@@ -73,10 +67,7 @@ def debug_question(
     embeddings: np.ndarray,
     model: SentenceTransformer,
 ) -> None:
-    question = next(
-        item for item in retrieval_questions
-        if item["id"] == question_id
-    )
+    question = next(item for item in retrieval_questions if item["id"] == question_id)
 
     query = format_query(model_key, question["query"])
     expected_ids = question["relevant_chunk_ids"]
@@ -102,10 +93,7 @@ def debug_question(
         print()
 
     for expected_id in expected_ids:
-        expected_chunk = next(
-            chunk for chunk in chunks
-            if chunk.id == expected_id
-        )
+        expected_chunk = next(chunk for chunk in chunks if chunk.id == expected_id)
 
         print("EXPECTED CHUNK:")
         print(expected_chunk.id)
@@ -154,13 +142,15 @@ def evaluate_model(
 
             reciprocal_rank_sum += 1 / relevant_rank
 
-        results.append({
-            "id": question["id"],
-            "query": query,
-            "category": question["category"],
-            "relevant_chunk_ids": expected_ids,
-            "rank": relevant_rank,
-        })
+        results.append(
+            {
+                "id": question["id"],
+                "query": query,
+                "category": question["category"],
+                "relevant_chunk_ids": expected_ids,
+                "rank": relevant_rank,
+            }
+        )
 
     questions_count = len(retrieval_questions)
 
@@ -187,7 +177,7 @@ def main() -> None:
 
     chunks, embeddings = load_retrieval_data(
         chunks_path=Path("data/processed/phalcon_docs_5.20.jsonl"),
-        embeddings_path=Path("data/embeddings/qwen_embeddings.npy"),
+        embeddings_path=Path(MODELS[model_key]["embeddings_path"]),
         chunk_ids_path=Path("data/embeddings/chunk_ids.json"),
     )
 

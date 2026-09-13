@@ -1,5 +1,7 @@
 from phalcon_rag.models import Chunk
-from .utils import _word_count, MAX_CHUNK_WORDS
+
+from .utils import MAX_CHUNK_WORDS, _word_count
+
 
 def _split_query_builder_examples(
     chunk: Chunk,
@@ -25,7 +27,7 @@ def _split_query_builder_examples(
         if not inside_php_block:
             continue
 
-        if (stripped.startswith("// SELECT") and current_lines):
+        if stripped.startswith("// SELECT") and current_lines:
             example_blocks.append("\n".join(current_lines).strip())
             current_lines = []
 
@@ -42,6 +44,7 @@ def _split_query_builder_examples(
         example_blocks=example_blocks,
     )
 
+
 def _group_example_blocks(
     parent_chunk: Chunk,
     example_blocks: list[str],
@@ -57,13 +60,10 @@ def _group_example_blocks(
         ]
 
         candidate_content = (
-            "### Examples\n\n"
-            "```php\n"
-            + "\n\n".join(candidate_examples)
-            + "\n```"
+            "### Examples\n\n```php\n" + "\n\n".join(candidate_examples) + "\n```"
         )
 
-        if (current_examples and _word_count(candidate_content) > MAX_CHUNK_WORDS):
+        if current_examples and _word_count(candidate_content) > MAX_CHUNK_WORDS:
             chunks.append(
                 _create_examples_chunk(
                     parent_chunk=parent_chunk,
@@ -89,6 +89,7 @@ def _group_example_blocks(
 
     return chunks
 
+
 def _create_examples_chunk(
     parent_chunk: Chunk,
     examples: list[str],
@@ -96,12 +97,7 @@ def _create_examples_chunk(
 ) -> Chunk:
     examples_content = "\n\n".join(examples)
 
-    content = (
-        "### Examples\n\n"
-        "```php\n"
-        f"{examples_content}\n"
-        "```"
-    )
+    content = f"### Examples\n\n```php\n{examples_content}\n```"
 
     return Chunk(
         id=f"{parent_chunk.id}::examples-{part}",
@@ -112,6 +108,7 @@ def _create_examples_chunk(
             "examples_part": part,
         },
     )
+
 
 def _is_query_builder_examples(
     chunk: Chunk,
