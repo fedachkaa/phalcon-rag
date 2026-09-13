@@ -1,5 +1,6 @@
 import argparse
 from pathlib import Path
+
 from dotenv import load_dotenv
 
 from phalcon_rag.config import GENERATION_MODEL

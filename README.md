@@ -127,10 +127,6 @@ Dense Top 50 + BM25 Top 50
 
 Each reranking model then reordered the same 10 candidates, allowing their impact on retrieval quality to be compared under identical conditions.
 
-| Reranker                    | Recall@5 | Recall@10 |     MRR |
-| --------------------------- | -------: | --------: | ------: |
-| **BAAI/bge-reranker-v2-m3** |  **...** |   **...** | **...** |
-
 Based on the evaluation results, `BAAI/bge-reranker-v2-m3` was selected for the final pipeline.
 
 Unlike the first-stage retrievers, the cross-encoder evaluates the query and each candidate passage together. This is more computationally expensive, but allows for more precise relevance scoring over the small candidate set.
@@ -269,7 +265,7 @@ Add your OpenAI API key:
 OPENAI_API_KEY=your-api-key
 ```
 
-## The `.env` file is excluded from Git and must never be committed.
+The `.env` file is excluded from Git and must never be committed.
 
 ## Usage
 
@@ -296,7 +292,10 @@ The script evaluates chunk token lengths against the context limits of the embed
 Individual retrieval stages can be evaluated using:
 
 ```bash
-python scripts/evaluate_embeddings.py
+python scripts/evaluate_embeddings.py qwen
+python scripts/evaluate_embeddings.py bge
+python scripts/evaluate_embeddings.py gte
+python scripts/evaluate_embeddings.py e5
 python scripts/evaluate_bm25.py
 python scripts/evaluate_hybrid.py
 python scripts/evaluate_reranker.py
@@ -315,7 +314,7 @@ This runs the complete retrieval → reranking → generation pipeline against t
 To use the RAG pipeline interactively:
 
 ```bash
-python scripts/answer_question.py
+python scripts/answer_question.py "How do I create a transaction in Phalcon?"
 ```
 
 Example questions:

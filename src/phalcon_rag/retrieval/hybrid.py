@@ -19,12 +19,12 @@ class HybridRetriever:
         candidate_k: int = 50,
         top_k: int = 10,
     ):
-        qwen_results = self.dense_retriever.search(query, top_k=candidate_k)
+        dense_results = self.dense_retriever.search(query, top_k=candidate_k)
 
         bm25_results = self.bm25_retriever.search(query, top_k=candidate_k)
 
         fused = reciprocal_rank_fusion(
-            [(qwen_results, DENSE_WEIGHT), (bm25_results, BM25_WEIGHT)], k=RRF_K
+            [(dense_results, DENSE_WEIGHT), (bm25_results, BM25_WEIGHT)], k=RRF_K
         )
 
         return fused[:top_k]

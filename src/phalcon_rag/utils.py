@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+from typing import Any
 
 import numpy as np
 
@@ -21,7 +22,7 @@ def load_json(path: Path):
         return json.load(file)
 
 
-def save_result(model_key: str, result: dict) -> None:
+def save_result(model_key: str, result: Any) -> None:
     results_dir = Path("data/evaluation/results")
     results_dir.mkdir(parents=True, exist_ok=True)
 
@@ -59,7 +60,8 @@ def load_retrieval_data(
 
     embeddings = np.load(embeddings_path)
 
-    assert len(embeddings) == len(chunks)
+    if len(embeddings) != len(chunks):
+        raise ValueError("Number of embeddings does not match number of loaded chunks")
 
     filtered_indices = [
         index for index, chunk in enumerate(chunks) if not is_retrieval_noise(chunk)
