@@ -11,3 +11,5 @@ data/embeddings/
 .vscode/
 
 *.egg-info/
+
+.ruff_cache
