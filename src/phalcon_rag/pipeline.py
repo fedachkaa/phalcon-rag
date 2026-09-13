@@ -1,9 +1,8 @@
+from phalcon_rag.config import CANDIDATE_K, HYBRID_TOP_K, RERANK_TOP_K
+from phalcon_rag.generation.answer_generator import AnswerGenerator
 from phalcon_rag.models import Chunk
-
-from .config import CANDIDATE_K, HYBRID_TOP_K, RERANK_TOP_K
-from .generation.answer_generator import AnswerGenerator
-from .reranking.cross_encoder import CrossEncoderReranker
-from .retrieval.hybrid import HybridRetriever
+from phalcon_rag.reranking.cross_encoder import CrossEncoderReranker
+from phalcon_rag.retrieval.hybrid import HybridRetriever
 
 
 class RagPipeline:

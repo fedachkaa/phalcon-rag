@@ -17,7 +17,7 @@ def load_chunks(path: Path) -> list[Chunk]:
     return chunks
 
 
-def load_json(path: Path):
+def load_json(path: Path) -> Any:
     with path.open(mode="r", encoding="utf-8") as file:
         return json.load(file)
 
