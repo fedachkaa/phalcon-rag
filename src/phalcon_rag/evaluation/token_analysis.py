@@ -34,6 +34,7 @@ def analyze_model_tokens(
     ]
 
     return {
+        "model_name": model_name,
         "chunks": len(token_lengths),
         "mean": float(np.mean(token_lengths)),
         "median": float(np.median(token_lengths)),
