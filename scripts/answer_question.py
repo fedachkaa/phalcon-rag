@@ -1,5 +1,6 @@
 import argparse
 from pathlib import Path
+from dotenv import load_dotenv
 
 from phalcon_rag.config import GENERATION_MODEL
 from phalcon_rag.generation.answer_generator import AnswerGenerator
@@ -9,6 +10,8 @@ from phalcon_rag.retrieval.bm25 import BM25Retriever
 from phalcon_rag.retrieval.dense import DenseRetriever
 from phalcon_rag.retrieval.hybrid import HybridRetriever
 from phalcon_rag.utils import load_retrieval_data
+
+load_dotenv()
 
 
 def answer_question(question: str) -> str:

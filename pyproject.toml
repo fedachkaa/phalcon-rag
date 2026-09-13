@@ -11,6 +11,7 @@ dependencies = [
     "numpy>=2.0,<2.4",
     "bm25s>=0.2,<1.0",
     "openai>=2.0,<3.0",
+    "python-dotenv>=1.0,<2.0",
 ]
 
 [project.optional-dependencies]
