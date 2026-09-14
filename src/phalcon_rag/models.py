@@ -16,3 +16,13 @@ class Chunk:
     content: str
     source: str
     metadata: dict[str, Any] = field(default_factory=dict)
+
+@dataclass
+class Method:
+    id: str
+    name: str
+    content: str
+    source: str
+    start_line: int
+    end_line: int
+    metadata: dict[str, Any] = field(default_factory=dict)
