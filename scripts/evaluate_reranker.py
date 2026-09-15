@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from phalcon_rag.models import SOURCE_PHALCON_DOCS
 from phalcon_rag.reranking.cross_encoder import CrossEncoderReranker
 from phalcon_rag.retrieval.bm25 import BM25Retriever
 from phalcon_rag.retrieval.dense import DenseRetriever
@@ -10,8 +11,8 @@ retrieval_questions = load_json(Path("data/evaluation/retrieval_questions.json")
 
 chunks, embeddings = load_retrieval_data(
     chunks_path=Path("data/processed/phalcon_docs_5.20.jsonl"),
-    embeddings_path=Path("data/embeddings/qwen_embeddings.npy"),
-    chunk_ids_path=Path("data/embeddings/chunk_ids.json"),
+    embeddings_path=Path(f"data/embeddings/{SOURCE_PHALCON_DOCS}/qwen_embeddings.npy"),
+    chunk_ids_path=Path(f"data/embeddings/{SOURCE_PHALCON_DOCS}/chunk_ids.json"),
 )
 
 reranker_model_name = "BAAI/bge-reranker-v2-m3"

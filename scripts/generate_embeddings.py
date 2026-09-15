@@ -6,19 +6,39 @@ import numpy as np
 from sentence_transformers import SentenceTransformer
 
 from phalcon_rag.embeddings import MODELS
-from phalcon_rag.models import Chunk
+from phalcon_rag.models import SOURCE_PHALCON_DOCS, SOURCE_PHALCON_SOURCE_CODE, Chunk
 from phalcon_rag.utils import load_chunks
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "model",
+        "--model",
+        type=str,
+        required=True,
         choices=MODELS.keys(),
         help="Embedding model to use",
     )
+    parser.add_argument(
+        "--source",
+        type=str,
+        required=True,
+        choices=[SOURCE_PHALCON_DOCS, SOURCE_PHALCON_SOURCE_CODE],
+        help="Chunk source",
+    )
 
     return parser.parse_args()
+
+
+def get_embedding_text(chunk: Chunk) -> str:
+    if chunk.source == SOURCE_PHALCON_SOURCE_CODE:
+        return (
+            f"File: {chunk.metadata['file']}\n"
+            f"Method: {chunk.metadata['method']}\n\n"
+            f"{chunk.content}"
+        )
+
+    return chunk.content
 
 
 def generate_embeddings(
@@ -26,7 +46,7 @@ def generate_embeddings(
     model: SentenceTransformer,
 ) -> np.ndarray:
     return model.encode(
-        [chunk.content for chunk in chunks],
+        [get_embedding_text(chunk) for chunk in chunks],
         normalize_embeddings=True,
         show_progress_bar=True,
     )
@@ -59,16 +79,14 @@ def main() -> None:
     args = parse_args()
     config = MODELS[args.model]
 
-    chunks = load_chunks(Path("data/processed/phalcon_docs_5.20.jsonl"))
+    chunks = load_chunks(Path(f"data/processed/{args.source}_5.20.jsonl"))
 
     model = SentenceTransformer(config["model_name"])
 
     embeddings = generate_embeddings(chunks, model)
 
     save_embeddings(
-        chunks,
-        embeddings,
-        Path(config["embeddings_path"]),
+        chunks, embeddings, Path(config["embeddings_path"].format(source=args.source))
     )
 
 

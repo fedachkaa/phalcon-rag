@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 
 from phalcon_rag.config import GENERATION_MODEL
 from phalcon_rag.generation.answer_generator import AnswerGenerator
+from phalcon_rag.models import SOURCE_PHALCON_DOCS
 from phalcon_rag.pipeline import RagPipeline
 from phalcon_rag.reranking.cross_encoder import CrossEncoderReranker
 from phalcon_rag.retrieval.bm25 import BM25Retriever
@@ -13,10 +14,11 @@ from phalcon_rag.utils import load_json, load_retrieval_data, save_result
 
 load_dotenv()
 
+
 chunks, embeddings = load_retrieval_data(
     chunks_path=Path("data/processed/phalcon_docs_5.20.jsonl"),
-    embeddings_path=Path("data/embeddings/qwen_embeddings.npy"),
-    chunk_ids_path=Path("data/embeddings/chunk_ids.json"),
+    embeddings_path=Path(f"data/embeddings/{SOURCE_PHALCON_DOCS}/qwen_embeddings.npy"),
+    chunk_ids_path=Path(f"data/embeddings/{SOURCE_PHALCON_DOCS}/chunk_ids.json"),
 )
 
 retrieval_questions = load_json(Path("data/evaluation/retrieval_questions.json"))

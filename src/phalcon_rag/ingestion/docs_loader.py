@@ -1,8 +1,8 @@
 from pathlib import Path
 
-from ..models import Document
-from .cleaning import clean_content
-from .frontmatter import parse_frontmatter
+from phalcon_rag.ingestion.cleaning import clean_content
+from phalcon_rag.ingestion.frontmatter import parse_frontmatter
+from phalcon_rag.models import SOURCE_PHALCON_DOCS, Document
 
 
 class DocsLoader:
@@ -21,7 +21,7 @@ class DocsLoader:
             document = Document(
                 id=str(relative_path),
                 content=content,
-                source="phalcon_docs",
+                source=SOURCE_PHALCON_DOCS,
                 metadata={
                     "file_path": str(relative_path),
                     "version": "5.20",
