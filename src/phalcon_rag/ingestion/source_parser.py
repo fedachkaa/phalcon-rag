@@ -1,7 +1,7 @@
 import re
 from pathlib import Path
 
-from phalcon_rag.models import Method
+from phalcon_rag.models import Method, SOURCE_PHALCON_SOURCE_CODE
 
 
 METHOD_PATTERN = re.compile(
@@ -55,7 +55,7 @@ def parse_methods(source_dir: Path) -> list[Method]:
                     id=f"{relative_path}::{method_name}",
                     name=method_name,
                     content=method_content,
-                    source="source_code",
+                    source=SOURCE_PHALCON_SOURCE_CODE,
                     start_line=start_line,
                     end_line=end_line,
                     metadata={

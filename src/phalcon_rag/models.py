@@ -2,6 +2,10 @@ from dataclasses import dataclass, field
 from typing import Any
 
 
+SOURCE_PHALCON_SOURCE_CODE = "phalcon_source_code"
+SOURCE_PHALCON_DOCS = "phalcon_docs"
+
+
 @dataclass
 class Document:
     id: str
