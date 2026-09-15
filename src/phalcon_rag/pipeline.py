@@ -2,22 +2,23 @@ from phalcon_rag.config import CANDIDATE_K, HYBRID_TOP_K, RERANK_TOP_K
 from phalcon_rag.generation.answer_generator import AnswerGenerator
 from phalcon_rag.models import Chunk
 from phalcon_rag.reranking.cross_encoder import CrossEncoderReranker
-from phalcon_rag.retrieval.hybrid import HybridRetriever
+from phalcon_rag.retrieval.multi_source import MultiSourceRetriever
 
 
 class RagPipeline:
     def __init__(
         self,
-        hybrid_retriever: HybridRetriever,
+        retriever: MultiSourceRetriever,
         reranker: CrossEncoderReranker,
         answer_generator: AnswerGenerator,
     ):
-        self.hybrid_retriever = hybrid_retriever
+        self.retriever = retriever
         self.reranker = reranker
         self.answer_generator = answer_generator
 
+
     def retrieve(self, query: str) -> list[Chunk]:
-        candidates = self.hybrid_retriever.search(
+        candidates = self.retriever.search(
             query,
             candidate_k=CANDIDATE_K,
             top_k=HYBRID_TOP_K,
@@ -26,6 +27,7 @@ class RagPipeline:
         reranked = self.reranker.rerank(query, candidates)
 
         return [chunk for chunk, _ in reranked[:RERANK_TOP_K]]
+
 
     def answer(self, query: str) -> str:
         chunks = self.retrieve(query)

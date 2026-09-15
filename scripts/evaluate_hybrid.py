@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from phalcon_rag.config import EMBEDDING_QUERY_INSTRUCTION
 from phalcon_rag.models import SOURCE_PHALCON_DOCS
 from phalcon_rag.retrieval.bm25 import BM25Retriever
 from phalcon_rag.retrieval.dense import DenseRetriever
@@ -15,7 +16,7 @@ chunks, embeddings = load_retrieval_data(
     chunk_ids_path=Path(f"data/embeddings/{SOURCE_PHALCON_DOCS}/chunk_ids.json"),
 )
 
-dense_retriever = DenseRetriever(chunks, embeddings)
+dense_retriever = DenseRetriever(chunks, embeddings, EMBEDDING_QUERY_INSTRUCTION)
 bm25_retriever = BM25Retriever(chunks)
 hybrid_retriever = HybridRetriever(dense_retriever, bm25_retriever)
 
