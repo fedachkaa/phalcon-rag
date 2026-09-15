@@ -2,7 +2,11 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-from phalcon_rag.config import GENERATION_MODEL, EMBEDDING_QUERY_INSTRUCTION, SOURCE_CODE_QUERY_INSTRUCTION
+from phalcon_rag.config import (
+    EMBEDDING_QUERY_INSTRUCTION,
+    GENERATION_MODEL,
+    SOURCE_CODE_QUERY_INSTRUCTION,
+)
 from phalcon_rag.generation.answer_generator import AnswerGenerator
 from phalcon_rag.models import SOURCE_PHALCON_DOCS, SOURCE_PHALCON_SOURCE_CODE
 from phalcon_rag.pipeline import RagPipeline
@@ -20,7 +24,7 @@ retrieval_questions = load_json(Path("data/evaluation/retrieval_questions.json")
 
 instructions = {
     SOURCE_PHALCON_DOCS: EMBEDDING_QUERY_INSTRUCTION,
-    SOURCE_PHALCON_SOURCE_CODE: SOURCE_CODE_QUERY_INSTRUCTION
+    SOURCE_PHALCON_SOURCE_CODE: SOURCE_CODE_QUERY_INSTRUCTION,
 }
 
 retrievers = {}

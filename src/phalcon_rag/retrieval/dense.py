@@ -1,16 +1,13 @@
 import numpy as np
 from sentence_transformers import SentenceTransformer
 
-from phalcon_rag.config import EMBEDDING_MODEL, EMBEDDING_QUERY_INSTRUCTION
+from phalcon_rag.config import EMBEDDING_MODEL
 from phalcon_rag.models import Chunk
 
 
 class DenseRetriever:
     def __init__(
-        self,
-        chunks: list[Chunk],
-        embeddings: np.ndarray,
-        query_instruction: str
+        self, chunks: list[Chunk], embeddings: np.ndarray, query_instruction: str
     ):
         self.chunks = chunks
         self.embeddings = embeddings
