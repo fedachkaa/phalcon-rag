@@ -1,7 +1,7 @@
 from sentence_transformers import CrossEncoder
 
 from phalcon_rag.config import RERANKER_MODEL
-from phalcon_rag.models import Chunk
+from phalcon_rag.models import SOURCE_PHALCON_DOCS, SOURCE_PHALCON_SOURCE_CODE, Chunk
 
 
 class CrossEncoderReranker:
@@ -16,7 +16,7 @@ class CrossEncoderReranker:
         if not candidates:
             return []
 
-        pairs = [(query, chunk.content) for chunk, _ in candidates]
+        pairs = [(query, self.get_reranking_text(chunk)) for chunk, _ in candidates]
 
         scores = self.model.predict(pairs)
 
@@ -29,3 +29,15 @@ class CrossEncoderReranker:
             key=lambda item: item[1],
             reverse=True,
         )
+
+    def get_reranking_text(self, chunk: Chunk) -> str:
+        if chunk.source == SOURCE_PHALCON_DOCS:
+            return chunk.content
+        elif chunk.source == SOURCE_PHALCON_SOURCE_CODE:
+            return (
+                f"File: {chunk.metadata['file']}\n"
+                f"Method: {chunk.metadata['method']}\n\n"
+                f"{chunk.content}"
+            )
+
+        return ""
