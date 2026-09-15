@@ -3,6 +3,9 @@
 # Embedding
 EMBEDDING_MODEL = "Qwen/Qwen3-Embedding-0.6B"
 EMBEDDING_QUERY_INSTRUCTION = "Given a Phalcon documentation question, retrieve relevant passages that answer the question."
+SOURCE_CODE_QUERY_INSTRUCTION = (
+    "Given a Phalcon technical question, retrieve relevant Phalcon source code."
+)
 
 # Hybrid retrieval
 DENSE_WEIGHT = 4.0

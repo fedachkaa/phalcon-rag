@@ -272,7 +272,7 @@ def merge_small_ranges(
 
         # Try merging with previous range
         if result:
-            prev_start, prev_end = result[-1]
+            prev_start, _ = result[-1]
 
             if end - prev_start <= MAX_METHOD_SIZE:
                 result[-1] = (prev_start, end)
@@ -281,7 +281,7 @@ def merge_small_ranges(
 
         # Try merging with next range
         if index + 1 < len(ranges):
-            next_start, next_end = ranges[index + 1]
+            _, next_end = ranges[index + 1]
 
             if next_end - start <= MAX_METHOD_SIZE:
                 result.append((start, next_end))
