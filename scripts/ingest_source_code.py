@@ -1,12 +1,10 @@
-from dataclasses import asdict
 import json
-
+from dataclasses import asdict
 from pathlib import Path
 
-from phalcon_rag.ingestion.source_parser import parse_methods
 from phalcon_rag.ingestion.source_chunker import chunk_method
+from phalcon_rag.ingestion.source_parser import parse_methods
 from phalcon_rag.models import SOURCE_PHALCON_SOURCE_CODE
-
 
 SOURCE_DIR = Path("data/raw/phalcon-source-code/phalcon")
 OUTPUT_FILE = Path(f"data/processed/{SOURCE_PHALCON_SOURCE_CODE}_5.20.jsonl")

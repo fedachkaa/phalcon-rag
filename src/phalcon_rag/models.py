@@ -1,7 +1,6 @@
 from dataclasses import dataclass, field
 from typing import Any
 
-
 SOURCE_PHALCON_SOURCE_CODE = "phalcon_source_code"
 SOURCE_PHALCON_DOCS = "phalcon_docs"
 
@@ -20,6 +19,7 @@ class Chunk:
     content: str
     source: str
     metadata: dict[str, Any] = field(default_factory=dict)
+
 
 @dataclass
 class Method:

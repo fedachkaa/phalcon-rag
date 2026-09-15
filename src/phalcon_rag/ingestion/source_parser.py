@@ -1,22 +1,22 @@
 import re
 from pathlib import Path
 
-from phalcon_rag.models import Method, SOURCE_PHALCON_SOURCE_CODE
-
+from phalcon_rag.models import SOURCE_PHALCON_SOURCE_CODE, Method
 
 METHOD_PATTERN = re.compile(
-    r'\b'
-    r'(?:(?:public|protected|private)\s+)?'
-    r'(?:(?:static)\s+)?'
-    r'function\s+'
-    r'([a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*)'
-    r'\s*\('
-    r'.*?'
-    r'\)'
-    r'(?:\s*->\s*[^{]+)?'
-    r'\s*\{',
-    re.DOTALL | re.IGNORECASE
+    r"\b"
+    r"(?:(?:public|protected|private)\s+)?"
+    r"(?:(?:static)\s+)?"
+    r"function\s+"
+    r"([a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*)"
+    r"\s*\("
+    r".*?"
+    r"\)"
+    r"(?:\s*->\s*[^{]+)?"
+    r"\s*\{",
+    re.DOTALL | re.IGNORECASE,
 )
+
 
 def parse_methods(source_dir: Path) -> list[Method]:
     methods = []
@@ -35,18 +35,18 @@ def parse_methods(source_dir: Path) -> list[Method]:
             start_line = parsed_content.count("\n", 0, start_pos) + 1
 
             try:
-                closing_brace_pos = find_closing_brace(parsed_content, opening_brace_pos)
+                closing_brace_pos = find_closing_brace(
+                    parsed_content, opening_brace_pos
+                )
             except ValueError as error:
                 print(
-                    f"[WARNING] {entry} :: {method_name} "
-                    f"at line {start_line} | {error}"
+                    f"[WARNING] {entry} :: {method_name} at line {start_line} | {error}"
                 )
                 continue
 
-            start_line = parsed_content.count("\n", 0, start_pos) + 1
             end_line = parsed_content.count("\n", 0, closing_brace_pos) + 1
 
-            method_content = raw_content[start_pos:closing_brace_pos + 1]
+            method_content = raw_content[start_pos : closing_brace_pos + 1]
 
             relative_path = entry.relative_to(source_dir).as_posix()
 
@@ -96,32 +96,20 @@ def mask_comments(content: str) -> str:
             i += 1
             continue
 
-        if (
-            char == "/"
-            and i + 1 < len(content)
-            and content[i + 1] == "/"
-        ):
+        if char == "/" and i + 1 < len(content) and content[i + 1] == "/":
             while i < len(content) and content[i] != "\n":
                 result[i] = " "
                 i += 1
 
             continue
 
-        if (
-            char == "/"
-            and i + 1 < len(content)
-            and content[i + 1] == "*"
-        ):
+        if char == "/" and i + 1 < len(content) and content[i + 1] == "*":
             result[i] = " "
             result[i + 1] = " "
             i += 2
 
             while i < len(content):
-                if (
-                    content[i] == "*"
-                    and i + 1 < len(content)
-                    and content[i + 1] == "/"
-                ):
+                if content[i] == "*" and i + 1 < len(content) and content[i + 1] == "/":
                     result[i] = " "
                     result[i + 1] = " "
                     i += 2

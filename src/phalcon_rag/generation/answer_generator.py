@@ -1,8 +1,7 @@
 from openai import OpenAI
 
-from phalcon_rag.models import Chunk
-
 from phalcon_rag.generation.prompt import build_prompt
+from phalcon_rag.models import Chunk
 
 
 class AnswerGenerator:

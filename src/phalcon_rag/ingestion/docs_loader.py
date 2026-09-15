@@ -2,7 +2,7 @@ from pathlib import Path
 
 from phalcon_rag.ingestion.cleaning import clean_content
 from phalcon_rag.ingestion.frontmatter import parse_frontmatter
-from phalcon_rag.models import Document, SOURCE_PHALCON_DOCS
+from phalcon_rag.models import SOURCE_PHALCON_DOCS, Document
 
 
 class DocsLoader:

@@ -6,16 +6,29 @@ import numpy as np
 from sentence_transformers import SentenceTransformer
 
 from phalcon_rag.embeddings import MODELS
-from phalcon_rag.models import Chunk, SOURCE_PHALCON_SOURCE_CODE, SOURCE_PHALCON_DOCS
+from phalcon_rag.models import SOURCE_PHALCON_DOCS, SOURCE_PHALCON_SOURCE_CODE, Chunk
 from phalcon_rag.utils import load_chunks
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model", type=str, required=True, choices=MODELS.keys(), help="Embedding model to use")
-    parser.add_argument("--source", type=str, required=True, choices=[SOURCE_PHALCON_DOCS, SOURCE_PHALCON_SOURCE_CODE], help="Chunk source")
+    parser.add_argument(
+        "--model",
+        type=str,
+        required=True,
+        choices=MODELS.keys(),
+        help="Embedding model to use",
+    )
+    parser.add_argument(
+        "--source",
+        type=str,
+        required=True,
+        choices=[SOURCE_PHALCON_DOCS, SOURCE_PHALCON_SOURCE_CODE],
+        help="Chunk source",
+    )
 
     return parser.parse_args()
+
 
 def get_embedding_text(chunk: Chunk) -> str:
     if chunk.source == SOURCE_PHALCON_SOURCE_CODE:
@@ -73,9 +86,7 @@ def main() -> None:
     embeddings = generate_embeddings(chunks, model)
 
     save_embeddings(
-        chunks,
-        embeddings,
-        Path(config["embeddings_path"].format(source=args.source))
+        chunks, embeddings, Path(config["embeddings_path"].format(source=args.source))
     )
 
 

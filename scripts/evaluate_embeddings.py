@@ -4,8 +4,8 @@ from pathlib import Path
 from sentence_transformers import SentenceTransformer
 
 from phalcon_rag.embeddings import MODELS
-from phalcon_rag.models import SOURCE_PHALCON_DOCS
 from phalcon_rag.evaluation.embeddings import evaluate_model
+from phalcon_rag.models import SOURCE_PHALCON_DOCS
 from phalcon_rag.utils import load_json, load_retrieval_data, save_result
 
 
@@ -28,7 +28,9 @@ def main() -> None:
 
     chunks, embeddings = load_retrieval_data(
         chunks_path=Path("data/processed/phalcon_docs_5.20.jsonl"),
-        embeddings_path=Path(config["embeddings_path"].format(source=SOURCE_PHALCON_DOCS)),
+        embeddings_path=Path(
+            config["embeddings_path"].format(source=SOURCE_PHALCON_DOCS)
+        ),
         chunk_ids_path=Path(f"data/embeddings/{SOURCE_PHALCON_DOCS}/chunk_ids.json"),
     )
 

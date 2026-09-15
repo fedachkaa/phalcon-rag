@@ -1,10 +1,11 @@
-from phalcon_rag.models import Chunk, Method
-from phalcon_rag.ingestion.source_parser import mask_comments
 from dataclasses import dataclass
 
+from phalcon_rag.ingestion.source_parser import mask_comments
+from phalcon_rag.models import Chunk, Method
 
 MAX_METHOD_SIZE = 1500
 MIN_CHUNK_SIZE = 300
+
 
 @dataclass
 class SplitPoint:
@@ -54,15 +55,9 @@ def split_large_method(method: Method) -> list[Chunk]:
     for index, (start, end) in enumerate(ranges):
         chunk_id = f"{method.id}::{index}"
 
-        chunk_start_line = (
-            method.start_line
-            + method.content.count("\n", 0, start)
-        )
+        chunk_start_line = method.start_line + method.content.count("\n", 0, start)
 
-        chunk_end_line = (
-            method.start_line
-            + method.content.count("\n", 0, end)
-        )
+        chunk_end_line = method.start_line + method.content.count("\n", 0, end)
 
         chunks.append(
             Chunk(
@@ -75,14 +70,10 @@ def split_large_method(method: Method) -> list[Chunk]:
                     "parent_id": method.id,
                     "chunk_index": index,
                     "prev_chunk_id": (
-                        f"{method.id}::{index - 1}"
-                        if index > 0
-                        else None
+                        f"{method.id}::{index - 1}" if index > 0 else None
                     ),
                     "next_chunk_id": (
-                        f"{method.id}::{index + 1}"
-                        if index < len(ranges) - 1
-                        else None
+                        f"{method.id}::{index + 1}" if index < len(ranges) - 1 else None
                     ),
                     "start_line": chunk_start_line,
                     "end_line": chunk_end_line,
@@ -91,6 +82,7 @@ def split_large_method(method: Method) -> list[Chunk]:
         )
 
     return chunks
+
 
 def find_split_points(content: str) -> list[SplitPoint]:
     parsed_content = mask_comments(content)
@@ -144,6 +136,7 @@ def find_split_points(content: str) -> list[SplitPoint]:
 
     return split_points
 
+
 def split_structurally(
     content: str,
     split_points: list[SplitPoint],
@@ -160,14 +153,12 @@ def split_structurally(
     points = [
         point.position
         for point in split_points
-        if point.depth == depth
-        and start < point.position < end
+        if point.depth == depth and start < point.position < end
     ]
 
     if not points:
         deeper_points_exist = any(
-            point.depth > depth
-            and start < point.position < end
+            point.depth > depth and start < point.position < end
             for point in split_points
         )
 
@@ -196,8 +187,7 @@ def split_structurally(
             continue
 
         deeper_points_exist = any(
-            point.depth > depth
-            and range_start < point.position < range_end
+            point.depth > depth and range_start < point.position < range_end
             for point in split_points
         )
 
@@ -212,11 +202,10 @@ def split_structurally(
                 )
             )
         else:
-            result.extend(
-                hard_split(range_start, range_end)
-            )
+            result.extend(hard_split(range_start, range_end))
 
     return result
+
 
 def pack_segments(
     start: int,
@@ -230,9 +219,7 @@ def pack_segments(
         max_end = current_start + MAX_METHOD_SIZE
 
         available_points = [
-            point
-            for point in points
-            if current_start < point <= max_end
+            point for point in points if current_start < point <= max_end
         ]
 
         if not available_points:
@@ -247,6 +234,7 @@ def pack_segments(
 
     return ranges
 
+
 def hard_split(
     start: int,
     end: int,
@@ -254,9 +242,7 @@ def hard_split(
     ranges = []
 
     while end - start > MAX_METHOD_SIZE:
-        ranges.append(
-            (start, start + MAX_METHOD_SIZE)
-        )
+        ranges.append((start, start + MAX_METHOD_SIZE))
 
         start += MAX_METHOD_SIZE
 
@@ -264,6 +250,7 @@ def hard_split(
         ranges.append((start, end))
 
     return ranges
+
 
 def merge_small_ranges(
     ranges: list[tuple[int, int]],
