@@ -1,0 +1,163 @@
+[
+  {
+    "id": "model-find-first-internal",
+    "question": "What happens internally when Model::findFirst() is called in Phalcon?",
+    "category": "internal",
+    "expected_answerable": true,
+    "expected_sources": [
+      "Mvc/Model.zep::findFirst"
+    ],
+    "expected_concepts": [
+      "getPreparedQuery",
+      "setUniqueRow",
+      "execute"
+    ]
+  },
+  {
+    "id": "model-delete-internal",
+    "question": "What happens internally when Model::delete() is called in Phalcon?",
+    "category": "internal",
+    "expected_answerable": true,
+    "expected_sources": [
+      "Mvc/Model.zep::delete"
+    ],
+    "expected_concepts": [
+      "beforeDelete",
+      "delete",
+      "afterDelete"
+    ]
+  },
+  {
+    "id": "belongs-to-resolution",
+    "question": "How does Phalcon resolve a belongsTo relation when it is accessed through a model property?",
+    "category": "internal",
+    "expected_answerable": true,
+    "expected_sources": [
+      "Mvc/Model/Manager.zep::getBelongsToRecords",
+      "Mvc/Model.zep::belongsTo"
+    ],
+    "expected_concepts": [
+      "belongsTo",
+      "relation alias",
+      "related records"
+    ]
+  },
+  {
+    "id": "model-save-validation-lifecycle",
+    "question": "What validation and lifecycle events are executed internally when a Phalcon model is saved?",
+    "category": "mixed",
+    "expected_answerable": true,
+    "expected_sources": [
+      "Mvc/Model.zep::preSave",
+      "Mvc/Model.zep::doSave",
+      "Mvc/Model.zep::postSave"
+    ],
+    "expected_concepts": [
+      "beforeValidation",
+      "validation",
+      "afterValidation",
+      "beforeSave",
+      "beforeCreate",
+      "beforeUpdate",
+      "afterCreate",
+      "afterUpdate",
+      "afterSave"
+    ]
+  },
+  {
+    "id": "dynamic-find-first-by-email",
+    "question": "How does Phalcon handle dynamic model methods such as findFirstByEmail()?",
+    "category": "internal",
+    "expected_answerable": true,
+    "expected_sources": [
+      "Mvc/Model.zep::invokeFinder",
+      "Mvc/Model.zep::__callStatic",
+      "Mvc/Model.zep::__call"
+    ],
+    "expected_concepts": [
+      "invokeFinder",
+      "findFirstBy",
+      "findFirst"
+    ]
+  },
+  {
+    "id": "model-changed-fields",
+    "question": "How does Phalcon determine which model fields have changed before or after saving?",
+    "category": "mixed",
+    "expected_answerable": true,
+    "expected_sources": [
+      "Mvc/Model.zep::getChangedFields",
+      "Mvc/Model.zep::hasChanged",
+      "Mvc/Model.zep::getUpdatedFields",
+      "Mvc/Model.zep::hasUpdated"
+    ],
+    "expected_concepts": [
+      "snapshot",
+      "getChangedFields",
+      "hasChanged",
+      "getUpdatedFields",
+      "hasUpdated"
+    ]
+  },
+  {
+    "id": "save-related-records",
+    "question": "How does Phalcon save related records defined through model relationships, and what happens if saving a related record fails?",
+    "category": "mixed",
+    "expected_answerable": true,
+    "expected_sources": [
+      "Mvc/Model.zep::preSaveRelatedRecords",
+      "Mvc/Model.zep::postSaveRelatedRecords",
+      "Mvc/Model.zep::collectRelatedToSave",
+      "Mvc/Model.zep::doSave"
+    ],
+    "expected_concepts": [
+      "preSaveRelatedRecords",
+      "postSaveRelatedRecords",
+      "rollback",
+      "validation messages"
+    ]
+  },
+  {
+    "id": "model-relationships-definition",
+    "question": "How do you define model relationships such as belongsTo, hasOne, and hasMany in Phalcon?",
+    "category": "documentation",
+    "expected_answerable": true,
+    "expected_sources": [
+      "db-models-relationships.mdx"
+    ],
+    "expected_concepts": [
+      "belongsTo",
+      "hasOne",
+      "hasMany",
+      "initialize"
+    ]
+  },
+  {
+    "id": "model-dynamic-update",
+    "question": "How does Phalcon's dynamic update feature work, and how does it decide which columns to include in an UPDATE?",
+    "category": "mixed",
+    "expected_answerable": true,
+    "expected_sources": [
+      "Mvc/Model.zep::doLowUpdate",
+      "Mvc/Model/Manager.zep::useDynamicUpdate"
+    ],
+    "expected_concepts": [
+      "dynamic update",
+      "changed fields",
+      "UPDATE"
+    ]
+  },
+  {
+    "id": "model-query-execution",
+    "question": "What happens internally when a Phalcon model query is executed?",
+    "category": "internal",
+    "expected_answerable": true,
+    "expected_sources": [
+      "Mvc/Model/Query.zep"
+    ],
+    "expected_concepts": [
+      "query",
+      "execute"
+    ]
+  }
+]
