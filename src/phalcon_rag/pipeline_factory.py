@@ -1,6 +1,10 @@
 from pathlib import Path
 
-from phalcon_rag.config import EMBEDDING_QUERY_INSTRUCTION, GENERATION_MODEL, SOURCE_CODE_QUERY_INSTRUCTION
+from phalcon_rag.config import (
+    EMBEDDING_QUERY_INSTRUCTION,
+    GENERATION_MODEL,
+    SOURCE_CODE_QUERY_INSTRUCTION,
+)
 from phalcon_rag.generation.answer_generator import AnswerGenerator
 from phalcon_rag.models import SOURCE_PHALCON_DOCS, SOURCE_PHALCON_SOURCE_CODE
 from phalcon_rag.pipeline import RagPipeline
@@ -27,7 +31,8 @@ def create_pipeline() -> RagPipeline:
         )
 
         retrievers[source] = HybridRetriever(
-            DenseRetriever(chunks, embeddings, instructions[source]), BM25Retriever(chunks)
+            DenseRetriever(chunks, embeddings, instructions[source]),
+            BM25Retriever(chunks),
         )
 
     answer_generator = AnswerGenerator(GENERATION_MODEL)
