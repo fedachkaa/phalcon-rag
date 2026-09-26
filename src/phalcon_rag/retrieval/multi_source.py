@@ -34,4 +34,4 @@ class MultiSourceRetriever:
             k=RRF_K,
         )
 
-        return fused[:top_k]
+        return fused[: top_k * 2]

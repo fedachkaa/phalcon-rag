@@ -1,6 +1,11 @@
-from phalcon_rag.config import CANDIDATE_K, HYBRID_TOP_K, RERANK_TOP_K
+from phalcon_rag.config import (
+    CANDIDATE_K,
+    HYBRID_TOP_K,
+    RERANK_DOCS_TOP_K,
+    RERANK_SOURCE_TOP_K,
+)
 from phalcon_rag.generation.answer_generator import AnswerGenerator
-from phalcon_rag.models import Chunk
+from phalcon_rag.models import SOURCE_PHALCON_DOCS, SOURCE_PHALCON_SOURCE_CODE, Chunk
 from phalcon_rag.reranking.cross_encoder import CrossEncoderReranker
 from phalcon_rag.retrieval.base import Retriever
 
@@ -23,9 +28,26 @@ class RagPipeline:
             top_k=HYBRID_TOP_K,
         )
 
-        reranked = self.reranker.rerank(query, candidates)
+        docs_candidates = [
+            candidate
+            for candidate in candidates
+            if candidate[0].source == SOURCE_PHALCON_DOCS
+        ]
 
-        return [chunk for chunk, _ in reranked[:RERANK_TOP_K]]
+        source_candidates = [
+            candidate
+            for candidate in candidates
+            if candidate[0].source == SOURCE_PHALCON_SOURCE_CODE
+        ]
+
+        docs_reranked = self.reranker.rerank(query, docs_candidates)
+        source_reranked = self.reranker.rerank(query, source_candidates)
+
+        selected = (
+            docs_reranked[:RERANK_DOCS_TOP_K] + source_reranked[:RERANK_SOURCE_TOP_K]
+        )
+
+        return [chunk for chunk, _ in selected]
 
     def answer(self, query: str) -> str:
         chunks = self.retrieve(query)

@@ -1,0 +1,262 @@
+[
+  {
+    "id": "model-find-first-internal",
+    "question": "What happens internally when Model::findFirst() is called in Phalcon?",
+    "category": "internal",
+    "expected_answerable": true,
+    "expected_sources": ["Mvc/Model.zep::findFirst"],
+    "expected_concepts": ["getPreparedQuery", "setUniqueRow", "execute"]
+  },
+  {
+    "id": "model-delete-internal",
+    "question": "What happens internally when Model::delete() is called in Phalcon?",
+    "category": "internal",
+    "expected_answerable": true,
+    "expected_sources": ["Mvc/Model.zep::delete"],
+    "expected_concepts": ["beforeDelete", "delete", "afterDelete"]
+  },
+  {
+    "id": "belongs-to-resolution",
+    "question": "How does Phalcon resolve a belongsTo relation when it is accessed through a model property?",
+    "category": "internal",
+    "expected_answerable": true,
+    "expected_sources": ["Mvc/Model.zep::__get", "Mvc/Model.zep::getRelated", "Mvc/Model/Manager.zep::getRelationRecords"],
+    "expected_concepts": ["belongsTo", "relation alias", "related records"]
+  },
+  {
+    "id": "model-save-validation-lifecycle",
+    "question": "What validation and lifecycle events are executed internally when a Phalcon model is saved?",
+    "category": "mixed",
+    "expected_answerable": true,
+    "expected_sources": ["Mvc/Model.zep::preSave", "Mvc/Model.zep::doSave", "Mvc/Model.zep::postSave"],
+    "expected_concepts": [
+      "beforeValidation",
+      "validation",
+      "afterValidation",
+      "beforeSave",
+      "beforeCreate",
+      "beforeUpdate",
+      "afterCreate",
+      "afterUpdate",
+      "afterSave"
+    ]
+  },
+  {
+    "id": "dynamic-find-first-by-email",
+    "question": "How does Phalcon handle dynamic model methods such as findFirstByEmail()?",
+    "category": "internal",
+    "expected_answerable": true,
+    "expected_sources": ["Mvc/Model.zep::invokeFinder", "Mvc/Model.zep::__callStatic", "Mvc/Model.zep::__call"],
+    "expected_concepts": ["invokeFinder", "findFirstBy", "findFirst"]
+  },
+  {
+    "id": "model-changed-fields",
+    "question": "How does Phalcon determine which model fields have changed before or after saving?",
+    "category": "mixed",
+    "expected_answerable": true,
+    "expected_sources": [
+      "Mvc/Model.zep::getChangedFields",
+      "Mvc/Model.zep::hasChanged",
+      "Mvc/Model.zep::getUpdatedFields",
+      "Mvc/Model.zep::hasUpdated"
+    ],
+    "expected_concepts": ["snapshot", "getChangedFields", "hasChanged", "getUpdatedFields", "hasUpdated"]
+  },
+  {
+    "id": "save-related-records",
+    "question": "How does Phalcon save related records defined through model relationships, and what happens if saving a related record fails?",
+    "category": "mixed",
+    "expected_answerable": true,
+    "expected_sources": [
+      "Mvc/Model.zep::preSaveRelatedRecords",
+      "Mvc/Model.zep::postSaveRelatedRecords",
+      "Mvc/Model.zep::collectRelatedToSave",
+      "Mvc/Model.zep::doSave"
+    ],
+    "expected_concepts": ["preSaveRelatedRecords", "postSaveRelatedRecords", "rollback", "validation messages"]
+  },
+  {
+    "id": "model-relationships-definition",
+    "question": "How do you define model relationships such as belongsTo, hasOne, and hasMany in Phalcon?",
+    "category": "documentation",
+    "expected_answerable": true,
+    "expected_sources": ["db-models-relationships.mdx"],
+    "expected_concepts": ["belongsTo", "hasOne", "hasMany", "initialize"]
+  },
+  {
+    "id": "model-dynamic-update",
+    "question": "How does Phalcon's dynamic update feature work, and how does it decide which columns to include in an UPDATE?",
+    "category": "mixed",
+    "expected_answerable": true,
+    "expected_sources": ["Mvc/Model.zep::doLowUpdate", "Mvc/Model/Manager.zep::useDynamicUpdate"],
+    "expected_concepts": ["dynamic update", "changed fields", "UPDATE"]
+  },
+  {
+    "id": "model-query-execution",
+    "question": "What happens internally when Query::execute() is called in Phalcon?",
+    "category": "internal",
+    "expected_answerable": true,
+    "expected_sources": ["Mvc/Model/Query.zep::execute"],
+    "expected_concepts": ["query", "execute"]
+  },
+  {
+    "id": "model-find-internal",
+    "question": "What happens internally when Model::find() is called in Phalcon?",
+    "category": "internal",
+    "expected_answerable": true,
+    "expected_sources": ["Mvc/Model.zep::find"],
+    "expected_concepts": ["getPreparedQuery", "execute", "hydration", "eager"]
+  },
+  {
+    "id": "model-create-internal",
+    "question": "How does Model::create() behave internally when the record already exists?",
+    "category": "internal",
+    "expected_answerable": true,
+    "expected_sources": ["Mvc/Model.zep::create"],
+    "expected_concepts": ["getWriteConnection", "InvalidCreateAttempt", "save"]
+  },
+  {
+    "id": "model-update-internal",
+    "question": "How does Model::update() behave internally when the record does not exist?",
+    "category": "internal",
+    "expected_answerable": true,
+    "expected_sources": ["Mvc/Model.zep::update"],
+    "expected_concepts": ["dirtyState", "getWriteConnection", "InvalidUpdateAttempt", "save"]
+  },
+  {
+    "id": "model-get-related-internal",
+    "question": "What happens internally when Model::getRelated() is called with a relation alias?",
+    "category": "internal",
+    "expected_answerable": true,
+    "expected_sources": ["Mvc/Model.zep::getRelated"],
+    "expected_concepts": ["getRelationByAlias", "RelationNotDefined", "related records"]
+  },
+  {
+    "id": "model-read-connection-internal",
+    "question": "How does a Phalcon model choose its read connection internally?",
+    "category": "internal",
+    "expected_answerable": true,
+    "expected_sources": ["Mvc/Model.zep::getReadConnection"],
+    "expected_concepts": ["transaction", "getConnection", "modelsManager", "getReadConnection"]
+  },
+  {
+    "id": "model-transaction-rollback-internal",
+    "question": "What happens internally when a Phalcon model transaction is rolled back?",
+    "category": "internal",
+    "expected_answerable": true,
+    "expected_sources": ["Mvc/Model/Transaction.zep::rollback"],
+    "expected_concepts": ["notifyRollback", "rollback", "rollbackRecord", "TxFailed"]
+  },
+  {
+    "id": "phql-parse-internal",
+    "question": "How is a PHQL string parsed internally by Phalcon?",
+    "category": "internal",
+    "expected_answerable": true,
+    "expected_sources": ["Mvc/Model/Query/Lang.zep::parsePHQL"],
+    "expected_concepts": ["parsePHQL", "phql_parse_phql"]
+  },
+  {
+    "id": "model-hydration-modes",
+    "question": "What hydration modes are available for Phalcon model resultsets and how are they used?",
+    "category": "documentation",
+    "expected_answerable": true,
+    "expected_sources": ["db-models.mdx::hydration-modes"],
+    "expected_concepts": ["hydration", "records", "arrays", "objects"]
+  },
+  {
+    "id": "model-column-mapping",
+    "question": "How does column mapping work in Phalcon models?",
+    "category": "documentation",
+    "expected_answerable": true,
+    "expected_sources": ["db-models.mdx::column-mapping"],
+    "expected_concepts": ["column map", "database columns", "model attributes"]
+  },
+  {
+    "id": "model-transactions-docs",
+    "question": "How can transactions be used with Phalcon models?",
+    "category": "documentation",
+    "expected_answerable": true,
+    "expected_sources": ["db-models-transactions.mdx"],
+    "expected_concepts": ["transaction", "commit", "rollback"]
+  },
+  {
+    "id": "model-virtual-foreign-keys",
+    "question": "How do virtual foreign keys work in Phalcon model relationships?",
+    "category": "documentation",
+    "expected_answerable": true,
+    "expected_sources": ["db-models-relationships.mdx::virtual-foreign-keys"],
+    "expected_concepts": ["foreign key", "restrict", "cascade", "relationships"]
+  },
+  {
+    "id": "phql-query-builder",
+    "question": "How do you build PHQL queries programmatically with Phalcon's query builder?",
+    "category": "documentation",
+    "expected_answerable": true,
+    "expected_sources": ["db-phql.mdx::query-builder"],
+    "expected_concepts": ["query builder", "where", "from", "getQuery"]
+  },
+  {
+    "id": "phql-bound-parameters",
+    "question": "How should bound parameters be used in PHQL queries?",
+    "category": "documentation",
+    "expected_answerable": true,
+    "expected_sources": ["db-phql.mdx::query-builder::bound-parameters"],
+    "expected_concepts": ["bound parameters", "bind", "placeholders"]
+  },
+  {
+    "id": "model-binding-parameters",
+    "question": "How do you bind parameters when finding records with Phalcon models?",
+    "category": "documentation",
+    "expected_answerable": true,
+    "expected_sources": ["db-models.mdx::finding-records::binding-parameters"],
+    "expected_concepts": ["bind", "parameters", "placeholders", "conditions"]
+  },
+  {
+    "id": "model-snapshots",
+    "question": "How do model snapshots work in Phalcon and how are they used to detect changes?",
+    "category": "mixed",
+    "expected_answerable": true,
+    "expected_sources": ["db-models.mdx::record-snapshots", "Mvc/Model.zep::setSnapshotData"],
+    "expected_concepts": ["snapshot", "setSnapshotData", "changed fields"]
+  },
+  {
+    "id": "model-read-write-connections",
+    "question": "How can Phalcon models use separate read and write database connections, and how are those connections resolved?",
+    "category": "mixed",
+    "expected_answerable": true,
+    "expected_sources": ["db-models.mdx::multiple-databases", "Mvc/Model.zep::getReadConnection", "Mvc/Model.zep::getWriteConnection"],
+    "expected_concepts": ["read connection", "write connection", "connection service", "models manager"]
+  },
+  {
+    "id": "has-many-internal-definition",
+    "question": "How is a hasMany relationship registered internally when it is defined on a Phalcon model?",
+    "category": "mixed",
+    "expected_answerable": true,
+    "expected_sources": ["db-models-relationships.mdx", "Mvc/Model.zep::hasMany", "Mvc/Model/Manager.zep::addHasMany"],
+    "expected_concepts": ["hasMany", "addHasMany", "fields", "referenced fields"]
+  },
+  {
+    "id": "has-many-to-many-internal-definition",
+    "question": "How does Phalcon define a hasManyToMany relationship internally?",
+    "category": "mixed",
+    "expected_answerable": true,
+    "expected_sources": ["db-models-relationships.mdx", "Mvc/Model.zep::hasManyToMany", "Mvc/Model/Manager.zep::addHasManyToMany"],
+    "expected_concepts": ["hasManyToMany", "intermediate model", "referenced fields"]
+  },
+  {
+    "id": "model-json-serialization",
+    "question": "How is a Phalcon model converted to JSON internally?",
+    "category": "mixed",
+    "expected_answerable": true,
+    "expected_sources": ["api/phalcon_mvc.mdx::mvc-model::methods::jsonserialize", "Mvc/Model.zep::jsonSerialize"],
+    "expected_concepts": ["jsonSerialize", "toArray"]
+  },
+  {
+    "id": "model-skip-attributes",
+    "question": "How can model attributes be skipped during INSERT or UPDATE operations in Phalcon, and what internal methods support this?",
+    "category": "mixed",
+    "expected_answerable": true,
+    "expected_sources": ["db-models.mdx::methods::skipattributes", "Mvc/Model.zep::skipAttributesOnCreate", "Mvc/Model.zep::skipAttributesOnUpdate"],
+    "expected_concepts": ["skipAttributesOnCreate", "skipAttributesOnUpdate", "INSERT", "UPDATE"]
+  }
+]
