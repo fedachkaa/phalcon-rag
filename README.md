@@ -204,6 +204,43 @@ The final pipeline currently uses 2 documentation chunks and 3 source-code chunk
 
 The evaluation also exposed difficult cases involving indirect source-code execution flows, where relevant methods cannot be identified from method names alone. These cases are useful targets for future retrieval improvements.
 
+### 9. Generation Evaluation
+
+Answer generation was manually evaluated on the same 30-question benchmark
+used for multi-source retrieval evaluation.
+
+Each generated answer was scored from 0 to 2 on three dimensions:
+
+- **Correctness** — whether the claims made in the answer are correct;
+- **Completeness** — whether the answer covers the expected concepts needed
+  to answer the question;
+- **Groundedness** — whether the answer is supported by the retrieved context
+  without introducing unsupported claims.
+
+| Metric       |         Score |      Mean |
+| ------------ | ------------: | --------: |
+| Correctness  |       60 / 60 |  2.00 / 2 |
+| Completeness |       44 / 60 |  1.47 / 2 |
+| Groundedness |       60 / 60 |  2.00 / 2 |
+| **Overall**  | **164 / 180** | **91.1%** |
+
+The evaluation shows that generation is reliable when sufficient context is
+retrieved. Answers remained grounded in the supplied Phalcon documentation and
+source code, including cases where the retrieved context was incomplete.
+
+The main limitation was **completeness**. Most incomplete answers were caused by
+missing or partial retrieval context rather than unsupported generation. For
+example, indirect source-code flows such as relationship resolution may require
+multiple connected methods that are difficult to retrieve from the query alone.
+
+The evaluation also showed that strict expected-source retrieval metrics can
+underestimate final answer quality: in some cases, the exact expected chunk was
+not retrieved, while alternative retrieved context was still sufficient to
+produce a correct and complete answer.
+
+Detailed per-question generation results and manual scores are stored in the
+generation evaluation results file.
+
 ---
 
 ## Project Structure
@@ -524,7 +561,6 @@ The current version supports retrieval over both Phalcon documentation and sourc
 
 Planned work includes:
 
-- generation evaluation over the expanded multi-source benchmark;
 - improved retrieval for indirect source-code execution flows;
 - API layer for external clients;
 - IDE integration, starting with a PhpStorm plugin;
