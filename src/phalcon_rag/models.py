@@ -30,3 +30,9 @@ class Method:
     start_line: int
     end_line: int
     metadata: dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass
+class RagResult:
+    answer: str
+    chunks: list[Chunk]

@@ -5,7 +5,12 @@ from phalcon_rag.config import (
     RERANK_SOURCE_TOP_K,
 )
 from phalcon_rag.generation.answer_generator import AnswerGenerator
-from phalcon_rag.models import SOURCE_PHALCON_DOCS, SOURCE_PHALCON_SOURCE_CODE, Chunk
+from phalcon_rag.models import (
+    SOURCE_PHALCON_DOCS,
+    SOURCE_PHALCON_SOURCE_CODE,
+    Chunk,
+    RagResult,
+)
 from phalcon_rag.reranking.cross_encoder import CrossEncoderReranker
 from phalcon_rag.retrieval.base import Retriever
 
@@ -53,3 +58,10 @@ class RagPipeline:
         chunks = self.retrieve(query)
 
         return self.answer_generator.generate(query, chunks)
+
+    def run(self, query: str) -> RagResult:
+        chunks = self.retrieve(query)
+
+        answer = self.answer_generator.generate(query, chunks)
+
+        return RagResult(answer=answer, chunks=chunks)
