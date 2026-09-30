@@ -10,7 +10,16 @@ def build_context(chunks: list[Chunk]) -> str:
     return context
 
 
-def build_prompt(query: str, chunks: list[Chunk]) -> str:
+def build_prompt(query: str, chunks: list[Chunk], context: str | None = None) -> str:
+    selected_code = ""
+    if context:
+        selected_code = f"""
+            Selected user code:
+            ```php
+            {context} 
+            ```
+            """
+    
     return f"""You are a technical assistant for the Phalcon framework. Answer the user's question using only the provided context.
 
 There are two types of evidence:
@@ -26,9 +35,11 @@ Rules:
     - When the question asks about public API, documented behavior, or usage, prioritize relevant DOCUMENTATION context.
     - When the question asks how something works internally, prioritize relevant SOURCE CODE context and use it to explain the implementation flow.
     - When both documentation and source code are relevant, combine them to explain both documented behavior and internal implementation.
+    - Treat selected user code as the code being analyzed, not as evidence about Phalcon behavior.
 
     Question:
     {query}
+    {selected_code}
 
     Context:
     {build_context(chunks)}"""

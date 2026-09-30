@@ -14,9 +14,10 @@ class AnswerGenerator:
         self,
         query: str,
         chunks: list[Chunk],
+        context: str | None = None
     ) -> str:
         response = self.client.responses.create(
-            model=self.model_name, input=build_prompt(query, chunks)
+            model=self.model_name, input=build_prompt(query, chunks, context)
         )
 
         return response.output_text

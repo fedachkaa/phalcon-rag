@@ -6,6 +6,7 @@ from phalcon_rag.config import (
     SOURCE_CODE_QUERY_INSTRUCTION,
 )
 from phalcon_rag.generation.answer_generator import AnswerGenerator
+from phalcon_rag.generation.query_rewriter import QueryRewriter
 from phalcon_rag.models import SOURCE_PHALCON_DOCS, SOURCE_PHALCON_SOURCE_CODE
 from phalcon_rag.pipeline import RagPipeline
 from phalcon_rag.reranking.cross_encoder import CrossEncoderReranker
@@ -44,4 +45,5 @@ def create_pipeline() -> RagPipeline:
         ),
         reranker=CrossEncoderReranker(),
         answer_generator=answer_generator,
+        query_rewriter=QueryRewriter(GENERATION_MODEL)
     )
