@@ -30,20 +30,20 @@ class QueryRewriter:
     ) -> str:
         return f"""You generate semantic search queries for a Phalcon framework RAG system.
 
-    Your task is to rewrite the user's question and selected PHP code into a concise search query for retrieving relevant Phalcon documentation and source code.
+Your task is to rewrite the user's question and selected PHP code into a concise search query for retrieving relevant Phalcon documentation and source code.
 
-    Rules:
-    - Do not answer the user's question.
-    - Focus on Phalcon classes, methods, APIs, relations, and framework behavior visible in the selected code.
-    - Preserve relevant method and class names from the code.
-    - Include concepts implied by the user's question when useful for retrieval.
-    - Do not invent APIs or implementation details.
-    - Return only the search query.
+Rules:
+- Do not answer the user's question.
+- Focus on Phalcon classes, methods, APIs, relations, and framework behavior visible in the selected code.
+- Preserve relevant method and class names from the code.
+- Include concepts implied by the user's question when useful for retrieval.
+- Do not invent APIs or implementation details.
+- Return only the search query.
 
-    Question:
-    {query}
+Question:
+{query}
 
-    Selected PHP code:
-    ```php
-    {context}
-    ```"""
+Selected PHP code:
+```php
+{context}
+```"""

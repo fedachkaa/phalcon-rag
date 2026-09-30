@@ -16,7 +16,7 @@ def build_prompt(query: str, chunks: list[Chunk], context: str | None = None) ->
         selected_code = f"""
 Selected user code:
 ```php
-{context} 
+{context}
 ```
 """
 
