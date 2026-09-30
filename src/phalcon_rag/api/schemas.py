@@ -9,6 +9,8 @@ class SourceResponse(BaseModel):
     file: str
     section: str | None = None
     method: str | None = None
+    start_line: int | None = None
+    end_line: int | None = None
 
 
 class AskRequest(BaseModel):
@@ -20,6 +22,14 @@ class AskRequest(BaseModel):
             max_length=2000,
         ),
     ]
+    context: Annotated[
+        str | None,
+        StringConstraints(
+            strip_whitespace=True,
+            min_length=1,
+            max_length=2000,
+        ),
+    ] = None
 
 
 class AskResponse(BaseModel):

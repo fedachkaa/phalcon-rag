@@ -1,11 +1,14 @@
 from pathlib import Path
 
+from openai import OpenAI
+
 from phalcon_rag.config import (
     EMBEDDING_QUERY_INSTRUCTION,
     GENERATION_MODEL,
     SOURCE_CODE_QUERY_INSTRUCTION,
 )
 from phalcon_rag.generation.answer_generator import AnswerGenerator
+from phalcon_rag.generation.query_rewriter import QueryRewriter
 from phalcon_rag.models import SOURCE_PHALCON_DOCS, SOURCE_PHALCON_SOURCE_CODE
 from phalcon_rag.pipeline import RagPipeline
 from phalcon_rag.reranking.cross_encoder import CrossEncoderReranker
@@ -35,7 +38,7 @@ def create_pipeline() -> RagPipeline:
             BM25Retriever(chunks),
         )
 
-    answer_generator = AnswerGenerator(GENERATION_MODEL)
+    client = OpenAI()
 
     return RagPipeline(
         retriever=MultiSourceRetriever(
@@ -43,5 +46,6 @@ def create_pipeline() -> RagPipeline:
             retrievers[SOURCE_PHALCON_SOURCE_CODE],
         ),
         reranker=CrossEncoderReranker(),
-        answer_generator=answer_generator,
+        answer_generator=AnswerGenerator(client, GENERATION_MODEL),
+        query_rewriter=QueryRewriter(client, GENERATION_MODEL),
     )

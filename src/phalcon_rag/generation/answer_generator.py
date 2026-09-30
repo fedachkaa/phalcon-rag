@@ -5,18 +5,15 @@ from phalcon_rag.models import Chunk
 
 
 class AnswerGenerator:
-    def __init__(self, model_name: str):
+    def __init__(self, client: OpenAI, model_name: str):
         self.model_name = model_name
-
-        self.client = OpenAI()
+        self.client = client
 
     def generate(
-        self,
-        query: str,
-        chunks: list[Chunk],
+        self, query: str, chunks: list[Chunk], context: str | None = None
     ) -> str:
         response = self.client.responses.create(
-            model=self.model_name, input=build_prompt(query, chunks)
+            model=self.model_name, input=build_prompt(query, chunks, context)
         )
 
         return response.output_text

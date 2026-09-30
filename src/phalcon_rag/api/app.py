@@ -26,9 +26,10 @@ async def health():
 
 @app.post("/api/v1/ask", response_model=AskResponse)
 async def ask(request: AskRequest):
-    question = request.question
-
-    rag_result = app.state.rag_pipeline.run(question)
+    rag_result = app.state.rag_pipeline.run(
+        query=request.question,
+        context=request.context,
+    )
 
     sources = [
         SourceResponse(
@@ -37,6 +38,8 @@ async def ask(request: AskRequest):
             file=chunk.metadata.get("file_path") or chunk.metadata.get("file"),
             section=chunk.metadata.get("section"),
             method=chunk.metadata.get("method"),
+            start_line=chunk.metadata.get("start_line"),
+            end_line=chunk.metadata.get("end_line"),
         )
         for chunk in rag_result.chunks
     ]

@@ -5,6 +5,7 @@ from phalcon_rag.config import (
     RERANK_SOURCE_TOP_K,
 )
 from phalcon_rag.generation.answer_generator import AnswerGenerator
+from phalcon_rag.generation.query_rewriter import QueryRewriter
 from phalcon_rag.models import (
     SOURCE_PHALCON_DOCS,
     SOURCE_PHALCON_SOURCE_CODE,
@@ -21,10 +22,12 @@ class RagPipeline:
         retriever: Retriever,
         reranker: CrossEncoderReranker,
         answer_generator: AnswerGenerator,
+        query_rewriter: QueryRewriter,
     ):
         self.retriever = retriever
         self.reranker = reranker
         self.answer_generator = answer_generator
+        self.query_rewriter = query_rewriter
 
     def retrieve(self, query: str) -> list[Chunk]:
         candidates = self.retriever.search(
@@ -59,9 +62,17 @@ class RagPipeline:
 
         return self.answer_generator.generate(query, chunks)
 
-    def run(self, query: str) -> RagResult:
-        chunks = self.retrieve(query)
+    def run(self, query: str, context: str | None = None) -> RagResult:
+        retrieval_query = query
 
-        answer = self.answer_generator.generate(query, chunks)
+        if context:
+            retrieval_query = self.query_rewriter.rewrite(
+                query=query,
+                context=context,
+            )
+
+        chunks = self.retrieve(retrieval_query)
+
+        answer = self.answer_generator.generate(query, chunks, context=context)
 
         return RagResult(answer=answer, chunks=chunks)
