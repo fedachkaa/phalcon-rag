@@ -26,6 +26,7 @@ class AskRequest(BaseModel):
         str | None,
         StringConstraints(
             strip_whitespace=True,
+            min_length=1,
             max_length=2000,
         ),
     ] = None

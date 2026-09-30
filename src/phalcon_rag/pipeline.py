@@ -22,7 +22,7 @@ class RagPipeline:
         retriever: Retriever,
         reranker: CrossEncoderReranker,
         answer_generator: AnswerGenerator,
-        query_rewriter: QueryRewriter
+        query_rewriter: QueryRewriter,
     ):
         self.retriever = retriever
         self.reranker = reranker

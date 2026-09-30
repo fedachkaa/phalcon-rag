@@ -14,12 +14,12 @@ def build_prompt(query: str, chunks: list[Chunk], context: str | None = None) ->
     selected_code = ""
     if context:
         selected_code = f"""
-            Selected user code:
-            ```php
-            {context} 
-            ```
-            """
-    
+Selected user code:
+```php
+{context} 
+```
+"""
+
     return f"""You are a technical assistant for the Phalcon framework. Answer the user's question using only the provided context.
 
 There are two types of evidence:

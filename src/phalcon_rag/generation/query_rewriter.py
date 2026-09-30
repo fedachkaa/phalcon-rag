@@ -2,8 +2,8 @@ from openai import OpenAI
 
 
 class QueryRewriter:
-    def __init__(self, model_name: str):
-        self.client = OpenAI()
+    def __init__(self, client: OpenAI, model_name: str):
+        self.client = client
         self.model_name = model_name
 
     def rewrite(

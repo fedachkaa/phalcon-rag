@@ -30,7 +30,7 @@ async def ask(request: AskRequest):
         query=request.question,
         context=request.context,
     )
-    
+
     sources = [
         SourceResponse(
             id=chunk.id,
