@@ -25,7 +25,7 @@ async def health():
 
 
 @app.post("/api/v1/ask", response_model=AskResponse)
-async def ask(request: AskRequest):
+def ask(request: AskRequest):
     rag_result = app.state.rag_pipeline.run(
         query=request.question,
         context=request.context,
