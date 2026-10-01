@@ -13,13 +13,13 @@ dependencies = [
     "openai>=2.0,<3.0",
     "python-dotenv>=1.0,<2.0",
     "fastapi>=0.141,<0.142",
+    "uvicorn>=0.54,<0.55"
 ]
 
 [project.optional-dependencies]
 dev = [
     "ruff>=0.13,<1.0",
     "pytest>=8.0,<9.0",
-    "uvicorn>=0.54,<0.55"
 ]
 
 [tool.ruff]
