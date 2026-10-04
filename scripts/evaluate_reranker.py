@@ -16,7 +16,7 @@ chunks, embeddings = load_retrieval_data(
     chunk_ids_path=Path(f"data/embeddings/{SOURCE_PHALCON_DOCS}/chunk_ids.json"),
 )
 
-reranker_model_name = "BAAI/bge-reranker-v2-m3"
+reranker_model_name = "cross-encoder/ms-marco-MiniLM-L6-v2"
 
 dense_retriever = DenseRetriever(chunks, embeddings, EMBEDDING_QUERY_INSTRUCTION)
 bm25_retriever = BM25Retriever(chunks)
@@ -25,6 +25,7 @@ reranker = CrossEncoderReranker(reranker_model_name)
 
 results = []
 recall_at_1 = 0
+recall_at_2 = 0
 recall_at_3 = 0
 recall_at_5 = 0
 recall_at_10 = 0
@@ -48,6 +49,9 @@ for question in retrieval_questions:
     if relevant_rank is not None:
         if relevant_rank == 1:
             recall_at_1 += 1
+
+        if relevant_rank <= 2:
+            recall_at_2 += 1
 
         if relevant_rank <= 3:
             recall_at_3 += 1
@@ -74,6 +78,7 @@ questions_count = len(retrieval_questions)
 
 metrics = {
     "recall_at_1": recall_at_1 / questions_count,
+    "recall_at_2": recall_at_2 / questions_count,
     "recall_at_3": recall_at_3 / questions_count,
     "recall_at_5": recall_at_5 / questions_count,
     "recall_at_10": recall_at_10 / questions_count,
@@ -88,4 +93,4 @@ evaluation_result = {
     "results": results,
 }
 
-save_result("reranker", evaluation_result)
+save_result("reranker-l6-docs", evaluation_result)
