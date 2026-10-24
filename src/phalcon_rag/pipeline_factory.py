@@ -1,11 +1,13 @@
 from pathlib import Path
 
 from openai import OpenAI
+from sentence_transformers import SentenceTransformer
 
 from phalcon_rag.config import (
     EMBEDDING_QUERY_INSTRUCTION,
     GENERATION_MODEL,
     SOURCE_CODE_QUERY_INSTRUCTION,
+    EMBEDDING_MODEL,
 )
 from phalcon_rag.generation.answer_generator import AnswerGenerator
 from phalcon_rag.generation.query_rewriter import QueryRewriter
@@ -25,6 +27,7 @@ def create_pipeline() -> RagPipeline:
         SOURCE_PHALCON_SOURCE_CODE: SOURCE_CODE_QUERY_INSTRUCTION,
     }
 
+    embedding_model = SentenceTransformer(EMBEDDING_MODEL)
     retrievers = {}
     for source in [SOURCE_PHALCON_DOCS, SOURCE_PHALCON_SOURCE_CODE]:
         chunks, embeddings = load_retrieval_data(
@@ -34,7 +37,7 @@ def create_pipeline() -> RagPipeline:
         )
 
         retrievers[source] = HybridRetriever(
-            DenseRetriever(chunks, embeddings, instructions[source]),
+            DenseRetriever(chunks, embeddings, instructions[source], embedding_model),
             BM25Retriever(chunks),
         )
 

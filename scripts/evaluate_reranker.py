@@ -1,6 +1,8 @@
 from pathlib import Path
 
-from phalcon_rag.config import EMBEDDING_QUERY_INSTRUCTION
+from sentence_transformers import SentenceTransformer
+
+from phalcon_rag.config import EMBEDDING_MODEL, EMBEDDING_QUERY_INSTRUCTION
 from phalcon_rag.models import SOURCE_PHALCON_DOCS
 from phalcon_rag.reranking.cross_encoder import CrossEncoderReranker
 from phalcon_rag.retrieval.bm25 import BM25Retriever
@@ -18,7 +20,12 @@ chunks, embeddings = load_retrieval_data(
 
 reranker_model_name = "cross-encoder/ms-marco-MiniLM-L6-v2"
 
-dense_retriever = DenseRetriever(chunks, embeddings, EMBEDDING_QUERY_INSTRUCTION)
+dense_retriever = DenseRetriever(
+    chunks,
+    embeddings,
+    EMBEDDING_QUERY_INSTRUCTION,
+    SentenceTransformer(EMBEDDING_MODEL),
+)
 bm25_retriever = BM25Retriever(chunks)
 hybrid_retriever = HybridRetriever(dense_retriever, bm25_retriever)
 reranker = CrossEncoderReranker(reranker_model_name)
