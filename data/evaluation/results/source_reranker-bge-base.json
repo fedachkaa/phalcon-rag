@@ -1,0 +1,1623 @@
+{
+  "model": "BAAI/bge-reranker-base",
+  "retrieval": "qwen_bm25_rrf_4_1",
+  "source": "phalcon_source_code",
+  "questions_count": 22,
+  "skipped_questions_count": 8,
+  "metrics": {
+    "hit_at_1": 0.36363636363636365,
+    "hit_at_3": 0.6818181818181818,
+    "hit_at_5": 0.7272727272727273,
+    "hit_at_10": 0.9545454545454546,
+    "mean_expected_source_recall_at_1": 0.22348484848484845,
+    "mean_expected_source_recall_at_3": 0.5227272727272727,
+    "mean_expected_source_recall_at_5": 0.6136363636363636,
+    "mean_expected_source_recall_at_10": 0.9015151515151516,
+    "mrr": 0.5678571428571428
+  },
+  "results": [
+    {
+      "id": "model-find-first-internal",
+      "question": "What happens internally when Model::findFirst() is called in Phalcon?",
+      "category": "internal",
+      "expected_sources": [
+        "Mvc/Model.zep::findFirst"
+      ],
+      "found_sources": {
+        "Mvc/Model.zep::findFirst": 1
+      },
+      "first_relevant_rank": 1,
+      "relevant_ranks": [
+        1
+      ],
+      "expected_source_recall_at_1": 1.0,
+      "expected_source_recall_at_3": 1.0,
+      "expected_source_recall_at_5": 1.0,
+      "expected_source_recall_at_10": 1.0,
+      "top_10": [
+        {
+          "id": "Mvc/Model.zep::findFirst::0",
+          "method_id": "Mvc/Model.zep::findFirst",
+          "score": 0.05400298163294792
+        },
+        {
+          "id": "Auth/Adapter/Model.zep::findFirstAsAuthUser::0",
+          "method_id": "Auth/Adapter/Model.zep::findFirstAsAuthUser",
+          "score": 0.04379837587475777
+        },
+        {
+          "id": "Mvc/Model/Binder.zep::findBoundModel::0",
+          "method_id": "Mvc/Model/Binder.zep::findBoundModel",
+          "score": 0.018511703237891197
+        },
+        {
+          "id": "Mvc/Model.zep::invokeFinder::0",
+          "method_id": "Mvc/Model.zep::invokeFinder",
+          "score": 0.009163256734609604
+        },
+        {
+          "id": "Mvc/Model/Criteria.zep::execute::0",
+          "method_id": "Mvc/Model/Criteria.zep::execute",
+          "score": 0.00011047351290471852
+        },
+        {
+          "id": "Mvc/Model/Query.zep::getSingleResult::0",
+          "method_id": "Mvc/Model/Query.zep::getSingleResult",
+          "score": 6.186379323480651e-05
+        },
+        {
+          "id": "Mvc/Model.zep::find::0",
+          "method_id": "Mvc/Model.zep::find",
+          "score": 6.153700087452307e-05
+        },
+        {
+          "id": "Mvc/Model/Query/Exceptions/ModelSourceNotFound.zep::__construct::0",
+          "method_id": "Mvc/Model/Query/Exceptions/ModelSourceNotFound.zep::__construct",
+          "score": 3.773318894673139e-05
+        },
+        {
+          "id": "Mvc/Model/Query/Exceptions/RelationshipNotFound.zep::__construct::0",
+          "method_id": "Mvc/Model/Query/Exceptions/RelationshipNotFound.zep::__construct",
+          "score": 3.733171251951717e-05
+        },
+        {
+          "id": "Mvc/Model/Query/Exceptions/NoModelForAlias.zep::__construct::0",
+          "method_id": "Mvc/Model/Query/Exceptions/NoModelForAlias.zep::__construct",
+          "score": 3.7304133002180606e-05
+        }
+      ]
+    },
+    {
+      "id": "model-delete-internal",
+      "question": "What happens internally when Model::delete() is called in Phalcon?",
+      "category": "internal",
+      "expected_sources": [
+        "Mvc/Model.zep::delete"
+      ],
+      "found_sources": {
+        "Mvc/Model.zep::delete": 2
+      },
+      "first_relevant_rank": 2,
+      "relevant_ranks": [
+        2
+      ],
+      "expected_source_recall_at_1": 0.0,
+      "expected_source_recall_at_3": 1.0,
+      "expected_source_recall_at_5": 1.0,
+      "expected_source_recall_at_10": 1.0,
+      "top_10": [
+        {
+          "id": "Mvc/Model/Manager.zep::__destruct::0",
+          "method_id": "Mvc/Model/Manager.zep::__destruct",
+          "score": 0.0033759931102395058
+        },
+        {
+          "id": "Mvc/Model.zep::delete::3",
+          "method_id": "Mvc/Model.zep::delete",
+          "score": 0.0026669835206121206
+        },
+        {
+          "id": "Mvc/Model/Query.zep::prepareDelete::0",
+          "method_id": "Mvc/Model/Query.zep::prepareDelete",
+          "score": 0.0014174565440043807
+        },
+        {
+          "id": "Mvc/Model.zep::delete::0",
+          "method_id": "Mvc/Model.zep::delete",
+          "score": 0.0006955700810067356
+        },
+        {
+          "id": "Mvc/Model/Behavior/SoftDelete.zep::notify::0",
+          "method_id": "Mvc/Model/Behavior/SoftDelete.zep::notify",
+          "score": 0.00039057148387655616
+        },
+        {
+          "id": "Mvc/Model/Query.zep::executeDelete::0",
+          "method_id": "Mvc/Model/Query.zep::executeDelete",
+          "score": 0.00031823915196582675
+        },
+        {
+          "id": "Mvc/Model/Query/Exceptions/DeleteMultipleNotSupported.zep::__construct::0",
+          "method_id": "Mvc/Model/Query/Exceptions/DeleteMultipleNotSupported.zep::__construct",
+          "score": 0.00018149803509004414
+        },
+        {
+          "id": "DataMapper/Query/QueryFactory.zep::newDelete::0",
+          "method_id": "DataMapper/Query/QueryFactory.zep::newDelete",
+          "score": 6.0219801525818184e-05
+        },
+        {
+          "id": "Mvc/Model/Query.zep::prepareDelete::1",
+          "method_id": "Mvc/Model/Query.zep::prepareDelete",
+          "score": 5.886641520191915e-05
+        },
+        {
+          "id": "Db/Adapter/AbstractAdapter.zep::delete::0",
+          "method_id": "Db/Adapter/AbstractAdapter.zep::delete",
+          "score": 4.9505761126056314e-05
+        }
+      ]
+    },
+    {
+      "id": "belongs-to-resolution",
+      "question": "How does Phalcon resolve a belongsTo relation when it is accessed through a model property?",
+      "category": "internal",
+      "expected_sources": [
+        "Mvc/Model.zep::__get",
+        "Mvc/Model.zep::getRelated",
+        "Mvc/Model/Manager.zep::getRelationRecords"
+      ],
+      "found_sources": {
+        "Mvc/Model.zep::__get": 10
+      },
+      "first_relevant_rank": 10,
+      "relevant_ranks": [
+        10
+      ],
+      "expected_source_recall_at_1": 0.0,
+      "expected_source_recall_at_3": 0.0,
+      "expected_source_recall_at_5": 0.0,
+      "expected_source_recall_at_10": 0.3333333333333333,
+      "top_10": [
+        {
+          "id": "Mvc/Model/Manager.zep::addBelongsTo::0",
+          "method_id": "Mvc/Model/Manager.zep::addBelongsTo",
+          "score": 0.2736136019229889
+        },
+        {
+          "id": "Mvc/Model.zep::belongsTo::0",
+          "method_id": "Mvc/Model.zep::belongsTo",
+          "score": 0.11110974848270416
+        },
+        {
+          "id": "Mvc/Model/Manager.zep::getBelongsTo::0",
+          "method_id": "Mvc/Model/Manager.zep::getBelongsTo",
+          "score": 0.07394436746835709
+        },
+        {
+          "id": "Mvc/Model/Manager.zep::getRelations::0",
+          "method_id": "Mvc/Model/Manager.zep::getRelations",
+          "score": 0.050192683935165405
+        },
+        {
+          "id": "Mvc/Model/Manager.zep::getBelongsToRecords::0",
+          "method_id": "Mvc/Model/Manager.zep::getBelongsToRecords",
+          "score": 0.034395571798086166
+        },
+        {
+          "id": "Mvc/Model/Manager.zep::existsBelongsTo::0",
+          "method_id": "Mvc/Model/Manager.zep::existsBelongsTo",
+          "score": 0.015699559822678566
+        },
+        {
+          "id": "Mvc/Model/Manager.zep::hasBelongsTo::0",
+          "method_id": "Mvc/Model/Manager.zep::hasBelongsTo",
+          "score": 0.0156517643481493
+        },
+        {
+          "id": "Mvc/Model/Manager.zep::getHasOneRecords::0",
+          "method_id": "Mvc/Model/Manager.zep::getHasOneRecords",
+          "score": 0.011085132136940956
+        },
+        {
+          "id": "Mvc/Model.zep::__isset::0",
+          "method_id": "Mvc/Model.zep::__isset",
+          "score": 0.0036112540401518345
+        },
+        {
+          "id": "Mvc/Model.zep::__get::0",
+          "method_id": "Mvc/Model.zep::__get",
+          "score": 0.0027006983291357756
+        }
+      ]
+    },
+    {
+      "id": "model-save-validation-lifecycle",
+      "question": "What validation and lifecycle events are executed internally when a Phalcon model is saved?",
+      "category": "mixed",
+      "expected_sources": [
+        "Mvc/Model.zep::doSave",
+        "Mvc/Model.zep::postSave",
+        "Mvc/Model.zep::preSave"
+      ],
+      "found_sources": {
+        "Mvc/Model.zep::doSave": 1,
+        "Mvc/Model.zep::preSave": 3,
+        "Mvc/Model.zep::postSave": 8
+      },
+      "first_relevant_rank": 1,
+      "relevant_ranks": [
+        1,
+        3,
+        8
+      ],
+      "expected_source_recall_at_1": 0.3333333333333333,
+      "expected_source_recall_at_3": 0.6666666666666666,
+      "expected_source_recall_at_5": 0.6666666666666666,
+      "expected_source_recall_at_10": 1.0,
+      "top_10": [
+        {
+          "id": "Mvc/Model.zep::doSave::1",
+          "method_id": "Mvc/Model.zep::doSave",
+          "score": 0.5581696033477783
+        },
+        {
+          "id": "Filter/Validation/Exceptions/UniquenessOnlyForPhalconModel.zep::__construct::0",
+          "method_id": "Filter/Validation/Exceptions/UniquenessOnlyForPhalconModel.zep::__construct",
+          "score": 0.23693007230758667
+        },
+        {
+          "id": "Mvc/Model.zep::preSave::7",
+          "method_id": "Mvc/Model.zep::preSave",
+          "score": 0.012560222297906876
+        },
+        {
+          "id": "Mvc/Model.zep::preSave::0",
+          "method_id": "Mvc/Model.zep::preSave",
+          "score": 0.004363701678812504
+        },
+        {
+          "id": "Mvc/Model.zep::doSave::4",
+          "method_id": "Mvc/Model.zep::doSave",
+          "score": 0.0005447428557090461
+        },
+        {
+          "id": "Mvc/Model.zep::doSave::0",
+          "method_id": "Mvc/Model.zep::doSave",
+          "score": 0.0005035301437601447
+        },
+        {
+          "id": "Mvc/Model/Manager.zep::notifyEvent::0",
+          "method_id": "Mvc/Model/Manager.zep::notifyEvent",
+          "score": 0.0002842465473804623
+        },
+        {
+          "id": "Mvc/Model.zep::postSave::0",
+          "method_id": "Mvc/Model.zep::postSave",
+          "score": 0.0002187071950174868
+        },
+        {
+          "id": "Mvc/Model.zep::collectRelatedToSave::0",
+          "method_id": "Mvc/Model.zep::collectRelatedToSave",
+          "score": 0.00016708254406694323
+        },
+        {
+          "id": "Mvc/Model.zep::save::0",
+          "method_id": "Mvc/Model.zep::save",
+          "score": 0.00010717936675064266
+        }
+      ]
+    },
+    {
+      "id": "dynamic-find-first-by-email",
+      "question": "How does Phalcon handle dynamic model methods such as findFirstByEmail()?",
+      "category": "internal",
+      "expected_sources": [
+        "Mvc/Model.zep::__call",
+        "Mvc/Model.zep::__callStatic",
+        "Mvc/Model.zep::invokeFinder"
+      ],
+      "found_sources": {
+        "Mvc/Model.zep::invokeFinder": 1,
+        "Mvc/Model.zep::__call": 8,
+        "Mvc/Model.zep::__callStatic": 10
+      },
+      "first_relevant_rank": 1,
+      "relevant_ranks": [
+        1,
+        8,
+        10
+      ],
+      "expected_source_recall_at_1": 0.3333333333333333,
+      "expected_source_recall_at_3": 0.3333333333333333,
+      "expected_source_recall_at_5": 0.3333333333333333,
+      "expected_source_recall_at_10": 1.0,
+      "top_10": [
+        {
+          "id": "Mvc/Model.zep::invokeFinder::0",
+          "method_id": "Mvc/Model.zep::invokeFinder",
+          "score": 0.04222344234585762
+        },
+        {
+          "id": "Mvc/Model.zep::findFirst::0",
+          "method_id": "Mvc/Model.zep::findFirst",
+          "score": 0.003784013679251075
+        },
+        {
+          "id": "Mvc/Model.zep::getRelatedRecords::0",
+          "method_id": "Mvc/Model.zep::getRelatedRecords",
+          "score": 0.0014454721240326762
+        },
+        {
+          "id": "Mvc/Model/Binder.zep::findBoundModel::0",
+          "method_id": "Mvc/Model/Binder.zep::findBoundModel",
+          "score": 0.0009680313523858786
+        },
+        {
+          "id": "Mvc/Model/Manager.zep::isUsingDynamicUpdate::0",
+          "method_id": "Mvc/Model/Manager.zep::isUsingDynamicUpdate",
+          "score": 0.0006720853270962834
+        },
+        {
+          "id": "Mvc/Model/Criteria.zep::execute::0",
+          "method_id": "Mvc/Model/Criteria.zep::execute",
+          "score": 0.0004367640649434179
+        },
+        {
+          "id": "Mvc/Model/Query/Builder.zep::getPhql::0",
+          "method_id": "Mvc/Model/Query/Builder.zep::getPhql",
+          "score": 0.00023159454576671124
+        },
+        {
+          "id": "Mvc/Model.zep::__call::0",
+          "method_id": "Mvc/Model.zep::__call",
+          "score": 0.00015079369768500328
+        },
+        {
+          "id": "Mvc/Model.zep::find::0",
+          "method_id": "Mvc/Model.zep::find",
+          "score": 9.301828686147928e-05
+        },
+        {
+          "id": "Mvc/Model.zep::__callStatic::0",
+          "method_id": "Mvc/Model.zep::__callStatic",
+          "score": 6.317676161415875e-05
+        }
+      ]
+    },
+    {
+      "id": "model-changed-fields",
+      "question": "How does Phalcon determine which model fields have changed before or after saving?",
+      "category": "mixed",
+      "expected_sources": [
+        "Mvc/Model.zep::getChangedFields",
+        "Mvc/Model.zep::getUpdatedFields",
+        "Mvc/Model.zep::hasChanged",
+        "Mvc/Model.zep::hasUpdated"
+      ],
+      "found_sources": {
+        "Mvc/Model.zep::hasChanged": 2,
+        "Mvc/Model.zep::getUpdatedFields": 3,
+        "Mvc/Model.zep::hasUpdated": 4,
+        "Mvc/Model.zep::getChangedFields": 5
+      },
+      "first_relevant_rank": 2,
+      "relevant_ranks": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "expected_source_recall_at_1": 0.0,
+      "expected_source_recall_at_3": 0.5,
+      "expected_source_recall_at_5": 1.0,
+      "expected_source_recall_at_10": 1.0,
+      "top_10": [
+        {
+          "id": "Mvc/Model.zep::doLowUpdate::3",
+          "method_id": "Mvc/Model.zep::doLowUpdate",
+          "score": 0.12811939418315887
+        },
+        {
+          "id": "Mvc/Model.zep::hasChanged::0",
+          "method_id": "Mvc/Model.zep::hasChanged",
+          "score": 0.023993046954274178
+        },
+        {
+          "id": "Mvc/Model.zep::getUpdatedFields::0",
+          "method_id": "Mvc/Model.zep::getUpdatedFields",
+          "score": 0.012493663467466831
+        },
+        {
+          "id": "Mvc/Model.zep::hasUpdated::0",
+          "method_id": "Mvc/Model.zep::hasUpdated",
+          "score": 0.00965581089258194
+        },
+        {
+          "id": "Mvc/Model.zep::getChangedFields::0",
+          "method_id": "Mvc/Model.zep::getChangedFields",
+          "score": 0.005190074909478426
+        },
+        {
+          "id": "Mvc/Model.zep::getChangedFields::1",
+          "method_id": "Mvc/Model.zep::getChangedFields",
+          "score": 0.004798026289790869
+        },
+        {
+          "id": "Mvc/Model.zep::doSave::0",
+          "method_id": "Mvc/Model.zep::doSave",
+          "score": 0.0013459674082696438
+        },
+        {
+          "id": "Mvc/Model.zep::collectRelatedToSave::0",
+          "method_id": "Mvc/Model.zep::collectRelatedToSave",
+          "score": 0.0004806443757843226
+        },
+        {
+          "id": "Mvc/Model/Manager.zep::isKeepingSnapshots::0",
+          "method_id": "Mvc/Model/Manager.zep::isKeepingSnapshots",
+          "score": 9.021773439599201e-05
+        },
+        {
+          "id": "Mvc/Model/Manager.zep::useDynamicUpdate::0",
+          "method_id": "Mvc/Model/Manager.zep::useDynamicUpdate",
+          "score": 4.231172351865098e-05
+        }
+      ]
+    },
+    {
+      "id": "save-related-records",
+      "question": "How does Phalcon save related records defined through model relationships, and what happens if saving a related record fails?",
+      "category": "mixed",
+      "expected_sources": [
+        "Mvc/Model.zep::collectRelatedToSave",
+        "Mvc/Model.zep::doSave",
+        "Mvc/Model.zep::postSaveRelatedRecords",
+        "Mvc/Model.zep::preSaveRelatedRecords"
+      ],
+      "found_sources": {
+        "Mvc/Model.zep::doSave": 1,
+        "Mvc/Model.zep::postSaveRelatedRecords": 2,
+        "Mvc/Model.zep::preSaveRelatedRecords": 4,
+        "Mvc/Model.zep::collectRelatedToSave": 5
+      },
+      "first_relevant_rank": 1,
+      "relevant_ranks": [
+        1,
+        2,
+        4,
+        5
+      ],
+      "expected_source_recall_at_1": 0.25,
+      "expected_source_recall_at_3": 0.5,
+      "expected_source_recall_at_5": 1.0,
+      "expected_source_recall_at_10": 1.0,
+      "top_10": [
+        {
+          "id": "Mvc/Model.zep::doSave::3",
+          "method_id": "Mvc/Model.zep::doSave",
+          "score": 0.3589664399623871
+        },
+        {
+          "id": "Mvc/Model.zep::postSaveRelatedRecords::11",
+          "method_id": "Mvc/Model.zep::postSaveRelatedRecords",
+          "score": 0.254969984292984
+        },
+        {
+          "id": "Mvc/Model.zep::postSaveRelatedRecords::0",
+          "method_id": "Mvc/Model.zep::postSaveRelatedRecords",
+          "score": 0.2243800312280655
+        },
+        {
+          "id": "Mvc/Model.zep::preSaveRelatedRecords::1",
+          "method_id": "Mvc/Model.zep::preSaveRelatedRecords",
+          "score": 0.13188737630844116
+        },
+        {
+          "id": "Mvc/Model.zep::collectRelatedToSave::0",
+          "method_id": "Mvc/Model.zep::collectRelatedToSave",
+          "score": 0.11050952970981598
+        },
+        {
+          "id": "Mvc/Model.zep::preSaveRelatedRecords::0",
+          "method_id": "Mvc/Model.zep::preSaveRelatedRecords",
+          "score": 0.09126687794923782
+        },
+        {
+          "id": "Mvc/Model.zep::doSave::4",
+          "method_id": "Mvc/Model.zep::doSave",
+          "score": 0.08732529729604721
+        },
+        {
+          "id": "Mvc/Model.zep::doSave::0",
+          "method_id": "Mvc/Model.zep::doSave",
+          "score": 0.07438652962446213
+        },
+        {
+          "id": "Mvc/Model.zep::__set::3",
+          "method_id": "Mvc/Model.zep::__set",
+          "score": 0.019058868288993835
+        },
+        {
+          "id": "Mvc/Model.zep::setRelated::0",
+          "method_id": "Mvc/Model.zep::setRelated",
+          "score": 0.005059189163148403
+        }
+      ]
+    },
+    {
+      "id": "model-dynamic-update",
+      "question": "How does Phalcon's dynamic update feature work, and how does it decide which columns to include in an UPDATE?",
+      "category": "mixed",
+      "expected_sources": [
+        "Mvc/Model.zep::doLowUpdate",
+        "Mvc/Model/Manager.zep::useDynamicUpdate"
+      ],
+      "found_sources": {
+        "Mvc/Model/Manager.zep::useDynamicUpdate": 2,
+        "Mvc/Model.zep::doLowUpdate": 3
+      },
+      "first_relevant_rank": 2,
+      "relevant_ranks": [
+        2,
+        3
+      ],
+      "expected_source_recall_at_1": 0.0,
+      "expected_source_recall_at_3": 1.0,
+      "expected_source_recall_at_5": 1.0,
+      "expected_source_recall_at_10": 1.0,
+      "top_10": [
+        {
+          "id": "Mvc/Model/Manager.zep::isUsingDynamicUpdate::0",
+          "method_id": "Mvc/Model/Manager.zep::isUsingDynamicUpdate",
+          "score": 0.15353924036026
+        },
+        {
+          "id": "Mvc/Model/Manager.zep::useDynamicUpdate::0",
+          "method_id": "Mvc/Model/Manager.zep::useDynamicUpdate",
+          "score": 0.1126168817281723
+        },
+        {
+          "id": "Mvc/Model.zep::doLowUpdate::0",
+          "method_id": "Mvc/Model.zep::doLowUpdate",
+          "score": 0.06490419059991837
+        },
+        {
+          "id": "DataMapper/Query/Update.zep::columns::0",
+          "method_id": "DataMapper/Query/Update.zep::columns",
+          "score": 0.04776107519865036
+        },
+        {
+          "id": "Mvc/Model.zep::useDynamicUpdate::0",
+          "method_id": "Mvc/Model.zep::useDynamicUpdate",
+          "score": 0.03251931071281433
+        },
+        {
+          "id": "DataMapper/Query/Update.zep::column::0",
+          "method_id": "DataMapper/Query/Update.zep::column",
+          "score": 0.027229275554418564
+        },
+        {
+          "id": "Db/Exceptions/ConflictUpdateColumnRequired.zep::__construct::0",
+          "method_id": "Db/Exceptions/ConflictUpdateColumnRequired.zep::__construct",
+          "score": 0.01679254323244095
+        },
+        {
+          "id": "DataMapper/Query/Update.zep::returning::0",
+          "method_id": "DataMapper/Query/Update.zep::returning",
+          "score": 0.012417532503604889
+        },
+        {
+          "id": "Mvc/Model/Query.zep::prepareUpdate::0",
+          "method_id": "Mvc/Model/Query.zep::prepareUpdate",
+          "score": 0.011723062954843044
+        },
+        {
+          "id": "Db/Dialect.zep::forUpdate::0",
+          "method_id": "Db/Dialect.zep::forUpdate",
+          "score": 0.004747301340103149
+        }
+      ]
+    },
+    {
+      "id": "model-query-execution",
+      "question": "What happens internally when Query::execute() is called in Phalcon?",
+      "category": "internal",
+      "expected_sources": [
+        "Mvc/Model/Query.zep::execute"
+      ],
+      "found_sources": {
+        "Mvc/Model/Query.zep::execute": 6
+      },
+      "first_relevant_rank": 6,
+      "relevant_ranks": [
+        6
+      ],
+      "expected_source_recall_at_1": 0.0,
+      "expected_source_recall_at_3": 0.0,
+      "expected_source_recall_at_5": 0.0,
+      "expected_source_recall_at_10": 1.0,
+      "top_10": [
+        {
+          "id": "Mvc/Model/Manager.zep::__destruct::0",
+          "method_id": "Mvc/Model/Manager.zep::__destruct",
+          "score": 0.016751008108258247
+        },
+        {
+          "id": "Mvc/Model/Manager.zep::executeQuery::0",
+          "method_id": "Mvc/Model/Manager.zep::executeQuery",
+          "score": 0.0030745177064090967
+        },
+        {
+          "id": "Db/Result/PdoResult.zep::execute::0",
+          "method_id": "Db/Result/PdoResult.zep::execute",
+          "score": 0.0005882044206373394
+        },
+        {
+          "id": "Db/Adapter/Pdo/AbstractPdo.zep::execute::0",
+          "method_id": "Db/Adapter/Pdo/AbstractPdo.zep::execute",
+          "score": 0.00027746957493945956
+        },
+        {
+          "id": "Mvc/Model/Manager.zep::createQuery::0",
+          "method_id": "Mvc/Model/Manager.zep::createQuery",
+          "score": 0.0001240476849488914
+        },
+        {
+          "id": "Mvc/Model/Query.zep::execute::0",
+          "method_id": "Mvc/Model/Query.zep::execute",
+          "score": 8.530207560397685e-05
+        },
+        {
+          "id": "Mvc/Model/Query/Builder.zep::getQuery::0",
+          "method_id": "Mvc/Model/Query/Builder.zep::getQuery",
+          "score": 7.850905967643484e-05
+        },
+        {
+          "id": "Mvc/Model.zep::getPreparedQuery::0",
+          "method_id": "Mvc/Model.zep::getPreparedQuery",
+          "score": 4.008436735603027e-05
+        },
+        {
+          "id": "Mvc/Model/Query.zep::__construct::0",
+          "method_id": "Mvc/Model/Query.zep::__construct",
+          "score": 3.7483787309611216e-05
+        },
+        {
+          "id": "Mvc/Model/Query/Lang.zep::parsePHQL::0",
+          "method_id": "Mvc/Model/Query/Lang.zep::parsePHQL",
+          "score": 3.729296076926403e-05
+        }
+      ]
+    },
+    {
+      "id": "model-find-internal",
+      "question": "What happens internally when Model::find() is called in Phalcon?",
+      "category": "internal",
+      "expected_sources": [
+        "Mvc/Model.zep::find"
+      ],
+      "found_sources": {
+        "Mvc/Model.zep::find": 6
+      },
+      "first_relevant_rank": 6,
+      "relevant_ranks": [
+        6
+      ],
+      "expected_source_recall_at_1": 0.0,
+      "expected_source_recall_at_3": 0.0,
+      "expected_source_recall_at_5": 0.0,
+      "expected_source_recall_at_10": 1.0,
+      "top_10": [
+        {
+          "id": "Mvc/Model/Criteria.zep::execute::0",
+          "method_id": "Mvc/Model/Criteria.zep::execute",
+          "score": 0.00877685658633709
+        },
+        {
+          "id": "Mvc/Model.zep::invokeFinder::0",
+          "method_id": "Mvc/Model.zep::invokeFinder",
+          "score": 0.0001275107788387686
+        },
+        {
+          "id": "Mvc/Model.zep::findFirst::0",
+          "method_id": "Mvc/Model.zep::findFirst",
+          "score": 5.610080188489519e-05
+        },
+        {
+          "id": "Mvc/Model/Binder.zep::findBoundModel::0",
+          "method_id": "Mvc/Model/Binder.zep::findBoundModel",
+          "score": 5.0283833843423054e-05
+        },
+        {
+          "id": "Mvc/Model.zep::__callStatic::0",
+          "method_id": "Mvc/Model.zep::__callStatic",
+          "score": 4.2640229366952553e-05
+        },
+        {
+          "id": "Mvc/Model.zep::find::0",
+          "method_id": "Mvc/Model.zep::find",
+          "score": 4.14397545682732e-05
+        },
+        {
+          "id": "Mvc/Model.zep::invokeFinder::2",
+          "method_id": "Mvc/Model.zep::invokeFinder",
+          "score": 4.008440737379715e-05
+        },
+        {
+          "id": "Mvc/Model/Query/Exceptions/RelationshipNotFound.zep::__construct::0",
+          "method_id": "Mvc/Model/Query/Exceptions/RelationshipNotFound.zep::__construct",
+          "score": 3.9527083572465926e-05
+        },
+        {
+          "id": "Mvc/Model/Query/Exceptions/ModelSourceNotFound.zep::__construct::0",
+          "method_id": "Mvc/Model/Query/Exceptions/ModelSourceNotFound.zep::__construct",
+          "score": 3.789120455621742e-05
+        },
+        {
+          "id": "Mvc/Model/Query/Exceptions/NoModelForAlias.zep::__construct::0",
+          "method_id": "Mvc/Model/Query/Exceptions/NoModelForAlias.zep::__construct",
+          "score": 3.729157833731733e-05
+        }
+      ]
+    },
+    {
+      "id": "model-create-internal",
+      "question": "How does Model::create() behave internally when the record already exists?",
+      "category": "internal",
+      "expected_sources": [
+        "Mvc/Model.zep::create"
+      ],
+      "found_sources": {
+        "Mvc/Model.zep::create": 1
+      },
+      "first_relevant_rank": 1,
+      "relevant_ranks": [
+        1
+      ],
+      "expected_source_recall_at_1": 1.0,
+      "expected_source_recall_at_3": 1.0,
+      "expected_source_recall_at_5": 1.0,
+      "expected_source_recall_at_10": 1.0,
+      "top_10": [
+        {
+          "id": "Mvc/Model.zep::create::0",
+          "method_id": "Mvc/Model.zep::create",
+          "score": 0.47754472494125366
+        },
+        {
+          "id": "Mvc/Model.zep::has::3",
+          "method_id": "Mvc/Model.zep::has",
+          "score": 0.12658776342868805
+        },
+        {
+          "id": "Mvc/Model.zep::postSaveRelatedRecords::6",
+          "method_id": "Mvc/Model.zep::postSaveRelatedRecords",
+          "score": 0.07035162299871445
+        },
+        {
+          "id": "Mvc/Model.zep::update::0",
+          "method_id": "Mvc/Model.zep::update",
+          "score": 0.059258293360471725
+        },
+        {
+          "id": "Mvc/Model.zep::doSave::1",
+          "method_id": "Mvc/Model.zep::doSave",
+          "score": 0.039242345839738846
+        },
+        {
+          "id": "Mvc/Model.zep::postSave::0",
+          "method_id": "Mvc/Model.zep::postSave",
+          "score": 0.012047836557030678
+        },
+        {
+          "id": "Mvc/Model.zep::postSaveRelatedRecords::1",
+          "method_id": "Mvc/Model.zep::postSaveRelatedRecords",
+          "score": 0.0018364307470619678
+        },
+        {
+          "id": "Filter/Validation/Validator/Uniqueness.zep::isUniquenessModel::4",
+          "method_id": "Filter/Validation/Validator/Uniqueness.zep::isUniquenessModel",
+          "score": 0.0012155112344771624
+        },
+        {
+          "id": "Mvc/Model.zep::postSaveRelatedRecords::7",
+          "method_id": "Mvc/Model.zep::postSaveRelatedRecords",
+          "score": 0.001050520339049399
+        },
+        {
+          "id": "Mvc/Model.zep::postSaveRelatedRecords::3",
+          "method_id": "Mvc/Model.zep::postSaveRelatedRecords",
+          "score": 0.0003834515227936208
+        }
+      ]
+    },
+    {
+      "id": "model-update-internal",
+      "question": "How does Model::update() behave internally when the record does not exist?",
+      "category": "internal",
+      "expected_sources": [
+        "Mvc/Model.zep::update"
+      ],
+      "found_sources": {
+        "Mvc/Model.zep::update": 1
+      },
+      "first_relevant_rank": 1,
+      "relevant_ranks": [
+        1
+      ],
+      "expected_source_recall_at_1": 1.0,
+      "expected_source_recall_at_3": 1.0,
+      "expected_source_recall_at_5": 1.0,
+      "expected_source_recall_at_10": 1.0,
+      "top_10": [
+        {
+          "id": "Mvc/Model.zep::update::0",
+          "method_id": "Mvc/Model.zep::update",
+          "score": 0.2840830087661743
+        },
+        {
+          "id": "Mvc/Model/Query.zep::executeUpdate::0",
+          "method_id": "Mvc/Model/Query.zep::executeUpdate",
+          "score": 0.015314536169171333
+        },
+        {
+          "id": "Mvc/Model/Behavior/SoftDelete.zep::notify::1",
+          "method_id": "Mvc/Model/Behavior/SoftDelete.zep::notify",
+          "score": 0.010377893224358559
+        },
+        {
+          "id": "Mvc/Model.zep::postSaveRelatedRecords::6",
+          "method_id": "Mvc/Model.zep::postSaveRelatedRecords",
+          "score": 0.007309629116207361
+        },
+        {
+          "id": "Mvc/Model/Manager.zep::isUsingDynamicUpdate::0",
+          "method_id": "Mvc/Model/Manager.zep::isUsingDynamicUpdate",
+          "score": 0.001172094838693738
+        },
+        {
+          "id": "Mvc/Model.zep::postSave::0",
+          "method_id": "Mvc/Model.zep::postSave",
+          "score": 0.0008639234001748264
+        },
+        {
+          "id": "Mvc/Model/Manager.zep::useDynamicUpdate::0",
+          "method_id": "Mvc/Model/Manager.zep::useDynamicUpdate",
+          "score": 0.0005989958299323916
+        },
+        {
+          "id": "Mvc/Model.zep::doLowUpdate::0",
+          "method_id": "Mvc/Model.zep::doLowUpdate",
+          "score": 0.00028844139887951314
+        },
+        {
+          "id": "Db/Dialect.zep::supportsOnConflictUpdate::0",
+          "method_id": "Db/Dialect.zep::supportsOnConflictUpdate",
+          "score": 0.00013199188106227666
+        },
+        {
+          "id": "Db/Dialect/Mysql.zep::supportsOnConflictUpdate::0",
+          "method_id": "Db/Dialect/Mysql.zep::supportsOnConflictUpdate",
+          "score": 0.00010696893150452524
+        }
+      ]
+    },
+    {
+      "id": "model-get-related-internal",
+      "question": "What happens internally when Model::getRelated() is called with a relation alias?",
+      "category": "internal",
+      "expected_sources": [
+        "Mvc/Model.zep::getRelated"
+      ],
+      "found_sources": {
+        "Mvc/Model.zep::getRelated": 2
+      },
+      "first_relevant_rank": 2,
+      "relevant_ranks": [
+        2
+      ],
+      "expected_source_recall_at_1": 0.0,
+      "expected_source_recall_at_3": 1.0,
+      "expected_source_recall_at_5": 1.0,
+      "expected_source_recall_at_10": 1.0,
+      "top_10": [
+        {
+          "id": "Mvc/Model.zep::getRelatedRecords::0",
+          "method_id": "Mvc/Model.zep::getRelatedRecords",
+          "score": 0.7399705648422241
+        },
+        {
+          "id": "Mvc/Model.zep::getRelated::2",
+          "method_id": "Mvc/Model.zep::getRelated",
+          "score": 0.5198472142219543
+        },
+        {
+          "id": "Mvc/Model.zep::getRelated::1",
+          "method_id": "Mvc/Model.zep::getRelated",
+          "score": 0.44659480452537537
+        },
+        {
+          "id": "Mvc/Model.zep::getRelated::0",
+          "method_id": "Mvc/Model.zep::getRelated",
+          "score": 0.26993557810783386
+        },
+        {
+          "id": "Mvc/Model/Manager.zep::addBelongsTo::1",
+          "method_id": "Mvc/Model/Manager.zep::addBelongsTo",
+          "score": 0.038904689252376556
+        },
+        {
+          "id": "Mvc/Model/Manager.zep::getRelationByAlias::0",
+          "method_id": "Mvc/Model/Manager.zep::getRelationByAlias",
+          "score": 0.02884576842188835
+        },
+        {
+          "id": "Mvc/Model/Exceptions/UnknownEagerRelation.zep::__construct::0",
+          "method_id": "Mvc/Model/Exceptions/UnknownEagerRelation.zep::__construct",
+          "score": 0.02269929088652134
+        },
+        {
+          "id": "Mvc/Model/Manager.zep::addHasMany::1",
+          "method_id": "Mvc/Model/Manager.zep::addHasMany",
+          "score": 0.017726141959428787
+        },
+        {
+          "id": "Mvc/Model.zep::setRelated::0",
+          "method_id": "Mvc/Model.zep::setRelated",
+          "score": 0.012544075958430767
+        },
+        {
+          "id": "Mvc/Model/Query.zep::getJoins::8",
+          "method_id": "Mvc/Model/Query.zep::getJoins",
+          "score": 0.012201113626360893
+        }
+      ]
+    },
+    {
+      "id": "model-read-connection-internal",
+      "question": "How does a Phalcon model choose its read connection internally?",
+      "category": "internal",
+      "expected_sources": [
+        "Mvc/Model.zep::getReadConnection"
+      ],
+      "found_sources": {
+        "Mvc/Model.zep::getReadConnection": 2
+      },
+      "first_relevant_rank": 2,
+      "relevant_ranks": [
+        2
+      ],
+      "expected_source_recall_at_1": 0.0,
+      "expected_source_recall_at_3": 1.0,
+      "expected_source_recall_at_5": 1.0,
+      "expected_source_recall_at_10": 1.0,
+      "top_10": [
+        {
+          "id": "Mvc/Model/Query.zep::getReadConnection::0",
+          "method_id": "Mvc/Model/Query.zep::getReadConnection",
+          "score": 0.37874311208724976
+        },
+        {
+          "id": "Mvc/Model.zep::getReadConnection::0",
+          "method_id": "Mvc/Model.zep::getReadConnection",
+          "score": 0.31828832626342773
+        },
+        {
+          "id": "Mvc/Model/Manager.zep::getReadConnection::0",
+          "method_id": "Mvc/Model/Manager.zep::getReadConnection",
+          "score": 0.13051825761795044
+        },
+        {
+          "id": "Mvc/Model.zep::getReadConnectionService::0",
+          "method_id": "Mvc/Model.zep::getReadConnectionService",
+          "score": 0.07346436381340027
+        },
+        {
+          "id": "Mvc/Model/Manager.zep::setReadConnectionService::0",
+          "method_id": "Mvc/Model/Manager.zep::setReadConnectionService",
+          "score": 0.06845195591449738
+        },
+        {
+          "id": "Mvc/Model/Manager.zep::getReadConnectionService::0",
+          "method_id": "Mvc/Model/Manager.zep::getReadConnectionService",
+          "score": 0.04288259148597717
+        },
+        {
+          "id": "Mvc/Model/Query.zep::getWriteConnection::0",
+          "method_id": "Mvc/Model/Query.zep::getWriteConnection",
+          "score": 0.0031961954664438963
+        },
+        {
+          "id": "Mvc/Model/Manager.zep::getConnectionService::0",
+          "method_id": "Mvc/Model/Manager.zep::getConnectionService",
+          "score": 0.0019836928695440292
+        },
+        {
+          "id": "Mvc/Model/Manager.zep::getConnection::0",
+          "method_id": "Mvc/Model/Manager.zep::getConnection",
+          "score": 0.0015465248143300414
+        },
+        {
+          "id": "Mvc/Model/Query.zep::executeSelect::1",
+          "method_id": "Mvc/Model/Query.zep::executeSelect",
+          "score": 0.0004186001024208963
+        }
+      ]
+    },
+    {
+      "id": "model-transaction-rollback-internal",
+      "question": "What happens internally when a Phalcon model transaction is rolled back?",
+      "category": "internal",
+      "expected_sources": [
+        "Mvc/Model/Transaction.zep::rollback"
+      ],
+      "found_sources": {
+        "Mvc/Model/Transaction.zep::rollback": 4
+      },
+      "first_relevant_rank": 4,
+      "relevant_ranks": [
+        4
+      ],
+      "expected_source_recall_at_1": 0.0,
+      "expected_source_recall_at_3": 0.0,
+      "expected_source_recall_at_5": 1.0,
+      "expected_source_recall_at_10": 1.0,
+      "top_10": [
+        {
+          "id": "Mvc/Model/Transaction/Manager.zep::notifyRollback::0",
+          "method_id": "Mvc/Model/Transaction/Manager.zep::notifyRollback",
+          "score": 0.019927488639950752
+        },
+        {
+          "id": "Db/Adapter/Pdo/AbstractPdo.zep::rollback::0",
+          "method_id": "Db/Adapter/Pdo/AbstractPdo.zep::rollback",
+          "score": 0.018058208748698235
+        },
+        {
+          "id": "Mvc/Model/Transaction.zep::setRollbackedRecord::0",
+          "method_id": "Mvc/Model/Transaction.zep::setRollbackedRecord",
+          "score": 0.0089763468131423
+        },
+        {
+          "id": "Mvc/Model/Transaction.zep::rollback::0",
+          "method_id": "Mvc/Model/Transaction.zep::rollback",
+          "score": 0.006516702473163605
+        },
+        {
+          "id": "Mvc/Model/Transaction/Manager.zep::rollback::0",
+          "method_id": "Mvc/Model/Transaction/Manager.zep::rollback",
+          "score": 0.004879062529653311
+        },
+        {
+          "id": "DataMapper/Pdo/Connection/AbstractConnection.zep::rollBack::0",
+          "method_id": "DataMapper/Pdo/Connection/AbstractConnection.zep::rollBack",
+          "score": 0.00279627600684762
+        },
+        {
+          "id": "Mvc/Model/Transaction/Manager.zep::rollbackPendent::0",
+          "method_id": "Mvc/Model/Transaction/Manager.zep::rollbackPendent",
+          "score": 0.0013979405630379915
+        },
+        {
+          "id": "Mvc/Model.zep::setTransaction::0",
+          "method_id": "Mvc/Model.zep::setTransaction",
+          "score": 0.00029339775210246444
+        },
+        {
+          "id": "Mvc/Model/Query.zep::executeDelete::0",
+          "method_id": "Mvc/Model/Query.zep::executeDelete",
+          "score": 0.0002767929108813405
+        },
+        {
+          "id": "Mvc/Model/Transaction/Manager.zep::commit::0",
+          "method_id": "Mvc/Model/Transaction/Manager.zep::commit",
+          "score": 8.092827192740515e-05
+        }
+      ]
+    },
+    {
+      "id": "phql-parse-internal",
+      "question": "How is a PHQL string parsed internally by Phalcon?",
+      "category": "internal",
+      "expected_sources": [
+        "Mvc/Model/Query/Lang.zep::parsePHQL"
+      ],
+      "found_sources": {
+        "Mvc/Model/Query/Lang.zep::parsePHQL": 6
+      },
+      "first_relevant_rank": 6,
+      "relevant_ranks": [
+        6
+      ],
+      "expected_source_recall_at_1": 0.0,
+      "expected_source_recall_at_3": 0.0,
+      "expected_source_recall_at_5": 0.0,
+      "expected_source_recall_at_10": 1.0,
+      "top_10": [
+        {
+          "id": "Mvc/Model/Query.zep::parse::0",
+          "method_id": "Mvc/Model/Query.zep::parse",
+          "score": 0.939582109451294
+        },
+        {
+          "id": "Mvc/Model/Query.zep::getSql::0",
+          "method_id": "Mvc/Model/Query.zep::getSql",
+          "score": 0.8571030497550964
+        },
+        {
+          "id": "Mvc/Model/Query.zep::parse::1",
+          "method_id": "Mvc/Model/Query.zep::parse",
+          "score": 0.3619772791862488
+        },
+        {
+          "id": "Mvc/Model/Query.zep::__construct::0",
+          "method_id": "Mvc/Model/Query.zep::__construct",
+          "score": 0.3025566041469574
+        },
+        {
+          "id": "Mvc/Model/Manager.zep::createQuery::0",
+          "method_id": "Mvc/Model/Manager.zep::createQuery",
+          "score": 0.2034832239151001
+        },
+        {
+          "id": "Mvc/Model/Query/Lang.zep::parsePHQL::0",
+          "method_id": "Mvc/Model/Query/Lang.zep::parsePHQL",
+          "score": 0.19780930876731873
+        },
+        {
+          "id": "Mvc/Model/Query/Exceptions/UnsafeIdentifier.zep::__construct::0",
+          "method_id": "Mvc/Model/Query/Exceptions/UnsafeIdentifier.zep::__construct",
+          "score": 0.12013860791921616
+        },
+        {
+          "id": "Mvc/Model/Manager.zep::executeQuery::0",
+          "method_id": "Mvc/Model/Manager.zep::executeQuery",
+          "score": 0.09884436428546906
+        },
+        {
+          "id": "Mvc/Model/Query/Exceptions/NoModelForAlias.zep::__construct::0",
+          "method_id": "Mvc/Model/Query/Exceptions/NoModelForAlias.zep::__construct",
+          "score": 0.0689975917339325
+        },
+        {
+          "id": "Mvc/Model/Query/Exceptions/AmbiguousColumn.zep::__construct::0",
+          "method_id": "Mvc/Model/Query/Exceptions/AmbiguousColumn.zep::__construct",
+          "score": 0.0558072067797184
+        }
+      ]
+    },
+    {
+      "id": "model-snapshots",
+      "question": "How do model snapshots work in Phalcon and how are they used to detect changes?",
+      "category": "mixed",
+      "expected_sources": [
+        "Mvc/Model.zep::setSnapshotData"
+      ],
+      "found_sources": {},
+      "first_relevant_rank": null,
+      "relevant_ranks": [],
+      "expected_source_recall_at_1": 0.0,
+      "expected_source_recall_at_3": 0.0,
+      "expected_source_recall_at_5": 0.0,
+      "expected_source_recall_at_10": 0.0,
+      "top_10": [
+        {
+          "id": "Mvc/Model/Manager.zep::isKeepingSnapshots::0",
+          "method_id": "Mvc/Model/Manager.zep::isKeepingSnapshots",
+          "score": 0.1563054621219635
+        },
+        {
+          "id": "Mvc/Model/Manager.zep::keepSnapshots::0",
+          "method_id": "Mvc/Model/Manager.zep::keepSnapshots",
+          "score": 0.13859108090400696
+        },
+        {
+          "id": "Mvc/Model.zep::keepSnapshots::0",
+          "method_id": "Mvc/Model.zep::keepSnapshots",
+          "score": 0.1028081402182579
+        },
+        {
+          "id": "Mvc/Model.zep::getChangedFields::0",
+          "method_id": "Mvc/Model.zep::getChangedFields",
+          "score": 0.09026917070150375
+        },
+        {
+          "id": "Mvc/Model/Resultset/Simple.zep::__construct::0",
+          "method_id": "Mvc/Model/Resultset/Simple.zep::__construct",
+          "score": 0.039107274264097214
+        },
+        {
+          "id": "Mvc/Model/Query.zep::executeSelect::9",
+          "method_id": "Mvc/Model/Query.zep::executeSelect",
+          "score": 0.01632758602499962
+        },
+        {
+          "id": "Mvc/Model.zep::getSnapshotData::0",
+          "method_id": "Mvc/Model.zep::getSnapshotData",
+          "score": 0.015521969646215439
+        },
+        {
+          "id": "Mvc/Model.zep::hasSnapshotData::0",
+          "method_id": "Mvc/Model.zep::hasSnapshotData",
+          "score": 0.011773276142776012
+        },
+        {
+          "id": "Mvc/Model/Manager.zep::useDynamicUpdate::0",
+          "method_id": "Mvc/Model/Manager.zep::useDynamicUpdate",
+          "score": 0.010081646032631397
+        },
+        {
+          "id": "Mvc/Model.zep::getOldSnapshotData::0",
+          "method_id": "Mvc/Model.zep::getOldSnapshotData",
+          "score": 0.007314322516322136
+        }
+      ]
+    },
+    {
+      "id": "model-read-write-connections",
+      "question": "How can Phalcon models use separate read and write database connections, and how are those connections resolved?",
+      "category": "mixed",
+      "expected_sources": [
+        "Mvc/Model.zep::getReadConnection",
+        "Mvc/Model.zep::getWriteConnection"
+      ],
+      "found_sources": {
+        "Mvc/Model.zep::getReadConnection": 2
+      },
+      "first_relevant_rank": 2,
+      "relevant_ranks": [
+        2
+      ],
+      "expected_source_recall_at_1": 0.0,
+      "expected_source_recall_at_3": 0.5,
+      "expected_source_recall_at_5": 0.5,
+      "expected_source_recall_at_10": 0.5,
+      "top_10": [
+        {
+          "id": "Mvc/Model/Manager.zep::getReadConnection::0",
+          "method_id": "Mvc/Model/Manager.zep::getReadConnection",
+          "score": 0.07916582375764847
+        },
+        {
+          "id": "Mvc/Model.zep::getReadConnection::0",
+          "method_id": "Mvc/Model.zep::getReadConnection",
+          "score": 0.023647237569093704
+        },
+        {
+          "id": "Mvc/Model/Query.zep::getWriteConnection::0",
+          "method_id": "Mvc/Model/Query.zep::getWriteConnection",
+          "score": 0.02090694010257721
+        },
+        {
+          "id": "DataMapper/Pdo/ConnectionLocator.zep::__construct::0",
+          "method_id": "DataMapper/Pdo/ConnectionLocator.zep::__construct",
+          "score": 0.01719786785542965
+        },
+        {
+          "id": "Mvc/Model/Manager.zep::getWriteConnection::0",
+          "method_id": "Mvc/Model/Manager.zep::getWriteConnection",
+          "score": 0.01588718220591545
+        },
+        {
+          "id": "Mvc/Model.zep::getReadConnectionService::0",
+          "method_id": "Mvc/Model.zep::getReadConnectionService",
+          "score": 0.01081131212413311
+        },
+        {
+          "id": "Mvc/Model/Query.zep::getReadConnection::0",
+          "method_id": "Mvc/Model/Query.zep::getReadConnection",
+          "score": 0.006993998773396015
+        },
+        {
+          "id": "Mvc/Model/Manager.zep::getReadConnectionService::0",
+          "method_id": "Mvc/Model/Manager.zep::getReadConnectionService",
+          "score": 0.006926272064447403
+        },
+        {
+          "id": "Mvc/Model/Query.zep::executeSelect::1",
+          "method_id": "Mvc/Model/Query.zep::executeSelect",
+          "score": 0.005622800439596176
+        },
+        {
+          "id": "Mvc/Model/Query/Exceptions/MixedDatabaseSystems.zep::__construct::0",
+          "method_id": "Mvc/Model/Query/Exceptions/MixedDatabaseSystems.zep::__construct",
+          "score": 0.0005009803571738303
+        }
+      ]
+    },
+    {
+      "id": "has-many-internal-definition",
+      "question": "How is a hasMany relationship registered internally when it is defined on a Phalcon model?",
+      "category": "mixed",
+      "expected_sources": [
+        "Mvc/Model.zep::hasMany",
+        "Mvc/Model/Manager.zep::addHasMany"
+      ],
+      "found_sources": {
+        "Mvc/Model/Manager.zep::addHasMany": 1,
+        "Mvc/Model.zep::hasMany": 6
+      },
+      "first_relevant_rank": 1,
+      "relevant_ranks": [
+        1,
+        6
+      ],
+      "expected_source_recall_at_1": 0.5,
+      "expected_source_recall_at_3": 0.5,
+      "expected_source_recall_at_5": 0.5,
+      "expected_source_recall_at_10": 1.0,
+      "top_10": [
+        {
+          "id": "Mvc/Model/Manager.zep::addHasMany::0",
+          "method_id": "Mvc/Model/Manager.zep::addHasMany",
+          "score": 0.10871600359678268
+        },
+        {
+          "id": "Mvc/Model/Manager.zep::addHasMany::1",
+          "method_id": "Mvc/Model/Manager.zep::addHasMany",
+          "score": 0.07075508683919907
+        },
+        {
+          "id": "Mvc/Model/Manager.zep::getHasMany::0",
+          "method_id": "Mvc/Model/Manager.zep::getHasMany",
+          "score": 0.054566748440265656
+        },
+        {
+          "id": "Mvc/Model/Manager.zep::getHasManyRecords::0",
+          "method_id": "Mvc/Model/Manager.zep::getHasManyRecords",
+          "score": 0.0491696298122406
+        },
+        {
+          "id": "Mvc/Model/Manager.zep::hasHasMany::0",
+          "method_id": "Mvc/Model/Manager.zep::hasHasMany",
+          "score": 0.012016336433589458
+        },
+        {
+          "id": "Mvc/Model.zep::hasMany::0",
+          "method_id": "Mvc/Model.zep::hasMany",
+          "score": 0.00861349981278181
+        },
+        {
+          "id": "Mvc/Model/Manager.zep::existsHasMany::0",
+          "method_id": "Mvc/Model/Manager.zep::existsHasMany",
+          "score": 0.0056517478078603745
+        },
+        {
+          "id": "Mvc/Model.zep::hasManyToMany::0",
+          "method_id": "Mvc/Model.zep::hasManyToMany",
+          "score": 0.0018131628166884184
+        },
+        {
+          "id": "Mvc/Model/Manager.zep::hasHasManyToMany::0",
+          "method_id": "Mvc/Model/Manager.zep::hasHasManyToMany",
+          "score": 0.0013893175637349486
+        },
+        {
+          "id": "Mvc/Model/Manager.zep::existsHasManyToMany::0",
+          "method_id": "Mvc/Model/Manager.zep::existsHasManyToMany",
+          "score": 0.0013814212288707495
+        }
+      ]
+    },
+    {
+      "id": "has-many-to-many-internal-definition",
+      "question": "How does Phalcon define a hasManyToMany relationship internally?",
+      "category": "mixed",
+      "expected_sources": [
+        "Mvc/Model.zep::hasManyToMany",
+        "Mvc/Model/Manager.zep::addHasManyToMany"
+      ],
+      "found_sources": {
+        "Mvc/Model/Manager.zep::addHasManyToMany": 1,
+        "Mvc/Model.zep::hasManyToMany": 7
+      },
+      "first_relevant_rank": 1,
+      "relevant_ranks": [
+        1,
+        7
+      ],
+      "expected_source_recall_at_1": 0.5,
+      "expected_source_recall_at_3": 0.5,
+      "expected_source_recall_at_5": 0.5,
+      "expected_source_recall_at_10": 1.0,
+      "top_10": [
+        {
+          "id": "Mvc/Model/Manager.zep::addHasManyToMany::0",
+          "method_id": "Mvc/Model/Manager.zep::addHasManyToMany",
+          "score": 0.07254059612751007
+        },
+        {
+          "id": "Mvc/Model/Manager.zep::getRelationsBetween::0",
+          "method_id": "Mvc/Model/Manager.zep::getRelationsBetween",
+          "score": 0.030391287058591843
+        },
+        {
+          "id": "Mvc/Model/Manager.zep::addHasManyToMany::1",
+          "method_id": "Mvc/Model/Manager.zep::addHasManyToMany",
+          "score": 0.02848300337791443
+        },
+        {
+          "id": "Mvc/Model/Manager.zep::getHasManyToMany::0",
+          "method_id": "Mvc/Model/Manager.zep::getHasManyToMany",
+          "score": 0.020213549956679344
+        },
+        {
+          "id": "Mvc/Model/Manager.zep::existsHasManyToMany::0",
+          "method_id": "Mvc/Model/Manager.zep::existsHasManyToMany",
+          "score": 0.004085733089596033
+        },
+        {
+          "id": "Mvc/Model/Manager.zep::hasHasManyToMany::0",
+          "method_id": "Mvc/Model/Manager.zep::hasHasManyToMany",
+          "score": 0.0040291487239301205
+        },
+        {
+          "id": "Mvc/Model.zep::hasManyToMany::0",
+          "method_id": "Mvc/Model.zep::hasManyToMany",
+          "score": 0.0031139396596699953
+        },
+        {
+          "id": "Mvc/Model.zep::hasMany::0",
+          "method_id": "Mvc/Model.zep::hasMany",
+          "score": 0.0028747522737830877
+        },
+        {
+          "id": "Mvc/Model/Manager.zep::hasHasMany::0",
+          "method_id": "Mvc/Model/Manager.zep::hasHasMany",
+          "score": 0.0012601903872564435
+        },
+        {
+          "id": "Mvc/Model/Query/Exceptions/RelationshipNotFound.zep::__construct::0",
+          "method_id": "Mvc/Model/Query/Exceptions/RelationshipNotFound.zep::__construct",
+          "score": 3.8091664464445785e-05
+        }
+      ]
+    },
+    {
+      "id": "model-json-serialization",
+      "question": "How is a Phalcon model converted to JSON internally?",
+      "category": "mixed",
+      "expected_sources": [
+        "Mvc/Model.zep::jsonSerialize"
+      ],
+      "found_sources": {
+        "Mvc/Model.zep::jsonSerialize": 7
+      },
+      "first_relevant_rank": 7,
+      "relevant_ranks": [
+        7
+      ],
+      "expected_source_recall_at_1": 0.0,
+      "expected_source_recall_at_3": 0.0,
+      "expected_source_recall_at_5": 0.0,
+      "expected_source_recall_at_10": 1.0,
+      "top_10": [
+        {
+          "id": "Mvc/Model/Resultset/Complex.zep::serialize::0",
+          "method_id": "Mvc/Model/Resultset/Complex.zep::serialize",
+          "score": 0.007270582485944033
+        },
+        {
+          "id": "Support/Collection.zep::toJson::0",
+          "method_id": "Support/Collection.zep::toJson",
+          "score": 0.004374817945063114
+        },
+        {
+          "id": "Mvc/Model.zep::serialize::0",
+          "method_id": "Mvc/Model.zep::serialize",
+          "score": 0.003372316248714924
+        },
+        {
+          "id": "Mvc/Model/Resultset/Complex.zep::__serialize::0",
+          "method_id": "Mvc/Model/Resultset/Complex.zep::__serialize",
+          "score": 0.003123427275568247
+        },
+        {
+          "id": "ADR/Responder/Formatter/JsonFormatter.zep::contentType::0",
+          "method_id": "ADR/Responder/Formatter/JsonFormatter.zep::contentType",
+          "score": 0.003066476434469223
+        },
+        {
+          "id": "Paginator/Repository.zep::jsonSerialize::0",
+          "method_id": "Paginator/Repository.zep::jsonSerialize",
+          "score": 0.0015682373195886612
+        },
+        {
+          "id": "Mvc/Model.zep::jsonSerialize::0",
+          "method_id": "Mvc/Model.zep::jsonSerialize",
+          "score": 0.0014930043835192919
+        },
+        {
+          "id": "Support/Registry.zep::jsonSerialize::0",
+          "method_id": "Support/Registry.zep::jsonSerialize",
+          "score": 0.0013544855173677206
+        },
+        {
+          "id": "Mvc/Model/Row.zep::jsonSerialize::0",
+          "method_id": "Mvc/Model/Row.zep::jsonSerialize",
+          "score": 0.0009508151561021805
+        },
+        {
+          "id": "Mvc/Model/Resultset.zep::jsonSerialize::0",
+          "method_id": "Mvc/Model/Resultset.zep::jsonSerialize",
+          "score": 0.00029502433608286083
+        }
+      ]
+    },
+    {
+      "id": "model-skip-attributes",
+      "question": "How can model attributes be skipped during INSERT or UPDATE operations in Phalcon, and what internal methods support this?",
+      "category": "mixed",
+      "expected_sources": [
+        "Mvc/Model.zep::skipAttributesOnCreate",
+        "Mvc/Model.zep::skipAttributesOnUpdate"
+      ],
+      "found_sources": {
+        "Mvc/Model.zep::skipAttributesOnUpdate": 2,
+        "Mvc/Model.zep::skipAttributesOnCreate": 3
+      },
+      "first_relevant_rank": 2,
+      "relevant_ranks": [
+        2,
+        3
+      ],
+      "expected_source_recall_at_1": 0.0,
+      "expected_source_recall_at_3": 1.0,
+      "expected_source_recall_at_5": 1.0,
+      "expected_source_recall_at_10": 1.0,
+      "top_10": [
+        {
+          "id": "Mvc/Model.zep::skipAttributes::0",
+          "method_id": "Mvc/Model.zep::skipAttributes",
+          "score": 0.8386490345001221
+        },
+        {
+          "id": "Mvc/Model.zep::skipAttributesOnUpdate::0",
+          "method_id": "Mvc/Model.zep::skipAttributesOnUpdate",
+          "score": 0.7928159236907959
+        },
+        {
+          "id": "Mvc/Model.zep::skipAttributesOnCreate::0",
+          "method_id": "Mvc/Model.zep::skipAttributesOnCreate",
+          "score": 0.23370392620563507
+        },
+        {
+          "id": "Mvc/Model.zep::unserialize::1",
+          "method_id": "Mvc/Model.zep::unserialize",
+          "score": 0.06189211085438728
+        },
+        {
+          "id": "Mvc/Model.zep::doLowInsert::0",
+          "method_id": "Mvc/Model.zep::doLowInsert",
+          "score": 0.053800564259290695
+        },
+        {
+          "id": "Mvc/Model/MetaData.zep::setAutomaticCreateAttributes::0",
+          "method_id": "Mvc/Model/MetaData.zep::setAutomaticCreateAttributes",
+          "score": 0.035092759877443314
+        },
+        {
+          "id": "Mvc/Model.zep::preSave::8",
+          "method_id": "Mvc/Model.zep::preSave",
+          "score": 0.02596088871359825
+        },
+        {
+          "id": "Mvc/Model/MetaData.zep::setAutomaticUpdateAttributes::0",
+          "method_id": "Mvc/Model/MetaData.zep::setAutomaticUpdateAttributes",
+          "score": 0.022204075008630753
+        },
+        {
+          "id": "Mvc/Model.zep::doLowInsert::1",
+          "method_id": "Mvc/Model.zep::doLowInsert",
+          "score": 0.02195155993103981
+        },
+        {
+          "id": "Mvc/Model.zep::skipOperation::0",
+          "method_id": "Mvc/Model.zep::skipOperation",
+          "score": 0.021220477297902107
+        }
+      ]
+    }
+  ]
+}
