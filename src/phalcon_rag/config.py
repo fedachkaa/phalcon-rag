@@ -18,9 +18,9 @@ HYBRID_TOP_K = 10
 RERANK_TOP_K = 5
 
 # Reranking
-RERANKER_MODEL = "BAAI/bge-reranker-v2-m3"
+RERANKER_MODEL = "cross-encoder/ms-marco-MiniLM-L6-v2"
 RERANK_DOCS_TOP_K = 2
-RERANK_SOURCE_TOP_K = 3
+RERANK_SOURCE_TOP_K = 5
 
 # Generation
 GENERATION_MODEL = "gpt-5.6-luna"

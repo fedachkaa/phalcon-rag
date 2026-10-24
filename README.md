@@ -119,31 +119,52 @@ For each benchmark question, the retrieval pipeline produced candidates using:
 
 ```text
 Dense Top 50 + BM25 Top 50
-              ↓
-         Weighted RRF
-              ↓
-        Hybrid Top 10
+              ↓
+         Weighted RRF
+              ↓
+        Hybrid Top 10
 ```
 
-Each reranking model then reordered the same 10 candidates, allowing their impact on retrieval quality to be compared under identical conditions.
+Each reranking model then reordered the same 10 candidates, allowing their impact on retrieval quality and inference latency to be compared under identical conditions.
 
-Based on the evaluation results, `BAAI/bge-reranker-v2-m3` was selected for the final pipeline.
+The following rerankers were evaluated:
 
-Unlike the first-stage retrievers, the cross-encoder evaluates the query and each candidate passage together. This is more computationally expensive, but allows for more precise relevance scoring over the small candidate set.
+- `BAAI/bge-reranker-v2-m3`
+- `BAAI/bge-reranker-base`
+- `cross-encoder/ms-marco-MiniLM-L6-v2`
 
-The final retrieval pipeline is therefore:
+`BAAI/bge-reranker-v2-m3` achieved the strongest source-code retrieval quality, but its CPU inference cost was too high for an interactive RAG pipeline. In profiling, reranking alone could account for most of the request latency.
+
+`cross-encoder/ms-marco-MiniLM-L6-v2` provided a much better latency-quality trade-off. It also performed particularly well on documentation retrieval at the production cutoff.
+
+To compensate for the lower source-code recall at Top 3, the final source-code context was increased from 3 to 5 chunks. Generation evaluation with this configuration achieved:
+
+| Metric       |           Score |
+| ------------ | --------------: |
+| Correctness  |           60/60 |
+| Completeness |           51/60 |
+| Groundedness |           60/60 |
+| Overall      | 171/180 (95.0%) |
+
+The final pipeline therefore reranks documentation and source-code candidates separately and selects different numbers of chunks from each source:
 
 ```text
 Dense Top 50 + BM25 Top 50
-              ↓
-         Weighted RRF
-              ↓
-        Hybrid Top 10
-              ↓
-   BGE Cross-Encoder Reranker
-              ↓
-            Top 5
+              ↓
+         Weighted RRF
+              ↓
+        Hybrid Top 10
+              ↓
+     MiniLM Cross-Encoder
+          ↙         ↘
+     Docs Top 2   Source Top 5
+          ↘         ↙
+       7 context chunks
+              ↓
+        Answer Generation
 ```
+
+Unlike the first-stage retrievers, the cross-encoder evaluates the query and each candidate passage together. Since it is only applied to the small candidate set produced by hybrid retrieval, MiniLM provides more precise relevance scoring while keeping CPU inference practical for interactive use.
 
 ### 6. Source-Code Ingestion and Multi-Source Retrieval
 
