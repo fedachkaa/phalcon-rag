@@ -1,294 +1,120 @@
-# Phalcon RAG
+# Phalcon RAG Assistant
 
-A Retrieval-Augmented Generation (RAG) system for answering technical questions about the Phalcon PHP framework using its official documentation and source code.
+A retrieval-augmented AI assistant for the **Phalcon PHP framework**, grounded in official **Phalcon 5.20 documentation** and **Zephir source code**. Ask questions about framework APIs and internals, or provide selected PHP code for a context-aware explanation.
 
-The project was built as a practical exploration of RAG architecture: document ingestion and domain-aware chunking, dense and keyword retrieval, hybrid search, reranking, answer generation, and evaluation of each stage.
+Built as an end-to-end RAG engineering project: source ingestion, structure-aware chunking, benchmark-driven retrieval selection, hybrid search, cross-encoder reranking, grounded answer generation, a FastAPI interface, and containerized AWS deployment.
 
-The current knowledge base combines the official Phalcon 5.20 documentation with the corresponding Phalcon 5.20 source code.
+## Features
 
-## How It Works
+- **Documentation + implementation evidence:** Answers draw on both official documentation and Phalcon source code.
+- **Context-aware questions:** Optionally send a PHP snippet alongside your question, including through the PhpStorm integration.
+- **Hybrid retrieval:** Qwen3-Embedding-0.6B dense retrieval plus BM25, combined using weighted Reciprocal Rank Fusion (4:1 dense to lexical).
+- **Source-aware reranking:** MiniLM cross-encoder reranks documentation and source-code candidates separately; the generation context includes up to **2 documentation + 5 source-code chunks**.
+- **Traceable answers:** The API returns an answer and structured source metadata, including source file, method, and line range where available.
+- **CPU deployment:** Dockerized FastAPI service tested on an AWS EC2 `t3.large` instance with Hugging Face models cached on a persistent Docker volume.
 
-The current RAG pipeline retrieves from two knowledge sources:
-
-- official Phalcon 5.20 documentation;
-- Phalcon 5.20 source code.
-
-```text
-Phalcon Documentation        Phalcon Source Code
-        ↓                            ↓
-Documentation Ingestion      Source-Code Ingestion
-        ↓                            ↓
-Structured Chunks            Method-Level Chunks
-        ↓                            ↓
-Dense Retrieval + BM25       Dense Retrieval + BM25
-        ↓                            ↓
-Weighted RRF                 Weighted RRF
-        └──────────────┬─────────────┘
-                       ↓
-              Multi-Source Retrieval
-                       ↓
-          Source-Aware Cross-Encoder
-                       ↓
-        2 Documentation + 3 Source Chunks
-                       ↓
-              LLM Answer Generation
-                       ↓
-          Answer with Source Citations
-```
-
-Documentation and source code are retrieved independently and fused at the multi-source layer. Reranking is performed separately per source type so that documentation and implementation evidence both remain represented in the final context.
-
-## Project Stages and Results
-
-### 1. Documentation Ingestion and Chunking
-
-The Phalcon 5.20 documentation was loaded from the official documentation repository and converted into a structured corpus.
-
-Instead of splitting documents using a fixed character or token window, the ingestion pipeline uses domain-aware chunking based on documentation structure.
-
-It handles, among other things:
-
-- headings and sections;
-- API definitions;
-- method signatures;
-- code examples;
-- tables;
-- annotations;
-- query builder examples;
-- oversized sections.
-
-The resulting corpus contains approximately **10.8k chunks from 151 documentation files**.
-
-Each chunk preserves metadata such as its source file and documentation section so retrieved information can later be traced back to its source.
-
-### 2. Embedding Model Evaluation
-
-Several embedding models were evaluated on a custom retrieval benchmark containing 30 Phalcon questions across multiple categories:
-
-- how-to;
-- conceptual;
-- problem-oriented;
-- API questions.
-
-Evaluated models:
-
-| Model                          |  Recall@5 | Recall@10 |       MRR |
-| ------------------------------ | --------: | --------: | --------: |
-| Qwen3-Embedding-0.6B           | **0.833** | **0.900** |     0.587 |
-| BGE Large EN v1.5              |     0.733 |     0.833 | **0.661** |
-| GTE ModernBERT Base            |     0.600 |     0.733 |     0.354 |
-| Multilingual E5 Large Instruct |     0.733 |     0.867 |     0.468 |
-
-`Qwen/Qwen3-Embedding-0.6B` was selected for dense retrieval because the first retrieval stage prioritizes recall: missing a relevant document at this stage prevents later reranking from recovering it.
-
-### 3. BM25 Retrieval
-
-A BM25 retriever was implemented as a lexical retrieval baseline.
-
-Results:
-
-| Retriever  | Recall@5 | Recall@10 |   MRR |
-| ---------- | -------: | --------: | ----: |
-| BM25       |    0.467 |     0.567 | 0.347 |
-
-BM25 performs worse than dense retrieval on its own, but it retrieves some relevant chunks that dense retrieval misses. This makes it useful as a complementary signal in hybrid retrieval.
-
-### 4. Hybrid Retrieval
-
-Dense Qwen retrieval and BM25 retrieval were combined using weighted Reciprocal Rank Fusion.
-
-Several weighting strategies were evaluated:
-
-| Qwen : BM25 | Recall@5 | Recall@10 |       MRR |
-| ----------- | -------: | --------: | --------: |
-| Qwen only   |    0.833 |     0.900 |     0.587 |
-| 1 : 1       |    0.667 |     0.800 |     0.458 |
-| 2 : 1       |    0.800 |     0.867 |     0.545 |
-| 3 : 1       |    0.733 | **0.933** |     0.581 |
-| **4 : 1**   |    0.800 | **0.933** | **0.610** |
-
-The final pipeline therefore uses a **4:1 weighting in favor of dense retrieval**.
-
-The hybrid retriever collects the top 50 candidates from both retrieval methods, fuses their rankings, and passes the top 10 hybrid candidates to the reranker.
-
-### 5. Cross-Encoder Reranking
-
-Several cross-encoder reranking models were evaluated on top of the hybrid retrieval pipeline rather than selecting a reranker without comparison.
-
-For each benchmark question, the retrieval pipeline produced candidates using:
+## Architecture
 
 ```text
-Dense Top 50 + BM25 Top 50
-              ↓
-         Weighted RRF
-              ↓
-        Hybrid Top 10
+Phalcon 5.20 Documentation       Phalcon 5.20 Zephir Source
+             |                                |
+    Structure-aware chunks             Method-level chunks
+             |                                |
+       Dense + BM25                      Dense + BM25
+             |                                |
+        Weighted RRF                     Weighted RRF
+             |                                |
+       Docs candidates                  Source candidates
+             |                                |
+       MiniLM reranking                 MiniLM reranking
+             |                                |
+         Top 2 docs                       Top 5 source
+             +---------------+----------------+
+                             |
+              Question + optional PHP context
+                             |
+                  Grounded LLM generation
+                             |
+                  Answer + source metadata
 ```
 
-Each reranking model then reordered the same 10 candidates, allowing their impact on retrieval quality and inference latency to be compared under identical conditions.
+The corpus includes approximately **10.8k documentation chunks from 151 files**, plus method-level source-code chunks with metadata.
 
-The following rerankers were evaluated:
+Documentation and source code are retrieved independently, and candidate passages are reranked separately by source type. The application initializes the RAG pipeline at startup and reuses it across requests.
 
-- `BAAI/bge-reranker-v2-m3`
-- `BAAI/bge-reranker-base`
-- `cross-encoder/ms-marco-MiniLM-L6-v2`
+## API
 
-`BAAI/bge-reranker-v2-m3` achieved the strongest source-code retrieval quality, but its CPU inference cost was too high for an interactive RAG pipeline. In profiling, reranking alone could account for most of the request latency.
+The FastAPI application is defined in `src/phalcon_rag/api/app.py`.
 
-`cross-encoder/ms-marco-MiniLM-L6-v2` provided a much better latency-quality trade-off. It also performed particularly well on documentation retrieval at the production cutoff.
+### `GET /health`
 
-To compensate for the lower source-code recall at Top 3, the final source-code context was increased from 3 to 5 chunks. Generation evaluation with this configuration achieved:
+Returns:
 
-| Metric       |           Score |
-| ------------ | --------------: |
-| Correctness  |           60/60 |
-| Completeness |           51/60 |
-| Groundedness |           60/60 |
-| Overall      | 171/180 (95.0%) |
-
-The final pipeline therefore reranks documentation and source-code candidates separately and selects different numbers of chunks from each source:
-
-```text
-Dense Top 50 + BM25 Top 50
-              ↓
-         Weighted RRF
-              ↓
-        Hybrid Top 10
-              ↓
-     MiniLM Cross-Encoder
-          ↙         ↘
-     Docs Top 2   Source Top 5
-          ↘         ↙
-       7 context chunks
-              ↓
-        Answer Generation
+```json
+{
+  "status": "ok"
+}
 ```
 
-Unlike the first-stage retrievers, the cross-encoder evaluates the query and each candidate passage together. Since it is only applied to the small candidate set produced by hybrid retrieval, MiniLM provides more precise relevance scoring while keeping CPU inference practical for interactive use.
+This endpoint reports a healthy response after the application has successfully started and initialized its RAG pipeline.
 
-### 6. Source-Code Ingestion and Multi-Source Retrieval
+### `POST /api/v1/ask`
 
-The knowledge base was extended with the Phalcon 5.20 source code.
+Accepts a required question and an optional PHP code snippet.
 
-Zephir source files are parsed into method-level chunks while preserving metadata such as:
+Both fields allow **1–2000 characters after trimming leading and trailing whitespace**, when provided.
 
-- source file;
-- class/method name;
-- start and end lines;
-- chunk source type.
+Example:
 
-Documentation and source code use separate hybrid retrievers and query instructions.
-
-The two ranked result lists are then combined using Reciprocal Rank Fusion before source-aware reranking.
-
-The final context currently keeps:
-
-- **2 documentation chunks**;
-- **3 source-code chunks**.
-
-This balance was selected after retrieval evaluation on a 30-question benchmark containing documentation, implementation, and mixed questions.
-
-### 7. Answer Generation
-
-The final five chunks are provided to the LLM together with the user's question.
-
-The generation prompt distinguishes between:
-
-- **DOCUMENTATION** — public API, documented behavior, and usage;
-- **SOURCE CODE** — internal implementation and execution flow.
-
-The model is instructed to:
-
-- answer using only the supplied context;
-- avoid relying on outside knowledge;
-- cite supporting chunks;
-- prioritize source-code evidence when the question asks how something works internally;
-- avoid inventing details when the retrieved context is insufficient.
-
-### 8. Multi-Source Retrieval Evaluation
-
-The multi-source retrieval pipeline was evaluated on a 30-question benchmark covering documentation, internal implementation, and mixed questions.
-
-Two metrics are reported:
-
-- Hit@5 — whether at least one expected source appears in the final five chunks;
-- Expected Source Recall@5 — the proportion of expected sources recovered in the final five chunks.
-
-Several documentation/source allocations were compared:
-| Final Context | Hit@5 | Mean Expected Source Recall@5 |
-| --------------------- | --------: | ----------------------------: |
-| 3 docs + 2 source | 80.0% | 65.0% |
-| **2 docs + 3 source** | **86.7%** | 70.8% |
-| 1 doc + 4 source | 86.7% | **71.9%** |
-
-The final pipeline currently uses 2 documentation chunks and 3 source-code chunks as a balance between documentation coverage and implementation detail.
-
-The evaluation also exposed difficult cases involving indirect source-code execution flows, where relevant methods cannot be identified from method names alone. These cases are useful targets for future retrieval improvements.
-
-### 9. Generation Evaluation
-
-Answer generation was manually evaluated on the same 30-question benchmark
-used for multi-source retrieval evaluation.
-
-Each generated answer was scored from 0 to 2 on three dimensions:
-
-- **Correctness** — whether the claims made in the answer are correct;
-- **Completeness** — whether the answer covers the expected concepts needed
-  to answer the question;
-- **Groundedness** — whether the answer is supported by the retrieved context
-  without introducing unsupported claims.
-
-| Metric       |         Score |      Mean |
-| ------------ | ------------: | --------: |
-| Correctness  |       60 / 60 |  2.00 / 2 |
-| Completeness |       44 / 60 |  1.47 / 2 |
-| Groundedness |       60 / 60 |  2.00 / 2 |
-| **Overall**  | **164 / 180** | **91.1%** |
-
-The evaluation shows that generation is reliable when sufficient context is
-retrieved. Answers remained grounded in the supplied Phalcon documentation and
-source code, including cases where the retrieved context was incomplete.
-
-The main limitation was **completeness**. Most incomplete answers were caused by
-missing or partial retrieval context rather than unsupported generation. For
-example, indirect source-code flows such as relationship resolution may require
-multiple connected methods that are difficult to retrieve from the query alone.
-
-The evaluation also showed that strict expected-source retrieval metrics can
-underestimate final answer quality: in some cases, the exact expected chunk was
-not retrieved, while alternative retrieved context was still sufficient to
-produce a correct and complete answer.
-
-Detailed per-question generation results and manual scores are stored in the
-generation evaluation results file.
-
----
-
-## Project Structure
-
-```text
-src/phalcon_rag/
-├── ingestion/
-├── retrieval/
-│   ├── dense.py
-│   ├── bm25.py
-│   ├── hybrid.py
-│   ├── multi_source.py
-│   └── rrf.py
-├── reranking/
-├── generation/
-├── evaluation/
-├── config.py
-├── models.py
-├── pipeline.py
-└── pipeline_factory.py
+```bash
+curl -X POST http://127.0.0.1:8000/api/v1/ask \
+  -H "Content-Type: application/json" \
+  -d '{"question":"What is the difference between DI get() and getShared()?"}'
 ```
 
----
+With selected PHP code:
 
-## Installation
+```json
+{
+  "question": "Could this code trigger N+1 queries?",
+  "context": "foreach ($users as $user) { Orders::find(['conditions' => 'user_id = :id:', 'bind' => ['id' => $user->id]]); }"
+}
+```
 
-The project requires **Python 3.11+**.
+Response shape (illustrative values, not a recorded model answer):
+
+```json
+{
+  "answer": "The loop may issue a separate orders query for each user...",
+  "sources": [
+    {
+      "id": "example-chunk-id",
+      "type": "source_code",
+      "file": "phalcon/Mvc/Model.zep",
+      "section": null,
+      "method": "find",
+      "start_line": 100,
+      "end_line": 150
+    }
+  ]
+}
+```
+
+The `sources` array may include documentation and source-code references. The `section`, `method`, `start_line`, and `end_line` fields are nullable.
+
+Interactive API documentation is available at `/docs` while the service is running.
+
+## Run Locally
+
+### Requirements
+
+- Python 3.11 or newer (Python 3.12 is used in the Docker image).
+- Processed Phalcon 5.20 documentation and source-code corpora.
+- Qwen embeddings corresponding to the processed corpora.
+- An OpenAI API key.
+- Internet access for initial embedding and reranker model downloads.
+
+### Installation
 
 Clone the repository:
 
@@ -297,13 +123,20 @@ git clone https://github.com/fedachkaa/phalcon-rag.git
 cd phalcon-rag
 ```
 
-Create and activate a virtual environment.
+Create and activate a virtual environment:
 
-Windows:
+**Linux / macOS:**
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+```
+
+**Windows (PowerShell):**
 
 ```powershell
 python -m venv .venv
-.venv\Scripts\Activate.ps1
+.\.venv\Scripts\Activate.ps1
 ```
 
 Install the project:
@@ -312,285 +145,204 @@ Install the project:
 pip install -e .
 ```
 
-For development tools such as Ruff and pytest:
+Create an environment configuration:
 
-```bash
-pip install -e ".[dev]"
-```
-
----
-
-## Configuration
-
-Create a local `.env` file from the provided example:
+**Linux / macOS:**
 
 ```bash
 cp .env.example .env
 ```
 
-On Windows PowerShell:
+**Windows (PowerShell):**
 
 ```powershell
 Copy-Item .env.example .env
 ```
 
-Add your OpenAI API key:
+Set your `OPENAI_API_KEY` in `.env`.
 
-```dotenv
-OPENAI_API_KEY=your-api-key
-```
+**Never commit `.env`, API keys, or other credentials.**
 
-The `.env` file is excluded from Git and must never be committed.
+### Prepare the Knowledge Base
 
-## Usage
+Before starting the service, download and process the Phalcon 5.20 documentation and Zephir source code, then generate the corresponding Qwen embeddings.
 
-The commands below assume the project has been installed and the virtual environment is activated.
+See [Setup and Evaluation Commands](docs/setup-and-evaluation-commands.md) for the preparation workflow.
 
-### 1. Prepare Phalcon Knowledge Sources
-
-The RAG pipeline uses both the official Phalcon 5.20 documentation and the Phalcon 5.20 source code.
-
-Clone the documentation repository:
-
-```bash
-git clone https://github.com/phalcon/documentation.git data/raw/phalcon-docs
-```
-
-The Phalcon 5.20 documentation should then be available at:
+The runtime expects corpus and embedding artifacts in the project directory, including:
 
 ```text
-data/raw/phalcon-docs/src/content/docs-5.20
+data/
+├── processed/
+│   ├── phalcon_docs_5.20.jsonl
+│   └── phalcon_source_code_5.20.jsonl
+└── embeddings/
+    ├── phalcon_docs/
+    │   ├── qwen_embeddings.npy
+    │   └── chunk_ids.json
+    └── phalcon_source_code/
+        ├── qwen_embeddings.npy
+        └── chunk_ids.json
 ```
 
-Clone the matching Phalcon source-code version:
+The RAG pipeline loads these artifacts during initialization. Missing or incompatible files will prevent the service from starting successfully.
+
+### Start the API
+
+Run the FastAPI application from the repository root:
 
 ```bash
-git clone --branch v5.20.0 --depth 1 https://github.com/phalcon/cphalcon.git data/raw/phalcon-source-code
+uvicorn phalcon_rag.api.app:app --host 127.0.0.1 --port 8000
 ```
 
-The Zephir source files used by the ingestion pipeline will then be available at:
-
-```text
-data/raw/phalcon-source-code/phalcon
-```
-
-Using the same Phalcon version for both sources keeps documentation and implementation details aligned.
-
-### 2. Ingest Knowledge Sources
-
-Process the documentation:
+Check the health endpoint:
 
 ```bash
-python scripts/ingest_docs.py
+curl http://127.0.0.1:8000/health
 ```
 
-This creates:
+Expected response:
 
-```text
-data/processed/phalcon_docs_5.20.jsonl
+```json
+{ "status": "ok" }
 ```
 
-Process the Phalcon source code:
+Open the interactive API documentation at:
 
-```bash
-python scripts/ingest_source_code.py
-```
+http://127.0.0.1:8000/docs
 
-This creates:
+### Command-Line Interface
 
-```text
-data/processed/phalcon_source_code_5.20.jsonl
-```
-
-The source-code ingestion pipeline parses Zephir files into method-level chunks and preserves metadata such as the source file, method name, line range, and neighboring chunks.
-
-### 3. Analyze Token Distribution
-
-Optionally inspect chunk token lengths for the supported embedding models:
-
-```bash
-python scripts/analyze_tokens.py
-```
-
-This step requires the processed corpus created during ingestion.
-
-### 4. Generate Embeddings
-
-Generate document embeddings before running dense or hybrid retrieval:
-
-```bash
-python scripts/generate_embeddings.py --model=qwen --source=phalcon_docs
-
-python scripts/generate_embeddings.py --model=qwen --source=phalcon_source_code
-```
-
-The script creates:
-
-```text
-data/embeddings/phalcon_docs/qwen_embeddings.npy
-data/embeddings/phalcon_docs/chunk_ids.json
-
-data/embeddings/phalcon_source_code/qwen_embeddings.npy
-data/embeddings/phalcon_source_code/chunk_ids.json
-```
-
-To generate embeddings for the other evaluated models:
-
-```bash
-python scripts/generate_embeddings.py --model=bge --source=phalcon_docs
-
-python scripts/generate_embeddings.py --model=gte --source=phalcon_docs
-
-python scripts/generate_embeddings.py --model=e5 --source=phalcon_docs
-```
-
-### 5. Run Retrieval Evaluations
-
-Embedding models can be evaluated after their embeddings have been generated:
-
-```bash
-python scripts/evaluate_embeddings.py qwen
-python scripts/evaluate_embeddings.py bge
-python scripts/evaluate_embeddings.py gte
-python scripts/evaluate_embeddings.py e5
-```
-
-The final RAG pipeline requires Qwen embeddings for both documentation and source-code corpora.
-
-Run the BM25 retrieval evaluation:
-
-```bash
-python scripts/evaluate_bm25.py
-```
-
-Run the hybrid dense + BM25 retrieval evaluation:
-
-```bash
-python scripts/evaluate_hybrid.py
-```
-
-Run the cross-encoder reranking evaluation:
-
-```bash
-python scripts/evaluate_reranker.py
-```
-
-Run the multi-source retrieval evaluation:
-
-```bash
-python scripts/evaluate_retrieval.py
-```
-
-This evaluates the final retrieved context using Hit@5 and Expected Source Recall@5 over the multi-source benchmark.
-
-The hybrid and reranking stages require the generated Qwen embeddings.
-
-### 6. Run Generation Evaluation
-
-Before running generation, create a local `.env` file and provide an OpenAI API key:
-
-```dotenv
-OPENAI_API_KEY=your-api-key
-```
-
-Then run:
-
-```bash
-python scripts/evaluate_generation.py
-```
-
-This evaluates the complete pipeline:
-
-```text
-Dense Retrieval
-    +
-BM25 Retrieval
-    ↓
-Weighted RRF
-    ↓
-Cross-Encoder Reranking
-    ↓
-LLM Answer Generation
-```
-
-### 7. Ask a Question
-
-To query the RAG pipeline directly:
+You can also ask a question directly from the command line:
 
 ```bash
 python scripts/answer_question.py "How do I create a transaction in Phalcon?"
 ```
 
-Example questions:
+The CLI loads the RAG pipeline and generates an answer using the prepared knowledge base.
+
+### API Security
+
+The current API is intended for local development or private deployment. It does not implement authentication or request-level authorization.
+
+Do not expose it directly to the public internet without appropriate access controls, authentication, rate limiting, and transport security.
+
+## PhpStorm Integration
+
+The [Phalcon RAG Assistant PhpStorm plugin](https://github.com/fedachkaa/phalcon-rag-plugin) integrates this backend directly into the IDE.
+
+It supports questions with optional selected PHP code, Markdown-formatted answers, and clickable references to Phalcon documentation and Zephir source code.
+
+**[Download the PhpStorm plugin (v1.0.0)](https://github.com/fedachkaa/phalcon-rag-plugin/releases/tag/v1.0.0)**
+
+The plugin requires a running backend API. Configure the API base URL under **PhpStorm → Settings → Tools → Phalcon RAG**.
+
+### Demo
+
+https://github.com/user-attachments/assets/6614303c-7cce-4686-b5a4-38b705e1b134
+
+## Evaluation Highlights
+
+The model and retrieval configuration were chosen through comparative evaluation rather than by model size alone.
+
+| Experiment                                           | Reported result                                                        |
+| ---------------------------------------------------- | ---------------------------------------------------------------------- |
+| Qwen3-Embedding-0.6B dense retrieval                 | Recall@10 **0.900** (30-question documentation benchmark)              |
+| Hybrid retrieval (4:1 dense:BM25)                    | Recall@10 **0.933** (same benchmark)                                   |
+| Generation evaluation, latest reported configuration | **171/180 (95.0%)** across correctness, completeness, and groundedness |
+
+The generation scores are manual benchmark assessments, **not an independently verified accuracy guarantee**.
+
+Earlier evaluation runs reported **164/180 (91.1%)**.
+
+The final generation evaluation reported:
+
+| Metric       |               Score |
+| ------------ | ------------------: |
+| Correctness  |               60/60 |
+| Completeness |               51/60 |
+| Groundedness |               60/60 |
+| **Overall**  | **171/180 (95.0%)** |
+
+See [Detailed Evaluation Results](docs/evaluation.md) for methodology, comparisons, and limitations.
+
+## Deployment
+
+The application has been built into a Docker image, pushed to **Amazon ECR**, and deployed to an **AWS EC2 `t3.large`** instance.
+
+The FastAPI service was accessible through an **SSH tunnel**, with the API bound to `127.0.0.1:8000` on the EC2 host rather than exposed publicly.
+
+Hugging Face model downloads were persisted in a Docker volume to avoid repeated downloads after container restarts.
+
+The EC2 instance is not intended to remain running continuously. Stopping an instance avoids ongoing instance compute charges, although EBS storage and other allocated resources may still incur costs.
+
+For more information, see the [AWS Deployment Guide](docs/deployment.md).
+
+## Project Layout
 
 ```text
-How do I create a transaction in Phalcon?
-How can I bind parameters in a Phalcon query?
-How do I register an event listener?
+src/phalcon_rag/
+├── api/             # FastAPI routes and request/response schemas
+├── ingestion/       # Documentation and Zephir source parsing/chunking
+├── retrieval/       # Dense, BM25, hybrid, multi-source, RRF
+├── reranking/       # Cross-encoder reranking
+├── generation/      # Prompting, query rewriting, answer generation
+├── evaluation/      # Evaluation utilities
+├── config.py
+├── pipeline.py
+└── pipeline_factory.py
+
+scripts/             # Ingestion, embedding, benchmarking, CLI
+tests/               # Automated tests
+
+docs/
+├── deployment.md
+├── evaluation.md
+└── setup-and-evaluation-commands.md
+
+Dockerfile
+pyproject.toml
 ```
 
-The system retrieves relevant documentation and source-code chunks, reranks them separately by source type, and generates an answer grounded in the retrieved Phalcon context.
+## Documentation
 
-### Required Files for the Full Pipeline
+- [Setup and Evaluation Commands](docs/setup-and-evaluation-commands.md)
+- [Detailed Evaluation Results](docs/evaluation.md)
+- [AWS Deployment Guide](docs/deployment.md)
+- [PhpStorm Plugin Repository](https://github.com/fedachkaa/phalcon-rag-plugin)
 
-After the preparation steps, the following files are required:
+## Limitations and Roadmap
 
-```text
-data/processed/phalcon_docs_5.20.jsonl
-data/processed/phalcon_source_code_5.20.jsonl
+- **Indirect execution paths:** Retrieving related implementation details spread across multiple Zephir methods remains challenging.
+- **Framework version:** The knowledge base is scoped to Phalcon 5.20.
+- **Private API:** The current service does not include authentication, rate limiting, or production-grade API access controls.
+- **Single-turn interactions:** Chat history, streaming responses, and multi-turn conversations are not implemented.
 
-data/embeddings/phalcon_docs/qwen_embeddings.npy
-data/embeddings/phalcon_docs/chunk_ids.json
-
-data/embeddings/phalcon_source_code/qwen_embeddings.npy
-data/embeddings/phalcon_source_code/chunk_ids.json
-```
-
-Without these files, hybrid retrieval, reranking, generation evaluation, and interactive question answering cannot run.
+Potential future improvements include framework-version filtering, improved citation presentation, streaming, and conversational history.
 
 ## Development
 
-Run Ruff:
+Install development dependencies:
+
+```bash
+pip install -e ".[dev]"
+```
+
+Run linting and formatting checks:
 
 ```bash
 ruff check .
+ruff format --check .
 ```
 
-Automatically fix supported lint issues:
-
-```bash
-ruff check . --fix
-```
-
-Format the project:
-
-```bash
-ruff format .
-```
-
-Run tests:
+Run automated tests:
 
 ```bash
 pytest
 ```
 
----
+To format the code automatically:
 
-## Planned Improvements
-
-The current version supports retrieval over both Phalcon documentation and source code.
-
-Planned work includes:
-
-- improved retrieval for indirect source-code execution flows;
-- API layer for external clients;
-- IDE integration, starting with a PhpStorm plugin;
-- improved citation presentation;
-- Phalcon version filtering.
-
-Possible later improvements include:
-
-- conversation history;
-- streaming responses;
-- support for multiple framework versions;
-- additional repositories or project-specific knowledge sources.
+```bash
+ruff format .
+```
