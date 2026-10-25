@@ -312,8 +312,6 @@ This script loads the complete RAG retrieval pipeline, retrieves documentation a
 
 **Retrieval evaluation configuration:** The current script evaluates all chunks returned by `pipeline.retrieve()`, using up to 2 documentation chunks and 5 source-code chunks per question. Metrics are reported as `Hit@7` and `Mean Expected Source Recall@7`. These reflect the current source-aware allocation rather than a globally ranked top-7.
 
-Because the current pipeline may return up to **2 documentation + 5 source-code chunks**, those printed metrics are not necessarily strict Top-5 metrics.
-
 To reproduce a strict historical Top-5 evaluation, the script must explicitly limit the evaluated chunks to five and use the corresponding historical retrieval configuration.
 
 See [Evaluation Results](evaluation.md) for recorded experimental results and their limitations.

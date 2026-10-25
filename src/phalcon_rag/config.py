@@ -27,4 +27,3 @@ RERANK_SOURCE_TOP_K = 5
 
 # Generation
 GENERATION_MODEL = os.getenv("GENERATION_MODEL", "gpt-5.6-luna")
-
