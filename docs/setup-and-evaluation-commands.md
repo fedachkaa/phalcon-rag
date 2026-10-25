@@ -310,9 +310,7 @@ python scripts/evaluate_retrieval.py
 
 This script loads the complete RAG retrieval pipeline, retrieves documentation and source-code chunks, and compares the returned chunk IDs with expected sources.
 
-**Important metric limitation:** The current script prints metrics named `Hit@5` and `Expected Source Recall@5`, but it processes all chunks returned by `pipeline.retrieve()`.
-
-Because the current pipeline may return up to **2 documentation + 5 source-code chunks**, those printed metrics are not necessarily strict Top-5 metrics.
+**Retrieval evaluation configuration:** The current script evaluates all chunks returned by `pipeline.retrieve()`, using up to 2 documentation chunks and 5 source-code chunks per question. Metrics are reported as `Hit@7` and `Mean Expected Source Recall@7`. These reflect the current source-aware allocation rather than a globally ranked top-7.
 
 To reproduce a strict historical Top-5 evaluation, the script must explicitly limit the evaluated chunks to five and use the corresponding historical retrieval configuration.
 

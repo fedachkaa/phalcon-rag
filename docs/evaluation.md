@@ -34,12 +34,12 @@ Several embedding models were evaluated on a custom retrieval benchmark containi
 
 Evaluated models:
 
-| Model | Recall@5 | Recall@10 | MRR |
-|---|---:|---:|---:|
-| Qwen3-Embedding-0.6B | **0.833** | **0.900** | 0.587 |
-| BGE Large EN v1.5 | 0.733 | 0.833 | **0.661** |
-| GTE ModernBERT Base | 0.600 | 0.733 | 0.354 |
-| Multilingual E5 Large Instruct | 0.733 | 0.867 | 0.468 |
+| Model                          |  Recall@5 | Recall@10 |       MRR |
+| ------------------------------ | --------: | --------: | --------: |
+| Qwen3-Embedding-0.6B           | **0.833** | **0.900** |     0.587 |
+| BGE Large EN v1.5              |     0.733 |     0.833 | **0.661** |
+| GTE ModernBERT Base            |     0.600 |     0.733 |     0.354 |
+| Multilingual E5 Large Instruct |     0.733 |     0.867 |     0.468 |
 
 `Qwen/Qwen3-Embedding-0.6B` was selected for dense retrieval because the first retrieval stage prioritizes recall: missing a relevant document at this stage prevents later reranking from recovering it.
 
@@ -47,9 +47,9 @@ Evaluated models:
 
 A BM25 retriever was implemented as a lexical retrieval baseline.
 
-| Retriever | Recall@5 | Recall@10 | MRR |
-|---|---:|---:|---:|
-| BM25 | 0.467 | 0.567 | 0.347 |
+| Retriever | Recall@5 | Recall@10 |   MRR |
+| --------- | -------: | --------: | ----: |
+| BM25      |    0.467 |     0.567 | 0.347 |
 
 BM25 performs worse than dense retrieval on its own, but it retrieves some relevant chunks that dense retrieval misses. This makes it useful as a complementary signal in hybrid retrieval.
 
@@ -59,13 +59,13 @@ Dense Qwen retrieval and BM25 retrieval were combined using weighted Reciprocal 
 
 Several weighting strategies were evaluated:
 
-| Qwen : BM25 | Recall@5 | Recall@10 | MRR |
-|---|---:|---:|---:|
-| Qwen only | 0.833 | 0.900 | 0.587 |
-| 1 : 1 | 0.667 | 0.800 | 0.458 |
-| 2 : 1 | 0.800 | 0.867 | 0.545 |
-| 3 : 1 | 0.733 | **0.933** | 0.581 |
-| **4 : 1** | 0.800 | **0.933** | **0.610** |
+| Qwen : BM25 | Recall@5 | Recall@10 |       MRR |
+| ----------- | -------: | --------: | --------: |
+| Qwen only   |    0.833 |     0.900 |     0.587 |
+| 1 : 1       |    0.667 |     0.800 |     0.458 |
+| 2 : 1       |    0.800 |     0.867 |     0.545 |
+| 3 : 1       |    0.733 | **0.933** |     0.581 |
+| **4 : 1**   |    0.800 | **0.933** | **0.610** |
 
 The final pipeline therefore uses a **4:1 weighting in favor of dense retrieval**.
 
@@ -99,12 +99,12 @@ The following rerankers were evaluated:
 
 To address lower source-code recall at Top 3, the source-code context allocation was subsequently increased from 3 to 5 chunks. A reported generation evaluation using the expanded allocation achieved:
 
-| Metric | Score |
-|---|---:|
-| Correctness | 60/60 |
-| Completeness | 51/60 |
-| Groundedness | 60/60 |
-| **Overall** | **171/180 (95.0%)** |
+| Metric       |               Score |
+| ------------ | ------------------: |
+| Correctness  |               60/60 |
+| Completeness |               51/60 |
+| Groundedness |               60/60 |
+| **Overall**  | **171/180 (95.0%)** |
 
 The current pipeline reranks documentation and source-code candidates separately and selects up to two documentation and five source-code chunks:
 
@@ -176,15 +176,15 @@ Two metrics were reported for the **five-chunk configurations**:
 
 Several documentation/source allocations were compared:
 
-| Final context | Hit@5 | Mean Expected Source Recall@5 |
-|---|---:|---:|
-| 3 docs + 2 source | 80.0% | 65.0% |
-| **2 docs + 3 source** | **86.7%** | 70.8% |
-| 1 doc + 4 source | 86.7% | **71.9%** |
+| Final context         |     Hit@5 | Mean Expected Source Recall@5 |
+| --------------------- | --------: | ----------------------------: |
+| 3 docs + 2 source     |     80.0% |                         65.0% |
+| **2 docs + 3 source** | **86.7%** |                         70.8% |
+| 1 doc + 4 source      |     86.7% |                     **71.9%** |
 
 At that stage, **2 documentation + 3 source-code chunks** were selected as a balance between documentation coverage and implementation detail.
 
-Subsequent experiments increased the source-code allocation to five chunks. The current application uses up to **2 documentation + 5 source-code chunks**. The Hit@5 and Expected Source Recall@5 values above **do not measure the current seven-chunk configuration**.
+Subsequent experiments increased the source-code allocation to five chunks. The current application uses up to **2 documentation + 5 source-code chunks**. The historical Hit@5 and Expected Source Recall@5 values above **do not measure the current seven-chunk configuration**. The current evaluation script reports `Hit@7` and `Mean Expected Source Recall@7`.
 
 The evaluation also exposed difficult cases involving indirect source-code execution flows, where relevant methods cannot be identified from method names alone. These cases are useful targets for future retrieval improvements.
 
@@ -198,12 +198,12 @@ Each generated answer was scored from 0 to 2 on three dimensions:
 - **Completeness** — whether the answer covers the expected concepts needed to answer the question;
 - **Groundedness** — whether the answer is supported by the retrieved context without introducing unsupported claims.
 
-| Metric | Score | Mean |
-|---|---:|---:|
-| Correctness | 60/60 | 2.00/2 |
-| Completeness | 44/60 | 1.47/2 |
-| Groundedness | 60/60 | 2.00/2 |
-| **Overall** | **164/180** | **91.1%** |
+| Metric       |       Score |      Mean |
+| ------------ | ----------: | --------: |
+| Correctness  |       60/60 |    2.00/2 |
+| Completeness |       44/60 |    1.47/2 |
+| Groundedness |       60/60 |    2.00/2 |
+| **Overall**  | **164/180** | **91.1%** |
 
 In this evaluation, answers generally remained grounded in the supplied Phalcon documentation and source code, including cases where the retrieved context was incomplete.
 
@@ -217,12 +217,12 @@ Detailed per-question generation results and manual scores were recorded in the 
 
 A later reported manual evaluation using an expanded source-code context produced:
 
-| Metric | Score |
-|---|---:|
-| Correctness | 60/60 |
-| Completeness | 51/60 |
-| Groundedness | 60/60 |
-| **Overall** | **171/180 (95.0%)** |
+| Metric       |               Score |
+| ------------ | ------------------: |
+| Correctness  |               60/60 |
+| Completeness |               51/60 |
+| Groundedness |               60/60 |
+| **Overall**  | **171/180 (95.0%)** |
 
 These results were manually assessed on the reported benchmark. The precise run settings and saved evaluation artifacts should be checked before interpreting the difference from the earlier **164/180 (91.1%)** score as a controlled improvement caused solely by increasing source-code context.
 

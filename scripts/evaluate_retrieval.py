@@ -6,8 +6,8 @@ from phalcon_rag.utils import load_json
 questions = load_json(Path("data/evaluation/questions.json"))
 pipeline = create_pipeline()
 
-hit_at_5_total = {}
-expected_source_recall_at_5 = {}
+hit_total = {}
+expected_source_recall = {}
 
 for case in questions:
     chunks = pipeline.retrieve(case["question"])
@@ -24,29 +24,24 @@ for case in questions:
 
         print(chunk.id)
 
-    hit_at_5_total[case["id"]] = int(bool(found_sources))
+    hit_total[case["id"]] = int(bool(found_sources))
 
-    expected_source_recall_at_5[case["id"]] = {
+    expected_source_recall[case["id"]] = {
         "found": len(found_sources),
         "total": len(case["expected_sources"]),
     }
 
-    print(f"Hit@5 = {hit_at_5_total[case['id']]}")
+    print(f"Hit@7 = {hit_total[case['id']]}")
 
-# Hit@5
+hits = sum(hit_total.values())
+hit_rate = hits / len(questions)
 
-hits = sum(hit_at_5_total.values())
-hit_at_5 = hits / len(questions)
+print(f"Hit@7: {hits}/{len(questions)} ({hit_rate * 100:.1f}%)")
 
-print(f"\nHit@5: {hits}/{len(questions)} ({hit_at_5 * 100:.1f}%)")
-
-# Expected Source Recall@5
 
 recalls = []
 
-print("\nExpected Source Recall@5:")
-
-for case_id, result in expected_source_recall_at_5.items():
+for case_id, result in expected_source_recall.items():
     recall = result["found"] / result["total"]
     recalls.append(recall)
 
@@ -54,4 +49,4 @@ for case_id, result in expected_source_recall_at_5.items():
 
 mean_recall = sum(recalls) / len(recalls)
 
-print(f"\nMean Expected Source Recall@5: {mean_recall * 100:.1f}%")
+print(f"Mean Expected Source Recall@7: {mean_recall * 100:.1f}%")
