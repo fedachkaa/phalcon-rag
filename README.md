@@ -112,6 +112,7 @@ Interactive API documentation is available at `/docs` while the service is runni
 - Processed Phalcon 5.20 documentation and source-code corpora.
 - Qwen embeddings corresponding to the processed corpora.
 - An OpenAI API key.
+- A supported OpenAI generation model (defaults to `gpt-5.6-luna`; configurable via `GENERATION_MODEL`).
 - Internet access for initial embedding and reranker model downloads.
 
 ### Installation
@@ -160,6 +161,13 @@ Copy-Item .env.example .env
 ```
 
 Set your `OPENAI_API_KEY` in `.env`.
+
+Optionally, set `GENERATION_MODEL` to override the default generation model (`gpt-5.6-luna`).
+
+```dotenv
+OPENAI_API_KEY=your-api-key
+GENERATION_MODEL=gpt-5.6-luna
+```
 
 **Never commit `.env`, API keys, or other credentials.**
 

@@ -1,4 +1,8 @@
-# src/phalcon_rag/config.py
+import os
+
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Embedding
 EMBEDDING_MODEL = "Qwen/Qwen3-Embedding-0.6B"
@@ -15,7 +19,6 @@ RRF_K = 60
 # Retrieval pipeline
 CANDIDATE_K = 50
 HYBRID_TOP_K = 10
-RERANK_TOP_K = 5
 
 # Reranking
 RERANKER_MODEL = "cross-encoder/ms-marco-MiniLM-L6-v2"
@@ -23,4 +26,5 @@ RERANK_DOCS_TOP_K = 2
 RERANK_SOURCE_TOP_K = 5
 
 # Generation
-GENERATION_MODEL = "gpt-5.6-luna"
+GENERATION_MODEL = os.getenv("GENERATION_MODEL", "gpt-5.6-luna")
+
